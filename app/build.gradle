@@ -26,4 +26,25 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //define versions
+    def room_version = "1.1.1"
+    def support_version = "28.0.0"
+
+    implementation "com.android.support:appcompat-v7:$support_version"
+
+    //add these libraries
+    //support design
+    implementation "com.android.support:design:$support_version"
+
+    //card view
+    implementation "com.android.support:cardview-v7:$support_version"
+
+    //recyclerview
+    implementation "com.android.support:recyclerview-v7:$support_version"
+
+    //room
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+    testImplementation "android.arch.persistence.room:testing:$room_version"
 }
