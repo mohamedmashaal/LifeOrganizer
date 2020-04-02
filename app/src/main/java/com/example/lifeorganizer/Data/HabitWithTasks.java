@@ -1,16 +1,16 @@
-package com.example.lifeorganizer;
+package com.example.lifeorganizer.Data;
 
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Relation;
 
 import java.util.List;
 
-public class JobWithTasks {
+public class HabitWithTasks {
     @Embedded
-    public Job job;
+    public Habit habit;
     @Relation(
             parentColumn = "id",
-            entityColumn = "jobID"
+            entityColumn = "habitID"
     )
     public List<Task> tasks;
 }

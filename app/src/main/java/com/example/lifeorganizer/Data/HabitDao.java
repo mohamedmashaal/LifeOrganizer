@@ -1,4 +1,4 @@
-package com.example.lifeorganizer;
+package com.example.lifeorganizer.Data;
 
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -9,8 +9,8 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 public interface HabitDao {
-    @Query("SELECT * FROM job")
-    List<Job> getAll();
+    @Query("SELECT * FROM habit")
+    List<Habit> getAll();
 
     @Insert
     void insert(Habit habit);

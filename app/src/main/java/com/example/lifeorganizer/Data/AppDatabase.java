@@ -1,4 +1,4 @@
-package com.example.lifeorganizer;
+package com.example.lifeorganizer.Data;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;

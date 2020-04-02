@@ -1,4 +1,4 @@
-package com.example.lifeorganizer;
+package com.example.lifeorganizer.Data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Job implements Serializable {
+public class Habit implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -19,8 +19,15 @@ public class Job implements Serializable {
     @ColumnInfo(name = "description")
     private String description;
 
-    @ColumnInfo(name = "deadline")
-    private Date deadline;
+    // days encoded as an integer
+    @ColumnInfo(name = "daysMask")
+    private int daysMask;
+
+    @ColumnInfo(name = "hrsPerWeek")
+    private int hrsPerWeek;
+
+    @ColumnInfo(name = "startDate")
+    private Date startDate;
 
     /*
      * Getters and Setters
@@ -50,11 +57,27 @@ public class Job implements Serializable {
         this.description = description;
     }
 
-    public Date getDeadline() {
-        return deadline;
+    public int getDaysMask() {
+        return daysMask;
     }
 
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
+    public void setDaysMask(int daysMask) {
+        this.daysMask = daysMask;
+    }
+
+    public int getHrsPerWeek() {
+        return hrsPerWeek;
+    }
+
+    public void setHrsPerWeek(int hrsPerWeek) {
+        this.hrsPerWeek = hrsPerWeek;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.lifeorganizer;
+package com.example.lifeorganizer.Data;
 
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
