@@ -1,20 +1,16 @@
 package com.example.lifeorganizer.Backend;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.example.lifeorganizer.Data.DatabaseClient;
 import com.example.lifeorganizer.Data.Habit;
-import com.example.lifeorganizer.MainActivity;
 
 import java.util.List;
 
 public class HabitManager {
     private Context mCtx;
     private static HabitManager mInstance;
-    private HabitManagerDelegate delegate;
 
     private HabitManager(Context mCtx) {
         this.mCtx = mCtx;
@@ -27,11 +23,7 @@ public class HabitManager {
         return mInstance;
     }
 
-    public void setDelegate(HabitManagerDelegate delegate) {
-        this.delegate = delegate;
-    }
-
-    public void createHabit(final Habit habit) {
+    public void createHabit(final Habit habit, final AfterCreateHabit callback) {
 
         class CreateHabit extends AsyncTask<Void, Void, Void> {
             @Override
@@ -45,10 +37,7 @@ public class HabitManager {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                delegate.afterCreateHabit();
-                //finish();
-                //startActivity(new Intent(mCtx, MainActivity.class));
-                Toast.makeText(mCtx, "Habit Created", Toast.LENGTH_LONG).show();
+                callback.afterCreateHabit();
             }
         }
 
@@ -56,7 +45,7 @@ public class HabitManager {
         st.execute();
     }
 
-    public void editHabit(final Habit habit) {
+    public void editHabit(final Habit habit, final AfterEditHabit callback) {
 
         class EditHabit extends AsyncTask<Void, Void, Void> {
             @Override
@@ -69,8 +58,7 @@ public class HabitManager {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                delegate.afterEditHabit();
-                Toast.makeText(mCtx, "Habit Updated", Toast.LENGTH_LONG).show();
+                callback.afterEditHabit();
             }
         }
 
@@ -78,7 +66,7 @@ public class HabitManager {
         st.execute();
     }
 
-    public void deleteHabit(final Habit habit) {
+    public void deleteHabit(final Habit habit, final AfterDeleteHabit callback) {
 
         class DeleteHabit  extends AsyncTask<Void, Void, Void> {
             @Override
@@ -91,8 +79,7 @@ public class HabitManager {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                delegate.afterDeleteHabit();
-                Toast.makeText(mCtx, "Habit Deleted", Toast.LENGTH_LONG).show();
+                callback.afterDeleteHabit();
             }
         }
 
@@ -100,7 +87,7 @@ public class HabitManager {
         st.execute();
     }
 
-    public void getHabits() {
+    public void getHabits(final AfterGetHabits callback) {
         class GetHabits extends AsyncTask<Void, Void, List<Habit>> {
             @Override
             protected List<Habit> doInBackground(Void... voids) {
@@ -114,8 +101,7 @@ public class HabitManager {
             @Override
             protected void onPostExecute(List<Habit> habits) {
                 super.onPostExecute(habits);
-                //TasksAdapter tasksAdapter = new TasksAdapter(MainActivity.this, tasks);
-                //recyclerView.setAdapter(tasksAdapter);
+                callback.afterGetHabits(habits);
             }
         }
 

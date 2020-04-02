@@ -19,7 +19,7 @@ public class HabitsAdapter extends RecyclerView.Adapter<HabitsAdapter.HabitsView
     private Context mCtx;
     private List<Habit> habits;
 
-    public HabitsAdapter(Context mCtx, List<Habit> taskList) {
+    public HabitsAdapter(Context mCtx, List<Habit> habits) {
         this.mCtx = mCtx;
         this.habits = habits;
     }
@@ -39,7 +39,7 @@ public class HabitsAdapter extends RecyclerView.Adapter<HabitsAdapter.HabitsView
         //if (t.isFinished())
         //    holder.textViewStatus.setText("Completed");
         //else
-            holder.textViewStatus.setText("Not Completed");
+        //    holder.textViewStatus.setText("Not Completed");
     }
 
     @Override
@@ -49,12 +49,12 @@ public class HabitsAdapter extends RecyclerView.Adapter<HabitsAdapter.HabitsView
 
     class HabitsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView textViewStatus, textViewTitle, textViewDesc;
+        TextView textViewTitle, textViewDesc;
 
         public HabitsViewHolder(View itemView) {
             super(itemView);
 
-            textViewStatus = itemView.findViewById(R.id.textViewStatus);
+            textViewTitle = itemView.findViewById(R.id.textViewTitle);
             textViewDesc = itemView.findViewById(R.id.textViewDesc);
 
             itemView.setOnClickListener(this);

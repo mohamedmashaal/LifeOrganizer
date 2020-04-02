@@ -17,7 +17,7 @@ public class Task implements Serializable {
     private String title;
 
     @ColumnInfo(name = "date")
-    private Date date;
+    private String date;
 
     @ColumnInfo(name = "finished")
     private boolean finished;
@@ -52,11 +52,11 @@ public class Task implements Serializable {
         this.title = title;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.lifeorganizer.Adapters.HabitsAdapter;
+import com.example.lifeorganizer.Backend.AfterGetHabits;
 import com.example.lifeorganizer.Backend.HabitManager;
 import com.example.lifeorganizer.Data.DatabaseClient;
 import com.example.lifeorganizer.Data.Habit;
@@ -41,6 +43,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        HabitManager.getInstance(getApplicationContext()).getHabits();
+        showHabits();
+    }
+
+    private void showHabits(){
+        HabitManager.getInstance(getApplicationContext()).getHabits(new AfterGetHabits() {
+            @Override
+            public void afterGetHabits(List<Habit> habits) {
+                HabitsAdapter adapter = new HabitsAdapter(MainActivity.this, habits);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 }

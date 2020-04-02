@@ -1,5 +1,6 @@
 package com.example.lifeorganizer.Data;
 
+import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Relation;
 

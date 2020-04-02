@@ -20,7 +20,7 @@ public class Job implements Serializable {
     private String description;
 
     @ColumnInfo(name = "deadline")
-    private Date deadline;
+    private String deadline;
 
     /*
      * Getters and Setters
@@ -50,11 +50,11 @@ public class Job implements Serializable {
         this.description = description;
     }
 
-    public Date getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 }

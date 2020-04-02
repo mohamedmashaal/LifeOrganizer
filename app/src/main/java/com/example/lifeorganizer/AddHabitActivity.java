@@ -1,21 +1,25 @@
 package com.example.lifeorganizer;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.lifeorganizer.Backend.AfterCreateHabit;
 import com.example.lifeorganizer.Backend.HabitManager;
+import com.example.lifeorganizer.Data.Habit;
 
 public class AddHabitActivity extends AppCompatActivity {
 
-    private EditText editTextTask, editTextDesc;
+    private EditText editTextTitle, editTextDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_habit);
-        editTextTask = findViewById(R.id.editTextTitle);
+        editTextTitle = findViewById(R.id.editTextTitle);
         editTextDesc = findViewById(R.id.editTextDesc);
 
         findViewById(R.id.button_save).setOnClickListener(new View.OnClickListener() {
@@ -27,12 +31,12 @@ public class AddHabitActivity extends AppCompatActivity {
     }
 
     private void createHabit() {
-        final String sTitle = editTextTask.getText().toString().trim();
+        final String sTitle = editTextTitle.getText().toString().trim();
         final String sDesc = editTextDesc.getText().toString().trim();
 
         if (sTitle.isEmpty()) {
-            editTextTask.setError("com.example.mytodo.Task Required");
-            editTextTask.requestFocus();
+            editTextTitle.setError("com.example.mytodo.Task Required");
+            editTextTitle.requestFocus();
             return;
         }
 
@@ -42,6 +46,16 @@ public class AddHabitActivity extends AppCompatActivity {
             return;
         }
 
-        HabitManager.getInstance(getApplicationContext()).c
+        Habit habit = new Habit();
+        habit.setTitle(sTitle);
+
+        HabitManager.getInstance(getApplicationContext()).createHabit(habit, new AfterCreateHabit() {
+            @Override
+            public void afterCreateHabit() {
+                finish();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Toast.makeText(getApplicationContext(), "Habit Created", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
