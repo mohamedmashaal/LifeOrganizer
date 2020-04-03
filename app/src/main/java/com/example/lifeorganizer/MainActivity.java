@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.MenuItem;
 
 import com.example.lifeorganizer.Adapters.HabitsAdapter;
+import com.example.lifeorganizer.Adapters.ViewPagerAdapter;
 import com.example.lifeorganizer.Backend.AfterGetHabits;
 import com.example.lifeorganizer.Backend.HabitManager;
 import com.example.lifeorganizer.Data.Habit;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton buttonAddTask;
     private RecyclerView recyclerView;
+    private ViewPager viewPager;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -34,10 +38,12 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_todo:
-                    loadFragment(new FragmentTodo(), false);
+//                    loadFragment(new FragmentTodo(), false);
+                    viewPager.setCurrentItem(0);
                     return true;
                 case R.id.navigation_habit:
-                    loadFragment(new FragmentHabit(), false);
+//                    loadFragment(new FragmentHabit(), false);
+                    viewPager.setCurrentItem(1);
                     return true;
             }
             return false;
@@ -49,10 +55,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        viewPager = (ViewPager) findViewById(R.id.main_view_pager);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        loadFragment(new FragmentTodo(), false);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),navigation);
+        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.addOnPageChangeListener(viewPagerAdapter.getListner());
+
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 //        recyclerView = findViewById(R.id.recyclerview_tasks);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -77,13 +87,5 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.setAdapter(adapter);
             }
         });
-    }
-
-    public void loadFragment(Fragment fragment, boolean backStack) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-        if (backStack)
-            transaction.addToBackStack(null);
-        transaction.commit();
     }
 }
