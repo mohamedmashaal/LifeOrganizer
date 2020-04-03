@@ -5,7 +5,9 @@ import android.os.AsyncTask;
 
 import com.example.lifeorganizer.Data.DatabaseClient;
 import com.example.lifeorganizer.Data.Habit;
+import com.example.lifeorganizer.Data.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HabitManager {
@@ -107,5 +109,31 @@ public class HabitManager {
 
         GetHabits gh = new GetHabits();
         gh.execute();
+    }
+
+    public void getTasksFromHabits(final String date, final int day, final AfterGetTasksFromHabits callback){
+        final List<Task> tasks = new ArrayList<>();
+        getHabits(new AfterGetHabits() {
+            @Override
+            public void afterGetHabits(List<Habit> habits) {
+                for(Habit habit : habits){
+                    int daysMask = habit.getDaysMask();
+                    if((daysMask & (1 << day)) != 0){
+                        Task task = new Task();
+                        task.setDate(date);
+                        task.setHabitID(habit.getId());
+                        task.setTitle(habit.getTitle());
+
+                        tasks.add(task);
+                        TaskManager.getInstance(mCtx).createTask(task, new AfterCreateTask() {
+                            @Override
+                            public void afterCreateTask() {}
+                        });
+                    }
+                }
+
+                callback.afterGetTasksFromHabits(tasks);
+            }
+        });
     }
 }

@@ -23,7 +23,7 @@ public class Task implements Serializable {
     private boolean finished;
 
     @ColumnInfo(name = "timeSpentInSeconds")
-    private boolean timeSpentInSeconds;
+    private int timeSpentInSeconds;
 
     // if the parent is a Job
     @ColumnInfo(name = "jobID")
@@ -68,11 +68,11 @@ public class Task implements Serializable {
         this.finished = finished;
     }
 
-    public boolean isTimeSpentInSeconds() {
+    public int getTimeSpentInSeconds() {
         return timeSpentInSeconds;
     }
 
-    public void setTimeSpentInSeconds(boolean timeSpentInSeconds) {
+    public void setTimeSpentInSeconds(int timeSpentInSeconds) {
         this.timeSpentInSeconds = timeSpentInSeconds;
     }
 
