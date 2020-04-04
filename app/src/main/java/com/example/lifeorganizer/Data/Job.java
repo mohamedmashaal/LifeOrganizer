@@ -22,6 +22,12 @@ public class Job implements Serializable {
     @ColumnInfo(name = "deadline")
     private Date deadline;
 
+    public Job(String title, String description, Date deadline) {
+        this.title = title;
+        this.description = description;
+        this.deadline = deadline;
+    }
+
     /*
      * Getters and Setters
      * */

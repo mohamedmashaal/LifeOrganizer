@@ -33,6 +33,13 @@ public class Task implements Serializable {
     @ColumnInfo(name = "habitID")
     private int habitID;
 
+    public Task(String title, Date date, boolean finished, int timeSpentInSeconds) {
+        this.title = title;
+        this.date = date;
+        this.finished = finished;
+        this.timeSpentInSeconds = timeSpentInSeconds;
+    }
+
     /*
      * Getters and Setters
      * */

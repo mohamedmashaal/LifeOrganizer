@@ -29,6 +29,14 @@ public class Habit implements Serializable {
     @ColumnInfo(name = "startDate")
     private Date startDate;
 
+    public Habit(String title, String description, int daysMask, int hrsPerWeek, Date startDate) {
+        this.title = title;
+        this.description = description;
+        this.daysMask = daysMask;
+        this.hrsPerWeek = hrsPerWeek;
+        this.startDate = startDate;
+    }
+
     /*
      * Getters and Setters
      * */
