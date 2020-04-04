@@ -9,22 +9,51 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.lifeorganizer.Adapters.TaskAdapter;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.dialogs.IAddTaskDialog;
 import com.example.lifeorganizer.dialogs.AddTaskDialog;
+
+import java.util.ArrayList;
 
 public class FragmentTodo extends Fragment {
 
     private FragmentActivity myContext;
 
+    public static class task {
+        public String name = "task";
+        public int time = 0;
+        public boolean status = true;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_todo, container, false);
 
+
+        // Create a list of words
+        final ArrayList<task> tasks = new ArrayList<task>();
+        for (int i = 0; i < 20; i++) {
+            tasks.add(new task());
+        }
+
+        TaskAdapter adapter = new TaskAdapter(getActivity(), tasks);
+
+        ListView listView = (ListView) getView().findViewById(R.id.task_list_view);
+
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                //view task information
+            }
+        });
         // Inflate the layout for this fragment
         return rootView;
     }
@@ -32,7 +61,7 @@ public class FragmentTodo extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        final TextView textView = (TextView) view.findViewById(R.id.testDialog);
+        //final TextView textView = (TextView) view.findViewById(R.id.testDialog);
 
         ((FloatingActionButton) view.findViewById(R.id.fb_add_task)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +71,7 @@ public class FragmentTodo extends Fragment {
                     @Override
                     public void onPositiveClicked(String title, String description, String date) {
 
-                        textView.setText(date);
+                        //textView.setText(date);
 
                         //TODO add new task here to db and view if success
 
