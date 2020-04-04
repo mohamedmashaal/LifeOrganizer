@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lifeorganizer.Adapters.TaskAdapter;
+import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.dialogs.IAddTaskDialog;
 import com.example.lifeorganizer.dialogs.AddTaskDialog;
@@ -25,11 +26,6 @@ public class FragmentTodo extends Fragment {
 
     private FragmentActivity myContext;
 
-    public static class task {
-        public String name = "task";
-        public int time = 0;
-        public boolean status = true;
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,11 +81,11 @@ public class FragmentTodo extends Fragment {
         });
 
         // Create a list of words
-        final ArrayList<task> tasks = new ArrayList<task>();
-        for (int i = 0; i < 20; i++) {
-            tasks.add(new task());
-            tasks.get(i).time = i;
-        }
+        final ArrayList<Task> tasks = new ArrayList<Task>();
+       // for (int i = 0; i < 20; i++) {
+//            tasks.add(new task());
+//            tasks.get(i).time = i;
+        //}
 
         TaskAdapter adapter = new TaskAdapter(getActivity(), tasks);
 
