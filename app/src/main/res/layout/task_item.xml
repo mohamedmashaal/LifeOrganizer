@@ -8,12 +8,13 @@
     <TextView
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="task_text"
+        android:textSize="25sp"
         android:gravity="center_vertical"
         android:id="@+id/task_name_text"/>
     <EditText
-        android:layout_width="50dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="-1"
         android:textAlignment="center"

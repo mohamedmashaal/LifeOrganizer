@@ -1,13 +1,16 @@
 package com.example.lifeorganizer.Adapters;
 
 import android.content.Context;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
@@ -31,7 +34,7 @@ public class TaskAdapter extends ArrayAdapter<FragmentTodo.task> {
         }
 
         // Get the {@link Word} object located at this position in the list
-        FragmentTodo.task currentWord = getItem(position);
+        final FragmentTodo.task currentWord = getItem(position);
 
         // Find the TextView in the list_item.xml layout with the ID miwok_text_view.
         TextView miwokTextView = (TextView) listItemView.findViewById(R.id.task_name_text);
@@ -39,11 +42,27 @@ public class TaskAdapter extends ArrayAdapter<FragmentTodo.task> {
         // the Miwok TextView.
         miwokTextView.setText(currentWord.name);
 
-        EditText timeField = listItemView.findViewById(R.id.task_time_spent_field);
-        timeField.setText(currentWord.time);
+        final EditText timeField = listItemView.findViewById(R.id.task_time_spent_field);
+        timeField.setText(currentWord.time+"");
+        //timeField.requestFocus();
 
         CheckBox checkBox = listItemView.findViewById(R.id.task_checkbox);
         checkBox.setChecked(currentWord.status);
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                currentWord.status = isChecked;
+                Toast.makeText(getContext(), currentWord.name+ "," + currentWord.time, Toast.LENGTH_SHORT).show();
+                if(!isChecked) {
+                    timeField.setText("0");
+                    currentWord.time = 0;
+                    timeField.setInputType(InputType.TYPE_NULL);
+                } else {
+                    timeField.setInputType(InputType.TYPE_CLASS_TEXT);
+                }
+            }
+        });
 
         // Find the TextView in the list_item.xml layout with the ID default_text_view.
 

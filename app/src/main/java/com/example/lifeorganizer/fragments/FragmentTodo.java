@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lifeorganizer.Adapters.TaskAdapter;
 import com.example.lifeorganizer.R;
@@ -36,7 +37,7 @@ public class FragmentTodo extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_todo, container, false);
 
 
-        // Create a list of words
+        /*// Create a list of words
         final ArrayList<task> tasks = new ArrayList<task>();
         for (int i = 0; i < 20; i++) {
             tasks.add(new task());
@@ -52,8 +53,10 @@ public class FragmentTodo extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 //view task information
+                //Toast.makeText(getActivity(), "Send", Toast.LENGTH_SHORT).show();
+
             }
-        });
+        });*/
         // Inflate the layout for this fragment
         return rootView;
     }
@@ -81,6 +84,27 @@ public class FragmentTodo extends Fragment {
             }
         });
 
+        // Create a list of words
+        final ArrayList<task> tasks = new ArrayList<task>();
+        for (int i = 0; i < 20; i++) {
+            tasks.add(new task());
+            tasks.get(i).time = i;
+        }
+
+        TaskAdapter adapter = new TaskAdapter(getActivity(), tasks);
+
+        ListView listView = (ListView) getView().findViewById(R.id.task_list_view);
+
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                //view task information
+                //Toast.makeText(getActivity(), "Send", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
     }
 }
