@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_task_header">
+        app:layout_constraintTop_toBottomOf="@id/add_task_header">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/add_task_container"
@@ -48,7 +48,7 @@
                 android:textSize="@dimen/dialog_title_size"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/add_task_container" />
+                app:layout_constraintTop_toTopOf="@id/add_task_container" />
 
             <EditText
                 android:id="@+id/add_task_title"
@@ -59,9 +59,9 @@
                 android:hint="Add Task Title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_task_title_title" />
+                app:layout_constraintTop_toBottomOf="@id/add_task_title_title" />
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/add_task_description_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                 android:textSize="@dimen/dialog_title_size"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_task_title" />
+                app:layout_constraintTop_toBottomOf="@id/add_task_title" />
 
             <EditText
                 android:id="@+id/add_task_description"
@@ -82,8 +82,8 @@
                 android:hint="Add Task Description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_task_description_title" />
-
+                app:layout_constraintTop_toBottomOf="@id/add_task_description_title" />
+-->
             <TextView
                 android:id="@+id/add_task_date_title"
                 android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
                 android:textSize="@dimen/dialog_title_size"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_task_description" />
+                app:layout_constraintTop_toBottomOf="@id/add_task_title" />
 
             <DatePicker
                 android:id="@+id/add_task_date_picker"
@@ -105,7 +105,7 @@
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_task_date_title">
+                app:layout_constraintTop_toBottomOf="@id/add_task_date_title">
 
             </DatePicker>
 

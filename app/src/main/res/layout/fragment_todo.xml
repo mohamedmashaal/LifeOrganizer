@@ -34,16 +34,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_prev_40dp"
-                android:id="@+id/habitCalenderPrev"
-                android:layout_toLeftOf="@id/habitCalenderMonth"
+                android:id="@+id/todoPrev"
+                android:layout_toLeftOf="@id/todoDayText"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:id="@+id/habitCalenderMonth"
-                android:text="Jan 2020"
+                android:id="@+id/todoDayText"
+                android:text="1 Jan 2020"
                 android:textSize="25sp"
                 android:layout_centerHorizontal="true"/>
 
@@ -51,12 +51,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_next_40dp"
-                android:id="@+id/habitCalenderNext"
-                android:layout_toRightOf="@id/habitCalenderMonth"
+                android:id="@+id/todoNext"
+                android:layout_toRightOf="@id/todoDayText"
                 />
         </RelativeLayout>
         <ListView
-            android:id="@+id/task_list_view"
+            android:id="@+id/todoListView"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

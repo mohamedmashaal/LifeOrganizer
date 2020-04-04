@@ -14,14 +14,12 @@ import android.widget.Toast;
 
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
-
-
-import java.util.ArrayList;
+import java.util.List;
 
 public class TaskAdapter extends ArrayAdapter<Task> {
 
-    public TaskAdapter(Context context, ArrayList<Task> words) {
-        super(context, 0, words);
+    public TaskAdapter(Context context, List<Task> tasks) {
+        super(context, 0, tasks);
     }
 
     @Override
@@ -33,37 +31,39 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                     R.layout.task_item, parent, false);
         }
 
-        // Get the {@link Word} object located at this position in the list
-        final Task task = getItem(position);
 
-        // Find the TextView in the list_item.xml layout with the ID miwok_text_view.
-        TextView nameText = (TextView) listItemView.findViewById(R.id.task_name_text);
-        // Get the Miwok translation from the currentWord object and set this text on
-        // the Miwok TextView.
-        //nameText.setText(currentWord.name);
+        final Task task = getItem(position);
+        final TextView nameText = (TextView) listItemView.findViewById(R.id.task_name_text);
+        nameText.setText(task.getTitle());
 
         final EditText timeField = listItemView.findViewById(R.id.task_time_spent_field);
-        //timeField.setText(currentWord.time+"");
+        timeField.setText(task.getTimeSpentInSeconds()/60+"");
+        if(task.isFinished()){
+            timeField.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        } else {
+            timeField.setInputType(InputType.TYPE_NULL);
+        }
+        //TODO put chang listener
         //timeField.requestFocus();
 
-        CheckBox checkBox = listItemView.findViewById(R.id.task_checkbox);
-        //checkBox.setChecked(currentWord.status);
+        final CheckBox checkBox = listItemView.findViewById(R.id.task_checkbox);
+        checkBox.setChecked(task.isFinished());
 
-/*        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                currentWord.status = isChecked;
-                Toast.makeText(getContext(), currentWord.name+ "," + currentWord.time, Toast.LENGTH_SHORT).show();
-                if(!isChecked) {
-                    timeField.setText("0");
-                    currentWord.time = 0;
-                    timeField.setInputType(InputType.TYPE_NULL);
+                //TODO warning the user from uncheck
+                task.setFinished(isChecked);
+
+                //Toast.makeText(getContext(), currentWord.name+ "," + currentWord.time, Toast.LENGTH_SHORT).show();
+                if(isChecked) {
+                   timeField.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 } else {
-                    timeField.setInputType(InputType.TYPE_CLASS_TEXT);
+                   timeField.setInputType(InputType.TYPE_NULL);
                 }
             }
         });
-*/
+
         // Find the TextView in the list_item.xml layout with the ID default_text_view.
 
         // Return the whole list item layout (containing 2 TextViews) so that it can be shown in
