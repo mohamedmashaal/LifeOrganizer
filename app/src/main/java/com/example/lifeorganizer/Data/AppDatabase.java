@@ -12,6 +12,4 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TaskDao taskDao();
     public abstract JobDao jobDao();
     public abstract HabitDao habitDao();
-    //public abstract HabitWithTasks habitWithTasksDao();
-    //public abstract JobWithTasks jobWithTasksDao();
 }

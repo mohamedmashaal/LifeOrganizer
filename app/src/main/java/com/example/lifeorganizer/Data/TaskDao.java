@@ -13,6 +13,12 @@ public interface TaskDao {
     @Query("SELECT * FROM task")
     List<Task> getAll();
 
+    @Query("SELECT * FROM task WHERE jobID=:jobId")
+    List<Task> getForSpecificJob(final int jobId);
+
+    @Query("SELECT * FROM task WHERE habitID=:habitId")
+    List<Task> getForSpecificHabit(final int habitId);
+
     @Insert
     void insert(Task task);
 

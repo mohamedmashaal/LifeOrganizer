@@ -2,12 +2,28 @@ package com.example.lifeorganizer.Data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
+@Entity(foreignKeys = {
+            @ForeignKey(
+                entity = Habit.class,
+                parentColumns = "id",
+                childColumns = "habitId",
+                onDelete = ForeignKey.CASCADE,
+                onUpdate = ForeignKey.CASCADE
+            ),
+            @ForeignKey(
+                entity = Job.class,
+                parentColumns = "id",
+                childColumns = "jobId",
+                onDelete = ForeignKey.CASCADE,
+                onUpdate = ForeignKey.CASCADE
+            )
+        })
 public class Task implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
@@ -32,6 +48,8 @@ public class Task implements Serializable {
     // if the parent is a Habit
     @ColumnInfo(name = "habitID")
     private int habitID;
+
+    public Task() {}
 
     public Task(String title, Date date, boolean finished, int timeSpentInSeconds) {
         this.title = title;

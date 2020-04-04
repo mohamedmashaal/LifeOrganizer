@@ -8,6 +8,7 @@ import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.Data.Task;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HabitManager {
@@ -111,7 +112,7 @@ public class HabitManager {
         gh.execute();
     }
 
-    public void getTasksFromHabits(final String date, final int day, final AfterGetTasksFromHabits callback){
+    public void getTasksFromHabits(final Date date, final int day, final AfterGetTasksFromHabits callback){
         final List<Task> tasks = new ArrayList<>();
         getHabits(new AfterGetHabits() {
             @Override

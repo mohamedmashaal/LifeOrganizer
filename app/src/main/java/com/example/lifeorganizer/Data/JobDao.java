@@ -22,8 +22,4 @@ public interface JobDao {
 
     @Update
     void update(Job job);
-
-    @Transaction
-    @Query("SELECT * FROM job")
-    public List<JobWithTasks> getJobWithTasks();
 }
