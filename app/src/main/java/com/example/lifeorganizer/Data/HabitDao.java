@@ -22,8 +22,4 @@ public interface HabitDao {
 
     @Update
     void update(Habit habit);
-
-    @Transaction
-    @Query("SELECT * FROM habit")
-    public List<HabitWithTasks> getHabitWithTasks();
 }

@@ -8,6 +8,7 @@ import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.Data.Task;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HabitManager {
@@ -111,7 +112,7 @@ public class HabitManager {
         gh.execute();
     }
 
-    public void getTasksFromHabits(final String date, final int day, final AfterGetTasksFromHabits callback){
+    public void getTasksFromHabits(final Date date, final int day, final AfterGetTasksFromHabits callback){
         final List<Task> tasks = new ArrayList<>();
         getHabits(new AfterGetHabits() {
             @Override
@@ -119,10 +120,8 @@ public class HabitManager {
                 for(Habit habit : habits){
                     int daysMask = habit.getDaysMask();
                     if((daysMask & (1 << day)) != 0){
-                        Task task = new Task();
-                        task.setDate(date);
+                        Task task = new Task(habit.getTitle(), date, false, 0);
                         task.setHabitID(habit.getId());
-                        task.setTitle(habit.getTitle());
 
                         tasks.add(task);
                         TaskManager.getInstance(mCtx).createTask(task, new AfterCreateTask() {
