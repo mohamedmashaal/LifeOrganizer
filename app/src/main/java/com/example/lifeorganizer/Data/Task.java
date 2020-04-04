@@ -36,6 +36,7 @@ public class Task implements Serializable {
     /*
      * Getters and Setters
      * */
+
     public int getId() {
         return id;
     }
