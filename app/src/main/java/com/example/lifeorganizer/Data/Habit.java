@@ -27,7 +27,7 @@ public class Habit implements Serializable {
     private int hrsPerWeek;
 
     @ColumnInfo(name = "startDate")
-    private String startDate;
+    private Date startDate;
 
     /*
      * Getters and Setters
@@ -73,11 +73,11 @@ public class Habit implements Serializable {
         this.hrsPerWeek = hrsPerWeek;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 }
