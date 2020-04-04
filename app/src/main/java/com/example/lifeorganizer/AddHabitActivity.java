@@ -11,6 +11,8 @@ import com.example.lifeorganizer.Backend.AfterCreateHabit;
 import com.example.lifeorganizer.Backend.HabitManager;
 import com.example.lifeorganizer.Data.Habit;
 
+import java.util.Date;
+
 public class AddHabitActivity extends AppCompatActivity {
 
     private EditText editTextTitle, editTextDesc;
@@ -46,8 +48,7 @@ public class AddHabitActivity extends AppCompatActivity {
             return;
         }
 
-        Habit habit = new Habit();
-        habit.setTitle(sTitle);
+        Habit habit = new Habit(sTitle, sDesc,0, 0, new Date());
 
         HabitManager.getInstance(getApplicationContext()).createHabit(habit, new AfterCreateHabit() {
             @Override

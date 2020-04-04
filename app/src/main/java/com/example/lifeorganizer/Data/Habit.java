@@ -2,6 +2,7 @@ package com.example.lifeorganizer.Data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -28,8 +29,6 @@ public class Habit implements Serializable {
 
     @ColumnInfo(name = "startDate")
     private Date startDate;
-
-    public Habit(){ }
 
     public Habit(String title, String description, int daysMask, int hrsPerWeek, Date startDate) {
         this.title = title;

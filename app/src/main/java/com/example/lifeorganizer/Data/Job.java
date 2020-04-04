@@ -2,6 +2,7 @@ package com.example.lifeorganizer.Data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -21,8 +22,6 @@ public class Job implements Serializable {
 
     @ColumnInfo(name = "deadline")
     private Date deadline;
-
-    public Job() {}
 
     public Job(String title, String description, Date deadline) {
         this.title = title;
