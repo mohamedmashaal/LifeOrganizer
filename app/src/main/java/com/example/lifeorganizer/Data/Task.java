@@ -54,6 +54,12 @@ public class Task implements Serializable {
     @ColumnInfo(name = "habitID")
     private int habitID;
 
+    @ColumnInfo(name = "isJobTask")
+    private boolean isJobTask;
+
+    @ColumnInfo(name = "isHabitTask")
+    private boolean isHabitTask;
+
     public Task(String title, Date date, boolean finished, int timeSpentInSeconds) {
         this.title = title;
         this.date = date;
@@ -119,5 +125,21 @@ public class Task implements Serializable {
 
     public void setHabitID(int habitID) {
         this.habitID = habitID;
+    }
+
+    public boolean isJobTask() {
+        return isJobTask;
+    }
+
+    public void setJobTask(boolean jobTask) {
+        isJobTask = jobTask;
+    }
+
+    public boolean isHabitTask() {
+        return isHabitTask;
+    }
+
+    public void setHabitTask(boolean habitTask) {
+        isHabitTask = habitTask;
     }
 }

@@ -22,7 +22,7 @@ public class Habit implements Serializable {
 
     // days encoded as an integer
     @ColumnInfo(name = "daysMask")
-    private int daysMask;
+    private String daysMask;
 
     @ColumnInfo(name = "hrsPerWeek")
     private int hrsPerWeek;
@@ -30,7 +30,7 @@ public class Habit implements Serializable {
     @ColumnInfo(name = "startDate")
     private Date startDate;
 
-    public Habit(String title, String description, int daysMask, int hrsPerWeek, Date startDate) {
+    public Habit(String title, String description, String daysMask, int hrsPerWeek, Date startDate) {
         this.title = title;
         this.description = description;
         this.daysMask = daysMask;
@@ -66,11 +66,11 @@ public class Habit implements Serializable {
         this.description = description;
     }
 
-    public int getDaysMask() {
+    public String getDaysMask() {
         return daysMask;
     }
 
-    public void setDaysMask(int daysMask) {
+    public void setDaysMask(String daysMask) {
         this.daysMask = daysMask;
     }
 

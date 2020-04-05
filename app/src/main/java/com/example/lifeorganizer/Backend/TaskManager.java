@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.example.lifeorganizer.Data.DatabaseClient;
+import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.Data.Task;
 
 import java.util.ArrayList;
@@ -137,6 +138,35 @@ public class TaskManager {
         }
 
         GetTasks gh = new GetTasks();
+        gh.execute();
+    }
+
+    public void getTasksForHabitAndDate(final Habit habit, final Date date, final AfterGetTasksFromHabits callback){
+        class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
+            @Override
+            protected List<Task> doInBackground(Void... voids) {
+                List<Task> tasks = DatabaseClient.getInstance(mCtx)
+                        .getAppDatabase()
+                        .taskDao()
+                        .getAll();
+                return tasks;
+            }
+
+            @Override
+            protected void onPostExecute(List<Task> tasks) {
+                super.onPostExecute(tasks);
+
+                List<Task> specificTasks = new ArrayList<>();
+                for(Task task : tasks){
+                    if(task.getDate().compareTo(date) == 0 && task.getHabitID() == habit.getId())
+                        specificTasks.add(task);
+                }
+
+                callback.afterGetTasksFromHabits(specificTasks);
+            }
+        }
+
+        MyAsyncTask gh = new MyAsyncTask();
         gh.execute();
     }
 }

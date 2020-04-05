@@ -100,15 +100,12 @@ public class HabitManager {
                         .habitDao()
                         .getAll();
 
-                Log.i("habits", "reference: " + habits.toString());
-
                 return habits;
             }
 
             @Override
             protected void onPostExecute(List<Habit> habits) {
                 super.onPostExecute(habits);
-                Log.i("habitssssssssss", "reference: " + habits.toString());
                 callback.afterGetHabits(habits);
             }
         }
@@ -117,26 +114,62 @@ public class HabitManager {
         gh.execute();
     }
 
+    public void getHabit(final int habitID, final AfterGetHabit callback) {
+        class MyAsyncTask extends AsyncTask<Void, Void, Habit> {
+            @Override
+            protected Habit doInBackground(Void... voids) {
+                Habit habit = DatabaseClient.getInstance(mCtx)
+                        .getAppDatabase()
+                        .habitDao()
+                        .getHabit(habitID);
+
+                return habit;
+            }
+
+            @Override
+            protected void onPostExecute(Habit habit) {
+                super.onPostExecute(habit);
+                callback.afterGetHabit(habit);
+            }
+        }
+
+        MyAsyncTask gh = new MyAsyncTask();
+        gh.execute();
+    }
+
     public void getTasksFromHabits(final Date date, final int day, final AfterGetTasksFromHabits callback){
-        final List<Task> tasks = new ArrayList<>();
+        final List<Task> finalTasks = new ArrayList<>();
         getHabits(new AfterGetHabits() {
             @Override
             public void afterGetHabits(List<Habit> habits) {
-                for(Habit habit : habits){
-                    int daysMask = habit.getDaysMask();
-                    if((daysMask & (1 << day)) != 0){
-                        Task task = new Task(habit.getTitle(), date, false, 0);
-                        task.setHabitID(habit.getId());
-
-                        tasks.add(task);
-                        TaskManager.getInstance(mCtx).createTask(task, new AfterCreateTask() {
+                for(final Habit habit : habits){
+                    String daysMask = habit.getDaysMask();
+                    if(daysMask.charAt(day) == '1'){
+                        TaskManager.getInstance(mCtx).getTasksForHabitAndDate(habit, date, new AfterGetTasksFromHabits() {
                             @Override
-                            public void afterCreateTask() {}
+                            public void afterGetTasksFromHabits(List<Task> tasks) {
+                                if(tasks.isEmpty()){
+                                    Task task = new Task(habit.getTitle(), date, false, 0);
+                                    task.setHabitID(habit.getId());
+                                    task.setHabitTask(true);
+                                    task.setJobTask(false);
+
+                                    finalTasks.add(task);
+
+                                    TaskManager.getInstance(mCtx).createTask(task, new AfterCreateTask() {
+                                        @Override
+                                        public void afterCreateTask() {}
+                                    });
+                                }
+                                else{
+                                    finalTasks.addAll(tasks);
+                                }
+                            }
                         });
                     }
                 }
 
-                callback.afterGetTasksFromHabits(tasks);
+                callback.afterGetTasksFromHabits(finalTasks);
             }
         });
     }

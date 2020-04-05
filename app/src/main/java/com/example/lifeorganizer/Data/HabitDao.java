@@ -7,12 +7,16 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
 public interface HabitDao {
     @Query("SELECT * FROM habit")
     List<Habit> getAll();
+
+    @Query("SELECT * FROM habit WHERE id=:habitID")
+    Habit getHabit(int habitID);
 
     @Insert
     void insert(Habit habit);

@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -18,6 +19,9 @@ public interface TaskDao {
 
     @Query("SELECT * FROM task WHERE habitID=:habitId")
     List<Task> getForSpecificHabit(final int habitId);
+
+    @Query("SELECT * FROM task WHERE habitID=:habitId AND date=:date")
+    List<Task> getForSpecificHabitِAndDate(final int habitId, Date date);
 
     @Insert
     void insert(Task task);
