@@ -3,7 +3,7 @@
 
     <item>
         <shape android:shape="rectangle" android:tint="@color/colorTicketBg">
-            <corners android:radius="8dp"/>
+            <corners android:radius="16dp"/>
         </shape>
     </item>
 
