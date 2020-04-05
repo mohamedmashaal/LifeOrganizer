@@ -43,7 +43,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         } else {
             timeField.setInputType(InputType.TYPE_NULL);
         }
-        //TODO put chang listener
+        //TODO put change listener
         //timeField.requestFocus();
 
         final CheckBox checkBox = listItemView.findViewById(R.id.task_checkbox);
@@ -56,6 +56,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                 task.setFinished(isChecked);
 
                 //Toast.makeText(getContext(), currentWord.name+ "," + currentWord.time, Toast.LENGTH_SHORT).show();
+                //TODO did set reflect in database?
                 if(isChecked) {
                    timeField.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 } else {
