@@ -119,7 +119,7 @@ public class TaskManager {
                 List<Task> tasks = DatabaseClient.getInstance(mCtx)
                         .getAppDatabase()
                         .taskDao()
-                        .getAll();
+                        .getAll(date);
                 return tasks;
             }
 
@@ -127,13 +127,15 @@ public class TaskManager {
             protected void onPostExecute(List<Task> tasks) {
                 super.onPostExecute(tasks);
 
-                List<Task> dateTasks = new ArrayList<>();
+                /*List<Task> dateTasks = new ArrayList<>();
                 for(Task task : tasks){
                     if(task.getDate().compareTo(date) == 0)
                         dateTasks.add(task);
-                }
 
                 callback.afterGetTasks(dateTasks);
+                }*/
+
+                callback.afterGetTasks(tasks);
             }
         }
 
