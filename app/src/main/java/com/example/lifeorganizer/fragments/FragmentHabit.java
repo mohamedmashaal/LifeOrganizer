@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.lifeorganizer.Adapters.HabitListAdapter;
+import com.example.lifeorganizer.Backend.AfterCreateHabit;
 import com.example.lifeorganizer.Backend.AfterGetHabits;
 import com.example.lifeorganizer.Backend.HabitManager;
+import com.example.lifeorganizer.Backend.TaskManager;
 import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.dialogs.AddHabitDialog;
@@ -74,6 +76,16 @@ public class FragmentHabit extends Fragment {
                     @Override
                     public void onPositiveClicked(String title, String description, String daysMask, int hrsPerWeek, Date startDate) {
                         //TODO call add nwe task here
+
+                        final Habit habit = new Habit(title, description, daysMask, hrsPerWeek, startDate);
+                        HabitManager.getInstance(getActivity()).createHabit(habit, new AfterCreateHabit() {
+                            @Override
+                            public void afterCreateHabit() {
+                                habitList.add(habit);
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+
                     }
                 });
                 mainDialog.showDialog();

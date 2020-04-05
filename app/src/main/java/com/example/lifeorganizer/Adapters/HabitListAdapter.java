@@ -1,8 +1,10 @@
 package com.example.lifeorganizer.Adapters;
 
+import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,10 @@ import android.widget.TextView;
 import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HabitListAdapter  extends  RecyclerView.Adapter<HabitListAdapter.ViewHolder> {
 
@@ -47,7 +52,17 @@ public class HabitListAdapter  extends  RecyclerView.Adapter<HabitListAdapter.Vi
         Habit habit = habitsList.get(position);
 
         ((TextView) holder.mConstraintLayout.findViewById(R.id.ticket_habit_name)).setText(habit.getTitle());
-        ((TextView) holder.mConstraintLayout.findViewById(R.id.ticket_habit_date)).setText(habit.getStartDate().toString());
+
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = habit.getStartDate();
+        try {
+            Log.i("lol", date + "");
+            date = dt.parse(date.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        ((TextView) holder.mConstraintLayout.findViewById(R.id.ticket_habit_date)).setText(date.toString());
 
         holder.mConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
