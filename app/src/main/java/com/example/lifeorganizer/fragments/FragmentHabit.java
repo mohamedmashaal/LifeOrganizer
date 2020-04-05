@@ -53,11 +53,10 @@ public class FragmentHabit extends Fragment {
             @Override
             public void afterGetHabits(List<Habit> habits) {
                 habitList = new ArrayList<>(habits);
+                mAdapter = new HabitListAdapter(habitList);
+                mRecyclerView.setAdapter(mAdapter);
             }
         });
-
-        mAdapter = new HabitListAdapter(habitList);
-        mRecyclerView.setAdapter(mAdapter);
 
         // Inflate the layout for this fragment
         return rootView;

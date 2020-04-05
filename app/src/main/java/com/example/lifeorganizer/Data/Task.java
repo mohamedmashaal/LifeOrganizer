@@ -4,12 +4,14 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity(foreignKeys = {
+@Entity(indices = {@Index("habitID"), @Index("jobID")}
+        /*,foreignKeys = {
             @ForeignKey(
                 entity = Habit.class,
                 parentColumns = "id",
@@ -24,7 +26,8 @@ import java.util.Date;
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE
             )
-        })
+        }*/
+        )
 
 public class Task implements Serializable {
 

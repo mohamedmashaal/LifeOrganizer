@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class HabitListAdapter  extends  RecyclerView.Adapter<HabitListAdapter.ViewHolder> {
 
-    private ArrayList<Habit> habitsList;
+    private ArrayList<Habit> habitsList = new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -28,8 +28,8 @@ public class HabitListAdapter  extends  RecyclerView.Adapter<HabitListAdapter.Vi
         }
     }
 
-    public HabitListAdapter (ArrayList<Habit> songsList){
-        this.habitsList = habitsList;
+    public HabitListAdapter (ArrayList<Habit> habits){
+        this.habitsList = habits;
     }
 
     @NonNull

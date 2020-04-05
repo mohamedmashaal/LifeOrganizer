@@ -2,6 +2,7 @@ package com.example.lifeorganizer.Backend;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.lifeorganizer.Data.DatabaseClient;
 import com.example.lifeorganizer.Data.Habit;
@@ -98,12 +99,16 @@ public class HabitManager {
                         .getAppDatabase()
                         .habitDao()
                         .getAll();
+
+                Log.i("habits", "reference: " + habits.toString());
+
                 return habits;
             }
 
             @Override
             protected void onPostExecute(List<Habit> habits) {
                 super.onPostExecute(habits);
+                Log.i("habitssssssssss", "reference: " + habits.toString());
                 callback.afterGetHabits(habits);
             }
         }

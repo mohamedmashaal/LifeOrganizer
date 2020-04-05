@@ -4,7 +4,7 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 
-@Database(entities = {Task.class, Job.class, Habit.class}, version = 2, exportSchema = false)
+@Database(entities = {Task.class, Job.class, Habit.class}, version = 1, exportSchema = false)
 
 @TypeConverters({DateConverter.class})
 
