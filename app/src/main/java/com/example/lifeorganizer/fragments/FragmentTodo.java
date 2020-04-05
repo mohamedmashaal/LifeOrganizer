@@ -68,7 +68,7 @@ public class FragmentTodo extends Fragment {
                             @Override
                             public void afterCreateTask() {
                                 //TODO reload the list
-                                /*TaskManager.getInstance(getActivity()).getTasks(date,new AfterGetTasks() {
+                                TaskManager.getInstance(getActivity()).getTasks(date,new AfterGetTasks() {
                                     Date x = date;
                                     @Override
                                     public void afterGetTasks(List<Task> tasks) {
@@ -80,10 +80,25 @@ public class FragmentTodo extends Fragment {
                                         d += MONTHS[calendar.get(Calendar.MONTH)] + " ";
                                         d += calendar.get(Calendar.YEAR);
                                         Toast.makeText(getActivity(), tasks.size()+"," + d, Toast.LENGTH_SHORT).show();
+                                        TaskAdapter adapter = new TaskAdapter(getActivity(), tasks);
 
+                                        ListView listView = (ListView) getView().findViewById(R.id.todoListView);
+
+                                        listView.setAdapter(adapter);
+
+                                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                                                //view task information
+                                                //Toast.makeText(getActivity(), "Send", Toast.LENGTH_SHORT).show();
+                                                //TODO navigate the tasks from habits or jobs or dates to the source of the task
+
+                                            }
+                                        });
                                     }
-                                });*/
-                                loadTheList();
+                                });
+
+                                //loadTheList();
                             }
                         });
                     }
