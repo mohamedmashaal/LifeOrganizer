@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.example.lifeorganizer.Backend.AfterCreateHabit;
 import com.example.lifeorganizer.Backend.AfterGetHabits;
 import com.example.lifeorganizer.Backend.HabitManager;
 import com.example.lifeorganizer.Data.Habit;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -40,15 +42,28 @@ public class HabitManagerTest {
             @Override
             public void afterGetHabits(List<Habit> habits) {
                 habitList.addAll(habits);
+                assertEquals(true, habitList.isEmpty());
+            }
+        });
+    }
+
+    /*@Test
+    public void testGetHabitsAfterAddingOneHabit() {
+        HabitManager mgr1 = HabitManager.getInstance(InstrumentationRegistry.getTargetContext());
+        Habit habit = new Habit("Habit1", "This is habit one", "0010100", 5, new Date());
+        mgr1.createHabit(habit, new AfterCreateHabit() {
+            @Override
+            public void afterCreateHabit() {
+                final List<Habit> habitList = new ArrayList<>();
+                mgr1.getHabits(new AfterGetHabits() {
+                    @Override
+                    public void afterGetHabits(List<Habit> habits) {
+                        habitList.addAll(habits);
+                    }
+                });
             }
         });
 
-        try {
-            new CountDownLatch(3).await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        assert habitList.isEmpty();
-    }
+        assert habitList.isEmpty() && ;
+    }*/
 }
