@@ -48,7 +48,7 @@ public class AddHabitActivity extends AppCompatActivity {
             return;
         }
 
-        Habit habit = new Habit(sTitle, sDesc,0, 0, new Date());
+        Habit habit = new Habit(sTitle, sDesc,"0000000", 0, new Date());
 
         HabitManager.getInstance(getApplicationContext()).createHabit(habit, new AfterCreateHabit() {
             @Override
