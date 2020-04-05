@@ -37,6 +37,7 @@ public class FragmentTodo extends Fragment {
     TextView dateText;
     Date date = new Date();
     final String [] MONTHS = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep", "Oct","Nov","Dec"};
+    List<Task> todoTasks;
 
 
     @Override
@@ -58,7 +59,7 @@ public class FragmentTodo extends Fragment {
                 AddTaskDialog mainDialog = new AddTaskDialog();
                 mainDialog.createDialog(getActivity().getSupportFragmentManager(), new IAddTaskDialog() {
                     @Override
-                    public void onPositiveClicked(String title, Date date) {
+                    public void onPositiveClicked(String title, final Date date) {
 
                         //textView.setText(date);
                         Task task = new Task(title, date,false,0);
@@ -66,7 +67,23 @@ public class FragmentTodo extends Fragment {
                         TaskManager.getInstance(getActivity()).createTask(task, new AfterCreateTask() {
                             @Override
                             public void afterCreateTask() {
-                                // reload the list
+                                //TODO reload the list
+                                /*TaskManager.getInstance(getActivity()).getTasks(date,new AfterGetTasks() {
+                                    Date x = date;
+                                    @Override
+                                    public void afterGetTasks(List<Task> tasks) {
+                                        //TODO filter them to habits and tasks
+                                        todoTasks = tasks;
+                                        Calendar calendar = Calendar.getInstance();
+                                        calendar.setTime(x);
+                                        String d = calendar.get(Calendar.DAY_OF_MONTH)+" ";
+                                        d += MONTHS[calendar.get(Calendar.MONTH)] + " ";
+                                        d += calendar.get(Calendar.YEAR);
+                                        Toast.makeText(getActivity(), tasks.size()+"," + d, Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });*/
+                                loadTheList();
                             }
                         });
                     }
@@ -81,6 +98,8 @@ public class FragmentTodo extends Fragment {
             @Override
             public void onClick(View v) {
                 changeDate(-1);
+                setDateText();
+                loadTheList();
             }
         });
         nextBtn = view.findViewById(R.id.todoNext);
@@ -88,9 +107,12 @@ public class FragmentTodo extends Fragment {
             @Override
             public void onClick(View v) {
                 changeDate(1);
+                setDateText();
+                loadTheList();
             }
         });
 
+        setDateText();
         loadTheList();
     }
     private void changeDate(int amount){
@@ -98,16 +120,28 @@ public class FragmentTodo extends Fragment {
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_YEAR, amount);
         date = calendar.getTime();
+    }
+    private void setDateText(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
         String d = calendar.get(Calendar.DAY_OF_MONTH)+" ";
         d += MONTHS[calendar.get(Calendar.MONTH)] + " ";
         d += calendar.get(Calendar.YEAR);
         dateText.setText(d);
     }
     private void loadTheList(){
-        /*TaskManager.getInstance(getActivity()).getTasks(date,new AfterGetTasks() {
+
+        TaskManager.getInstance(getActivity()).getTasks(date,new AfterGetTasks() {
             @Override
             public void afterGetTasks(List<Task> tasks) {
                 //TODO filter them to habits and tasks
+                todoTasks = tasks;
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                String d = calendar.get(Calendar.DAY_OF_MONTH)+" ";
+                d += MONTHS[calendar.get(Calendar.MONTH)] + " ";
+                d += calendar.get(Calendar.YEAR);
+                Toast.makeText(getActivity(), tasks.size()+","+d, Toast.LENGTH_SHORT).show();
 
                 TaskAdapter adapter = new TaskAdapter(getActivity(), tasks);
 
@@ -125,8 +159,8 @@ public class FragmentTodo extends Fragment {
                     }
                 });
             }
-        });*/
-        List<Task> tasks = new ArrayList<>();
+        });
+/*        List<Task> tasks = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Task dummyTask = new Task("dummy task "+i,date,false,0);
             tasks.add(dummyTask);
@@ -147,7 +181,7 @@ public class FragmentTodo extends Fragment {
                 //TODO navigate the tasks from habits or jobs or dates to the source of the task
 
             }
-        });
+        });*/
     }
 
 }
