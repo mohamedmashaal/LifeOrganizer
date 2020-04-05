@@ -15,6 +15,7 @@ import com.example.lifeorganizer.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddTaskDialog extends DialogFragment {
 
@@ -48,12 +49,11 @@ public class AddTaskDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
 
                         String taskTitle = ((EditText) rootView.findViewById(R.id.add_task_title)).getText().toString();
-                        String taskDescription = ((EditText) rootView.findViewById(R.id.add_task_description)).getText().toString();
 
                         DatePicker datePicker = rootView.findViewById(R.id.add_task_date_picker);
-                        String taskDate = getDate(datePicker);
+                        Date taskDate = getDate(datePicker);
 
-                        iDialog.onPositiveClicked(taskTitle, taskDescription, taskDate);
+                        iDialog.onPositiveClicked(taskTitle, taskDate, false, 0);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -64,15 +64,14 @@ public class AddTaskDialog extends DialogFragment {
         return builder.create();
     }
 
-    private String getDate(DatePicker datePicker){
+    private Date getDate(DatePicker datePicker){
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
         int year =  datePicker.getYear();
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(calendar.getTime());
+        return calendar.getTime();
     }
 
 }

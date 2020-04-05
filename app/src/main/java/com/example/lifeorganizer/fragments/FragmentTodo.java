@@ -15,6 +15,8 @@ import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.dialogs.IAddTaskDialog;
 import com.example.lifeorganizer.dialogs.AddTaskDialog;
 
+import java.util.Date;
+
 public class FragmentTodo extends Fragment {
 
     private FragmentActivity myContext;
@@ -39,13 +41,11 @@ public class FragmentTodo extends Fragment {
             public void onClick(View v) {
                 AddTaskDialog mainDialog = new AddTaskDialog();
                 mainDialog.createDialog(getActivity().getSupportFragmentManager(), new IAddTaskDialog() {
+
                     @Override
-                    public void onPositiveClicked(String title, String description, String date) {
-
-                        textView.setText(date);
-
-                        //TODO add new task here to db and view if success
-
+                    public void onPositiveClicked(String title, Date date, boolean finished, int timeSpentInSeconds) {
+                        textView.setText(date.toString());
+                        //TODO call add new task here
                     }
                 });
                 mainDialog.showDialog();
