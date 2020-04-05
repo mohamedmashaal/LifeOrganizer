@@ -19,10 +19,18 @@ public class HabitManager {
     private HabitManager(Context mCtx) {
         this.mCtx = mCtx;
     }
+    private HabitManager() { }
 
     public static synchronized HabitManager getInstance(Context mCtx) {
         if (mInstance == null) {
             mInstance = new HabitManager(mCtx);
+        }
+        return mInstance;
+    }
+
+    public static synchronized HabitManager getInstance() {
+        if (mInstance == null) {
+            mInstance = new HabitManager();
         }
         return mInstance;
     }
