@@ -14,8 +14,9 @@ public interface TaskDao {
     @Query("SELECT * FROM task")
     List<Task> getAll();
 
-    @Query("SELECT * FROM task WHERE date=:date")
-    List<Task> getAll(Date date);
+    @Query("SELECT * FROM task WHERE date=date(:dateObj)")
+    List<Task> getAll(Date dateObj);
+    Date date = new Date();
 
     @Query("SELECT * FROM task WHERE jobID=:jobId")
     List<Task> getForSpecificJob(final int jobId);
@@ -23,8 +24,8 @@ public interface TaskDao {
     @Query("SELECT * FROM task WHERE habitID=:habitId")
     List<Task> getForSpecificHabit(final int habitId);
 
-    @Query("SELECT * FROM task WHERE habitID=:habitId AND date=:date")
-    List<Task> getForSpecificHabitِAndDate(final int habitId, Date date);
+    @Query("SELECT * FROM task WHERE habitID=:habitId AND date=date(:dateObj)")
+    List<Task> getForSpecificHabitِAndDate(final int habitId, Date dateObj);
 
     @Insert
     void insert(Task task);
