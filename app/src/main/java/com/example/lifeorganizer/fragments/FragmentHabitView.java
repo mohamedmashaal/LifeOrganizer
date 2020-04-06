@@ -20,6 +20,7 @@ import com.example.lifeorganizer.Adapters.TaskAdapter;
 import com.example.lifeorganizer.Backend.AfterCreateTask;
 import com.example.lifeorganizer.Backend.AfterGetTasks;
 import com.example.lifeorganizer.Backend.TaskManager;
+import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.dialogs.IAddTaskDialog;
@@ -42,6 +43,14 @@ public class FragmentHabitView extends Fragment{
     ImageView next;
     TextView calenderMonth;
     GridLayout calender;
+
+    private static Habit habit;
+    public static FragmentHabitView newInstance(Habit habit) {
+        FragmentHabitView.habit = habit;
+        FragmentHabitView fragment = new FragmentHabitView();
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
