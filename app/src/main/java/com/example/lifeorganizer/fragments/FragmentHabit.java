@@ -55,7 +55,7 @@ public class FragmentHabit extends Fragment {
             @Override
             public void afterGetHabits(List<Habit> habits) {
                 habitList = new ArrayList<>(habits);
-                mAdapter = new HabitListAdapter(habitList, getContext());
+                mAdapter = new HabitListAdapter(habitList, getContext(), getFragmentManager());
                 mRecyclerView.setAdapter(mAdapter);
             }
         });
