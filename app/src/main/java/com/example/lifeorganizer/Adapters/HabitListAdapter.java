@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +21,7 @@ import com.example.lifeorganizer.Backend.AfterDeleteHabit;
 import com.example.lifeorganizer.Backend.HabitManager;
 import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.R;
+import com.example.lifeorganizer.fragments.FragmentHabitView;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -31,6 +34,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
     private ArrayList<Habit> habitsList = new ArrayList<>();
     private Context context;
     private HabitListAdapter habitListAdapter;
+    private FragmentManager fragmentManager;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -102,6 +106,11 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
             @Override
             public void onClick(View view) {
                 //TODO Open Single Habit Fragment
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container,
+                        FragmentHabitView.newInstance(habit));
+                transaction.addToBackStack(null);
+                transaction.commit();
 
             }
         });
