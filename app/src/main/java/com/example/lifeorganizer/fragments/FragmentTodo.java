@@ -146,7 +146,7 @@ public class FragmentTodo extends Fragment {
     }
     private void loadTheList(){
 
-        TaskManager.getInstance(getContext()).getTasks(new AfterGetTasks() {
+        TaskManager.getInstance(getContext()).getTasks(date, new AfterGetTasks() {
             @Override
             public void afterGetTasks(List<Task> tasks) {
                 //TODO filter them to habits and tasks
