@@ -19,15 +19,20 @@ import com.example.lifeorganizer.Backend.AfterDeleteTask;
 import com.example.lifeorganizer.Backend.TaskManager;
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
+import com.example.lifeorganizer.fragments.FragmentHabit;
+import com.example.lifeorganizer.fragments.FragmentTodo;
+
 import java.util.List;
 
 public class TaskAdapter extends ArrayAdapter<Task> {
     List<Task> tasksList;
     TaskAdapter taskAdapter;
-    public TaskAdapter(Context context, List<Task> tasks) {
+    FragmentTodo.TASKS_TYPE tasksType;
+    public TaskAdapter(Context context, List<Task> tasks, FragmentTodo.TASKS_TYPE tasksType) {
         super(context, 0, tasks);
         tasksList = tasks;
         taskAdapter = this;
+        this.tasksType = tasksType;
     }
 
     @Override
@@ -38,6 +43,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.task_item, parent, false);
         }
+
 
 
         final Task task = getItem(position);
@@ -102,6 +108,10 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                 dialog.show();
             }
         });
+
+        if(tasksType != FragmentTodo.TASKS_TYPE.TODO){
+            deleteBtn.setVisibility(View.GONE);
+        }
         // Find the TextView in the list_item.xml layout with the ID default_text_view.
 
         // Return the whole list item layout (containing 2 TextViews) so that it can be shown in

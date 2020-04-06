@@ -38,7 +38,9 @@ public class FragmentTodo extends Fragment {
     Date date = new Date();
     final String [] MONTHS = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep", "Oct","Nov","Dec"};
     List<Task> todoTasks;
-
+    List<Task> habitTasks;
+    List<Task> jobTasks;
+    public enum  TASKS_TYPE {Habit,TODO,Job};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,37 +69,6 @@ public class FragmentTodo extends Fragment {
                         TaskManager.getInstance(getActivity()).createTask(task, new AfterCreateTask() {
                             @Override
                             public void afterCreateTask() {
-                                //TODO reload the list
-                          /*      TaskManager.getInstance(getActivity()).getTasks(date,new AfterGetTasks() {
-                                    Date x = date;
-                                    @Override
-                                    public void afterGetTasks(List<Task> tasks) {
-                                        //TODO filter them to habits and tasks
-                                        todoTasks = tasks;
-                                        Calendar calendar = Calendar.getInstance();
-                                        calendar.setTime(x);
-                                        String d = calendar.get(Calendar.DAY_OF_MONTH)+" ";
-                                        d += MONTHS[calendar.get(Calendar.MONTH)] + " ";
-                                        d += calendar.get(Calendar.YEAR);
-                                        Toast.makeText(getActivity(), tasks.size()+"," + d, Toast.LENGTH_SHORT).show();
-                                        TaskAdapter adapter = new TaskAdapter(getActivity(), tasks);
-
-                                        ListView listView = (ListView) getView().findViewById(R.id.todoListView);
-
-                                        listView.setAdapter(adapter);
-
-                                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                            @Override
-                                            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                                                //view task information
-                                                //Toast.makeText(getActivity(), "Send", Toast.LENGTH_SHORT).show();
-                                                //TODO navigate the tasks from habits or jobs or dates to the source of the task
-
-                                            }
-                                        });
-                                    }
-                                });
-*/
                                 loadTheList();
                             }
                         });
@@ -150,53 +121,55 @@ public class FragmentTodo extends Fragment {
             @Override
             public void afterGetTasks(List<Task> tasks) {
                 //TODO filter them to habits and tasks
-                todoTasks = tasks;
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                String d = calendar.get(Calendar.DAY_OF_MONTH)+" ";
-                d += MONTHS[calendar.get(Calendar.MONTH)] + " ";
-                d += calendar.get(Calendar.YEAR);
-                //Toast.makeText(getActivity(), tasks.size()+","+d, Toast.LENGTH_SHORT).show();
+                todoTasks = new ArrayList<>();
+                habitTasks = new ArrayList<>();
+                jobTasks = new ArrayList<>();
+                for (int i = 0; i < tasks.size(); i++) {
+                    Task task = tasks.get(i);
+                    if(task.isHabitTask()){
+                        habitTasks.add(tasks.get(i));
+                    } else if(task.isJobTask()){
+                        jobTasks.add(task);
+                    }else{
+                        todoTasks.add(task);
+                    }
+                }
 
-                TaskAdapter adapter = new TaskAdapter(getActivity(), tasks);
+                TaskAdapter todoAdapter = new TaskAdapter(getActivity(), todoTasks,TASKS_TYPE.TODO);
+                TaskAdapter habitAdapter = new TaskAdapter(getActivity(),habitTasks, TASKS_TYPE.Habit);
+                TaskAdapter jobAdapter =  new TaskAdapter(getActivity(),jobTasks, TASKS_TYPE.Job);
 
-                ListView listView = (ListView) getView().findViewById(R.id.todoListView);
+                // to do list
+                ListView todoListView = (ListView) getView().findViewById(R.id.todoListView);
 
-                listView.setAdapter(adapter);
+                todoListView.setAdapter(todoAdapter);
 
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                todoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                        //view task information
-                        //Toast.makeText(getActivity(), "Send", Toast.LENGTH_SHORT).show();
-                        //TODO navigate the tasks from habits or jobs or dates to the source of the task
+                        //TODO Edit task or add button edit
+                    }
+                });
+
+
+                // habit list
+                ListView habitListView = (ListView) getView().findViewById(R.id.habitTasksListView);
+
+                habitListView.setAdapter(habitAdapter);
+
+                habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        //TODO navigate the tasks from habits to the source of the task
 
                     }
                 });
+
+                //TODO add job tasks list
+
             }
         });
-/*        List<Task> tasks = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Task dummyTask = new Task("dummy task "+i,date,false,0);
-            tasks.add(dummyTask);
-        }
-
-
-        TaskAdapter adapter = new TaskAdapter(getActivity(), tasks);
-
-        ListView listView = (ListView) getView().findViewById(R.id.todoListView);
-
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                //view task information
-                //Toast.makeText(getActivity(), "Send", Toast.LENGTH_SHORT).show();
-                //TODO navigate the tasks from habits or jobs or dates to the source of the task
-
-            }
-        });*/
+        //TODO Load Dates
     }
 
 }
