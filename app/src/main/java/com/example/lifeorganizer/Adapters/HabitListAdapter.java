@@ -46,10 +46,11 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
         }
     }
 
-    public HabitListAdapter(ArrayList<Habit> habits, Context context) {
+    public HabitListAdapter(ArrayList<Habit> habits, Context context, FragmentManager fragmentManager) {
         this.habitsList = habits;
         this.context = context;
         this.habitListAdapter = this;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
