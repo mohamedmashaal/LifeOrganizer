@@ -147,6 +147,37 @@ public class TaskManager {
         gh.execute();
     }
 
+    public void getTasksForHabit(final Habit habit, final AfterGetTasksFromHabits callback){
+        class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
+            @Override
+            protected List<Task> doInBackground(Void... voids) {
+                List<Task> tasks = DatabaseClient.getInstance(mCtx)
+                        .getAppDatabase()
+                        .taskDao()
+                        .getAll();
+                return tasks;
+            }
+
+            @Override
+            protected void onPostExecute(List<Task> tasks) {
+                super.onPostExecute(tasks);
+
+                List<Task> specificTasks = new ArrayList<>();
+                for(Task task : tasks){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+                    if(task.getHabitID() == habit.getId())
+                        specificTasks.add(task);
+                }
+
+                callback.afterGetTasksFromHabits(specificTasks);
+            }
+        }
+
+        MyAsyncTask gh = new MyAsyncTask();
+        gh.execute();
+    }
+
     public void getTasksForHabitAndDate(final Habit habit, final Date date, final AfterGetTasksFromHabits callback){
         class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
             @Override
@@ -164,7 +195,9 @@ public class TaskManager {
 
                 List<Task> specificTasks = new ArrayList<>();
                 for(Task task : tasks){
-                    if(task.getDate().compareTo(date) == 0 && task.getHabitID() == habit.getId())
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+                    if(sdf.format(task.getDate()).equals(sdf.format(date)) && task.getHabitID() == habit.getId())
                         specificTasks.add(task);
                 }
 
