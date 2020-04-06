@@ -1,25 +1,33 @@
 package com.example.lifeorganizer.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lifeorganizer.Backend.AfterDeleteTask;
+import com.example.lifeorganizer.Backend.TaskManager;
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
 import java.util.List;
 
 public class TaskAdapter extends ArrayAdapter<Task> {
-
+    List<Task> tasksList;
+    TaskAdapter taskAdapter;
     public TaskAdapter(Context context, List<Task> tasks) {
         super(context, 0, tasks);
+        tasksList = tasks;
+        taskAdapter = this;
     }
 
     @Override
@@ -65,6 +73,35 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             }
         });
 
+        final Button deleteBtn = (Button) listItemView.findViewById(R.id.task_delete_btn);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                builder.setMessage("Are you sure you want to delete this the task?")
+                        .setTitle("Delete Task");
+
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        TaskManager.getInstance(getContext()).deleteTask(task, new AfterDeleteTask() {
+                            @Override
+                            public void afterDeleteTask() {
+                                tasksList.remove(task);
+                                taskAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
         // Find the TextView in the list_item.xml layout with the ID default_text_view.
 
         // Return the whole list item layout (containing 2 TextViews) so that it can be shown in
