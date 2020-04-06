@@ -1,28 +1,16 @@
 package com.example.lifeorganizer;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.MenuItem;
 
-import com.example.lifeorganizer.Adapters.HabitsAdapter;
 import com.example.lifeorganizer.Adapters.ViewPagerAdapter;
-import com.example.lifeorganizer.Backend.AfterGetHabits;
-import com.example.lifeorganizer.Backend.HabitManager;
-import com.example.lifeorganizer.Data.Habit;
-import com.example.lifeorganizer.fragments.FragmentTodo;
 import com.example.lifeorganizer.fragments.FragmentHabit;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,29 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-//        recyclerView = findViewById(R.id.recyclerview_tasks);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//        buttonAddTask = findViewById(R.id.floating_button_add);
-//        buttonAddTask.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, AddHabitActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        showHabits();
-    }
-
-    private void showHabits() {
-        HabitManager.getInstance(getApplicationContext()).getHabits(new AfterGetHabits() {
-            @Override
-            public void afterGetHabits(List<Habit> habits) {
-                HabitsAdapter adapter = new HabitsAdapter(MainActivity.this, habits);
-                recyclerView.setAdapter(adapter);
-            }
-        });
     }
 
 
