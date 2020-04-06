@@ -68,7 +68,7 @@ public class FragmentTodo extends Fragment {
                             @Override
                             public void afterCreateTask() {
                                 //TODO reload the list
-                                TaskManager.getInstance(getActivity()).getTasks(date,new AfterGetTasks() {
+                          /*      TaskManager.getInstance(getActivity()).getTasks(date,new AfterGetTasks() {
                                     Date x = date;
                                     @Override
                                     public void afterGetTasks(List<Task> tasks) {
@@ -97,8 +97,8 @@ public class FragmentTodo extends Fragment {
                                         });
                                     }
                                 });
-
-                                //loadTheList();
+*/
+                                loadTheList();
                             }
                         });
                     }
@@ -156,7 +156,7 @@ public class FragmentTodo extends Fragment {
                 String d = calendar.get(Calendar.DAY_OF_MONTH)+" ";
                 d += MONTHS[calendar.get(Calendar.MONTH)] + " ";
                 d += calendar.get(Calendar.YEAR);
-                Toast.makeText(getActivity(), tasks.size()+","+d, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), tasks.size()+","+d, Toast.LENGTH_SHORT).show();
 
                 TaskAdapter adapter = new TaskAdapter(getActivity(), tasks);
 
