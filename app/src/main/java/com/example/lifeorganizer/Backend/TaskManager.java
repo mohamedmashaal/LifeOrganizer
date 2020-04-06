@@ -2,11 +2,13 @@ package com.example.lifeorganizer.Backend;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.format.DateUtils;
 
 import com.example.lifeorganizer.Data.DatabaseClient;
 import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.Data.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -119,7 +121,7 @@ public class TaskManager {
                 List<Task> tasks = DatabaseClient.getInstance(mCtx)
                         .getAppDatabase()
                         .taskDao()
-                        .getAll(date);
+                        .getAll();
                 return tasks;
             }
 
@@ -127,15 +129,17 @@ public class TaskManager {
             protected void onPostExecute(List<Task> tasks) {
                 super.onPostExecute(tasks);
 
-                /*List<Task> dateTasks = new ArrayList<>();
+                List<Task> dateTasks = new ArrayList<>();
                 for(Task task : tasks){
-                    if(task.getDate().compareTo(date) == 0)
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+                    if(sdf.format(task.getDate()).equals(sdf.format(date)))
                         dateTasks.add(task);
 
                 callback.afterGetTasks(dateTasks);
-                }*/
+                }
 
-                callback.afterGetTasks(tasks);
+                //callback.afterGetTasks(tasks);
             }
         }
 
