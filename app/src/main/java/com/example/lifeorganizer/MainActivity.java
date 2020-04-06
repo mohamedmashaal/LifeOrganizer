@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton buttonAddTask;
     private RecyclerView recyclerView;
     private ViewPager viewPager;
-
+    private ViewPagerAdapter viewPagerAdapter;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.main_view_pager);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),navigation);
+        //ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), navigation);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), navigation);
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerAdapter.getListner());
 
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 //        showHabits();
     }
 
-    private void showHabits(){
+    private void showHabits() {
         HabitManager.getInstance(getApplicationContext()).getHabits(new AfterGetHabits() {
             @Override
             public void afterGetHabits(List<Habit> habits) {
@@ -87,5 +88,20 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.setAdapter(adapter);
             }
         });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        //FragmentHabit fragment = (FragmentHabit) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 0);
+
+        FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
+
+        if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0) {
+            fragment.getChildFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+
     }
 }

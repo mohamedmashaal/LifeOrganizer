@@ -35,6 +35,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
     private Context context;
     private HabitListAdapter habitListAdapter;
     private FragmentManager fragmentManager;
+    FragmentManager childManager;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -46,11 +47,12 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
         }
     }
 
-    public HabitListAdapter(ArrayList<Habit> habits, Context context, FragmentManager fragmentManager) {
+    public HabitListAdapter(ArrayList<Habit> habits, Context context, FragmentManager fragmentManager,FragmentManager childManager) {
         this.habitsList = habits;
         this.context = context;
         this.habitListAdapter = this;
         this.fragmentManager = fragmentManager;
+        this.childManager =childManager;
     }
 
     @NonNull
@@ -107,9 +109,14 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
             @Override
             public void onClick(View view) {
                 //TODO Open Single Habit Fragment
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container,
+                FragmentTransaction transaction = childManager.beginTransaction();
+/*
+                transaction.replace(R.id.habit_view_fragment_container,
                         FragmentHabitView.newInstance(habit));
+*/
+                transaction.add(R.id.habit_view_fragment_container,
+                        FragmentHabitView.newInstance(habit));
+
                 transaction.addToBackStack(null);
                 transaction.commit();
 

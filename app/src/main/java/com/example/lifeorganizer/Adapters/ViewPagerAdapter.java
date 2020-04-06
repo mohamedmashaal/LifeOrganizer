@@ -12,7 +12,9 @@ import com.example.lifeorganizer.fragments.FragmentTodo;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    private Fragment todoFragment, habitFragment;
+    //private Fragment todoFragment, habitFragment;
+    public Fragment todoFragment, habitFragment;
+
     private BottomNavigationView navigationView;
 
     public ViewPagerAdapter(FragmentManager fm, BottomNavigationView navigationView) {
