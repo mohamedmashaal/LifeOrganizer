@@ -16,7 +16,6 @@ public interface TaskDao {
 
     @Query("SELECT * FROM task WHERE date(date)=date(:dateObj)")
     List<Task> getAll(Date dateObj);
-    Date date = new Date();
 
     @Query("SELECT * FROM task WHERE jobID=:jobId")
     List<Task> getForSpecificJob(final int jobId);
