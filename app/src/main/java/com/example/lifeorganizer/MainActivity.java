@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
 
-        if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0) {
+        if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0 &&
+                viewPagerAdapter.habitFragment == viewPagerAdapter.currentFragment) {
             fragment.getChildFragmentManager().popBackStack();
         } else {
             super.onBackPressed();

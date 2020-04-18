@@ -13,7 +13,7 @@ import com.example.lifeorganizer.fragments.FragmentTodo;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     //private Fragment todoFragment, habitFragment;
-    public Fragment todoFragment, habitFragment;
+    public Fragment todoFragment, habitFragment, currentFragment;
 
     private BottomNavigationView navigationView;
 
@@ -28,10 +28,12 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 if (todoFragment == null)
                     todoFragment = new FragmentTodo();
+                    currentFragment = todoFragment;
                 return todoFragment;
             case 1:
                 if (habitFragment == null)
                     habitFragment = new FragmentHabit();
+                    currentFragment = habitFragment;
                 return habitFragment;
         }
         return null;
