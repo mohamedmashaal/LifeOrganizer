@@ -13,7 +13,9 @@ import com.example.lifeorganizer.fragments.FragmentTodo;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     //private Fragment todoFragment, habitFragment;
-    public Fragment todoFragment, habitFragment, currentFragment;
+    public Fragment todoFragment, habitFragment;
+    public enum  FRAGMENT_TYPE {Habit,TODO,Job,Diary};
+    public FRAGMENT_TYPE currentFragment = FRAGMENT_TYPE.TODO;
 
     private BottomNavigationView navigationView;
 
@@ -26,14 +28,14 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                if (todoFragment == null)
+                if (todoFragment == null) {
                     todoFragment = new FragmentTodo();
-                    currentFragment = todoFragment;
+                }
                 return todoFragment;
             case 1:
-                if (habitFragment == null)
+                if (habitFragment == null) {
                     habitFragment = new FragmentHabit();
-                    currentFragment = habitFragment;
+                }
                 return habitFragment;
         }
         return null;
@@ -55,9 +57,11 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             switch (i) {
                 case 0:
                     navigationView.getMenu().findItem(R.id.navigation_todo).setChecked(true);
+                    currentFragment = FRAGMENT_TYPE.TODO;
                     break;
                 case 1:
                     navigationView.getMenu().findItem(R.id.navigation_habit).setChecked(true);
+                    currentFragment = FRAGMENT_TYPE.Habit;
                     break;
             }
         }

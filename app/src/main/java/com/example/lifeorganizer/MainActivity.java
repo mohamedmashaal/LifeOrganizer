@@ -7,7 +7,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.lifeorganizer.Adapters.ViewPagerAdapter;
 import com.example.lifeorganizer.fragments.FragmentHabit;
@@ -61,9 +63,16 @@ public class MainActivity extends AppCompatActivity {
         //FragmentHabit fragment = (FragmentHabit) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 0);
 
         FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
-
+        /*switch (viewPagerAdapter.currentFragment){
+            case TODO:
+                Toast.makeText(getApplicationContext(),"TODO",Toast.LENGTH_SHORT).show();
+                break;
+            case Habit:
+                Toast.makeText(getApplicationContext(),"Habit",Toast.LENGTH_SHORT).show();
+                break;
+        }*/
         if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0 &&
-                viewPagerAdapter.habitFragment == viewPagerAdapter.currentFragment) {
+               viewPagerAdapter.currentFragment == ViewPagerAdapter.FRAGMENT_TYPE.Habit) {
             fragment.getChildFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
