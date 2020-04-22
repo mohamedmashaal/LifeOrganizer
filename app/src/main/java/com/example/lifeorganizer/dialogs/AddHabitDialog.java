@@ -44,7 +44,7 @@ public class AddHabitDialog extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(rootView)
                 // Add action buttons
-                .setPositiveButton("Add Task", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Add Habit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
 
