@@ -21,8 +21,10 @@ import com.example.lifeorganizer.Backend.AfterGetTasks;
 import com.example.lifeorganizer.Backend.TaskManager;
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
+import com.example.lifeorganizer.dialogs.EditTaskDialog;
 import com.example.lifeorganizer.dialogs.IAddTaskDialog;
 import com.example.lifeorganizer.dialogs.AddTaskDialog;
+import com.example.lifeorganizer.dialogs.IEditTaskDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -134,42 +136,28 @@ public class FragmentTodo extends Fragment {
                         todoTasks.add(task);
                     }
                 }
+                //Test Code
+                habitTasks.add(new Task("habit Task",new Date(),false,0));
 
                 TaskAdapter todoAdapter = new TaskAdapter(getActivity(), todoTasks,TASKS_TYPE.TODO);
                 TaskAdapter habitAdapter = new TaskAdapter(getActivity(),habitTasks, TASKS_TYPE.Habit);
                 TaskAdapter jobAdapter =  new TaskAdapter(getActivity(),jobTasks, TASKS_TYPE.Job);
 
                 // to do list
-                ListView todoListView = (ListView) getView().findViewById(R.id.todoListView);
-
+                final ListView todoListView = (ListView) getView().findViewById(R.id.todoListView);
                 todoListView.setAdapter(todoAdapter);
-
-                todoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                        //TODO Edit task or add button edit
-                    }
-                });
 
 
                 // habit list
                 ListView habitListView = (ListView) getView().findViewById(R.id.habitTasksListView);
-
                 habitListView.setAdapter(habitAdapter);
 
-                habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                        //TODO navigate the tasks from habits to the source of the task
-
-                    }
-                });
 
                 //TODO add job tasks list
 
             }
         });
-        //TODO Load Dates
+        //TODO Load events
     }
 
 }
