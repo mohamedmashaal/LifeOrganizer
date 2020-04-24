@@ -6,4 +6,8 @@
     <color name="colorLight">#fff</color>
     <color name="colorRed">#e70004</color>
     <color name="colorTicketBg">#F389AC</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorDone">#55B958</color>
+    <color name="colorMissed">#E90101</color>
+    <color name="colorBlack">#000000</color>
 </resources>

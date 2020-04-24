@@ -151,36 +151,42 @@
                 android:layout_height="wrap_content"
                 app:layout_columnWeight="1"
                 app:layout_gravity="center_horizontal"
+                android:clickable="false"
                 android:id="@+id/habitSaCheckbox"/>
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_columnWeight="1"
                 app:layout_gravity="center_horizontal"
+                android:clickable="false"
                 android:id="@+id/habitSuCheckbox"/>
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_columnWeight="1"
                 app:layout_gravity="center_horizontal"
+                android:clickable="false"
                 android:id="@+id/habitMoCheckbox"/>
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_columnWeight="1"
                 app:layout_gravity="center_horizontal"
+                android:clickable="false"
                 android:id="@+id/habitTuCheckbox"/>
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_columnWeight="1"
                 app:layout_gravity="center_horizontal"
+                android:clickable="false"
                 android:id="@+id/habitWeCheckbox"/>
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_columnWeight="1"
                 app:layout_gravity="center_horizontal"
+                android:clickable="false"
                 android:id="@+id/habitThCheckbox"/>
             <CheckBox
                 android:layout_width="wrap_content"
