@@ -139,9 +139,9 @@ public class FragmentTodo extends Fragment {
                 //Test Code
                 habitTasks.add(new Task("habit Task",new Date(),false,0));
 
-                TaskAdapter todoAdapter = new TaskAdapter(getActivity(), todoTasks,TASKS_TYPE.TODO);
-                TaskAdapter habitAdapter = new TaskAdapter(getActivity(),habitTasks, TASKS_TYPE.Habit);
-                TaskAdapter jobAdapter =  new TaskAdapter(getActivity(),jobTasks, TASKS_TYPE.Job);
+                TaskAdapter todoAdapter = new TaskAdapter(getActivity(), todoTasks,TASKS_TYPE.TODO,FragmentTodo.this);
+                TaskAdapter habitAdapter = new TaskAdapter(getActivity(),habitTasks, TASKS_TYPE.Habit,FragmentTodo.this);
+                TaskAdapter jobAdapter =  new TaskAdapter(getActivity(),jobTasks, TASKS_TYPE.Job,FragmentTodo.this);
 
                 // to do list
                 final ListView todoListView = (ListView) getView().findViewById(R.id.todoListView);
@@ -158,6 +158,10 @@ public class FragmentTodo extends Fragment {
             }
         });
         //TODO Load events
+    }
+
+    public void notifyChange(){
+        loadTheList();
     }
 
 }
