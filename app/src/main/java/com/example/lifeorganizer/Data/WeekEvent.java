@@ -1,10 +1,18 @@
 package com.example.lifeorganizer.Data;
 
+import android.graphics.Color;
+import android.graphics.ColorSpace;
+
 import com.alamkanak.weekview.WeekViewEvent;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
 
 public class WeekEvent extends WeekViewEvent {
+
+    private Random random = new Random();
+    private int[] colors = {Color.RED, Color.YELLOW, Color.BLUE, Color.GREEN, Color.CYAN, Color.MAGENTA};
 
     public WeekEvent() {
         super();
@@ -12,6 +20,7 @@ public class WeekEvent extends WeekViewEvent {
 
     public WeekEvent(long id, String name, int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute) {
         super(id, name, startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute);
+        setColor(colors[(int)(Math.random() * colors.length)]);
     }
 
     public WeekEvent(long id, String name, String location, Calendar startTime, Calendar endTime) {
