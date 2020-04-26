@@ -108,9 +108,6 @@ public class JobManager {
                 TaskManager.getInstance(mCtx).getTasksForJob(job, new AfterGetTasks() {
                     @Override
                     public void afterGetTasks(List<Task> tasks) {
-                        DatabaseClient.getInstance(mCtx).getAppDatabase()
-                                .jobDao().delete(job);
-
                         for(Task task : tasks){
                             TaskManager.getInstance(mCtx).deleteTask(task, new AfterDeleteTask() {
                                 @Override
@@ -120,6 +117,8 @@ public class JobManager {
                     }
                 });
 
+                DatabaseClient.getInstance(mCtx).getAppDatabase()
+                        .jobDao().delete(job);
 
                 return null;
             }
