@@ -145,11 +145,13 @@ public class FragmentTodo extends Fragment {
 
                 // to do list
                 final ListView todoListView = (ListView) getView().findViewById(R.id.todoListView);
+                todoListView.setItemsCanFocus(true);
                 todoListView.setAdapter(todoAdapter);
 
 
                 // habit list
                 ListView habitListView = (ListView) getView().findViewById(R.id.habitTasksListView);
+                habitListView.setItemsCanFocus(true);
                 habitListView.setAdapter(habitAdapter);
 
 

@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //FragmentHabit fragment = (FragmentHabit) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 0);
-
+        //TODO handle navigation
         FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
         /*switch (viewPagerAdapter.currentFragment){
             case TODO:
