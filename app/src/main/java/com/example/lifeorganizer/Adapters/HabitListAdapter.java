@@ -115,7 +115,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
                         FragmentHabitView.newInstance(habit));
 */
                 transaction.add(R.id.habit_view_fragment_container,
-                        FragmentHabitView.newInstance(habit));
+                        FragmentHabitView.newInstance(habit,habitListAdapter));
 
                 transaction.addToBackStack(null);
                 transaction.commit();

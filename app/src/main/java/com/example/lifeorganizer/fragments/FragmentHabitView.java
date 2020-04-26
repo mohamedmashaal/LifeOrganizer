@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.lifeorganizer.Adapters.HabitListAdapter;
 import com.example.lifeorganizer.Backend.AfterEditHabit;
 import com.example.lifeorganizer.Backend.AfterEditTask;
 import com.example.lifeorganizer.Backend.HabitManager;
@@ -43,11 +44,11 @@ public class FragmentHabitView extends Fragment{
     Button editBtn;
     Date currentMonth = new Date();
     final String [] MONTHS = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep", "Oct","Nov","Dec"};
-
-
+    private static HabitListAdapter habitListAdapter;
     private static Habit habit;
-    public static FragmentHabitView newInstance(Habit habit) {
+    public static FragmentHabitView newInstance(Habit habit, HabitListAdapter habitListAdapter) {
         FragmentHabitView.habit = habit;
+        FragmentHabitView.habitListAdapter = habitListAdapter;
         FragmentHabitView fragment = new FragmentHabitView();
         return fragment;
     }
@@ -148,6 +149,7 @@ public class FragmentHabitView extends Fragment{
                             @Override
                             public void afterEditHabit() {
                                 updateDetails();
+                                habitListAdapter.notifyDataSetChanged();
                             }
                         });
 
