@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,8 @@ public class TaskAdapter extends ArrayAdapter<Task> {
     FragmentTodo.TASKS_TYPE tasksType;
     Context context;
     FragmentTodo todoFragment;
+    LayoutInflater mInflater;
+
     final String [] MONTHS = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep", "Oct","Nov","Dec"};
 
     public TaskAdapter(Context context, List<Task> tasks, FragmentTodo.TASKS_TYPE tasksType,FragmentTodo fragment) {
@@ -50,39 +54,54 @@ public class TaskAdapter extends ArrayAdapter<Task> {
     @Override
     public View getView(int position, final View convertView, ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
+        final ViewHolder holder;
         View listItemView = convertView;
         if (listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.task_item, parent, false);
-        }
+            holder = new ViewHolder();
+            mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            //listItemView = mInflater.inflate(R.layout.task_item, parent,false);
+            listItemView = mInflater.inflate(R.layout.task_item, null);
+            holder.task = getItem(position);
 
-        final Task task = getItem(position);
-
-        final TextView nameText = (TextView) listItemView.findViewById(R.id.task_name_text);
-        nameText.setText(task.getTitle());
-        setNameTextListener(nameText,task);
-
-        final EditText timeField = listItemView.findViewById(R.id.task_time_spent_field);
-        timeField.setText(task.getTimeSpentInSeconds()/60+"");
-        if(task.isFinished()){
-            timeField.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            //TODO put change listener
             //timeField.requestFocus();
-        } else {
-            timeField.setInputType(InputType.TYPE_NULL);
+            //timeField.setOnC
+            holder.timeFiled = (EditText) listItemView.findViewById(R.id.task_time_spent_field);
+            //holder.timeFiled.setTag(position);
+
+            holder.nameText = listItemView.findViewById(R.id.task_name_text);
+
+            holder.checkBox = listItemView.findViewById(R.id.task_checkbox);
+
+            holder.deleteBtn = (Button) listItemView.findViewById(R.id.task_delete_btn);
+
+            listItemView.setTag(holder);
+
+        }else {
+            holder = (ViewHolder) listItemView.getTag();
         }
-        //TODO put change listener
-        //timeField.requestFocus();
-        //timeField.setOnC
 
-        final CheckBox checkBox = listItemView.findViewById(R.id.task_checkbox);
-        checkBox.setChecked(task.isFinished());
-        setCheckBoxListener(checkBox,task,timeField);
+        holder.timeFiled.setText(holder.task.getTimeSpentInSeconds()/60 + "");
+        if(!holder.task.isFinished()){
+            holder.timeFiled.setClickable(false);
+            holder.timeFiled.setCursorVisible(false);
+            holder.timeFiled.setFocusable(false);
+        } else {
+            holder.timeFiled.setClickable(true);
+            holder.timeFiled.setCursorVisible(true);
+            holder.timeFiled.setFocusable(true);
+        }
+        setTimeFiledListener(holder.timeFiled,holder.task);
 
+        holder.nameText.setText(holder.task.getTitle());
+        setNameTextListener(holder.nameText,holder.task);
 
-        final Button deleteBtn = (Button) listItemView.findViewById(R.id.task_delete_btn);
-        setDeleteListener(deleteBtn,task);
+        holder.checkBox.setChecked(holder.task.isFinished());
+        setCheckBoxListener(holder.checkBox,holder.task,holder.timeFiled);
+
+        setDeleteListener(holder.deleteBtn,holder.task);
         if(tasksType != FragmentTodo.TASKS_TYPE.TODO){
-            deleteBtn.setVisibility(View.GONE);
+            holder.deleteBtn.setVisibility(View.GONE);
         }
 
         return listItemView;
@@ -92,13 +111,20 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //Toast.makeText(getContext(), task.isFinished()+ "," + isChecked, Toast.LENGTH_SHORT).show();
+                /*if(task.isFinished() != isChecked){
+                    Toast.makeText(context, "diff", Toast.LENGTH_SHORT).show();
+                }*/
                 final TaskManager taskManager = TaskManager.getInstance(context);
                 task.setFinished(isChecked);
                 final boolean state = isChecked;
                 //Toast.makeText(getContext(), currentWord.name+ "," + currentWord.time, Toast.LENGTH_SHORT).show();
                 //TODO did set reflect in database?
                 if(isChecked) {
-                    timeField.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    timeField.setClickable(true);
+                    timeField.setCursorVisible(true);
+                    timeField.setFocusable(true);
+                    timeField.setFocusableInTouchMode(true);
                     task.setFinished(state);
                     //timeField.requestFocus();
                     taskManager.editTask(task, new AfterEditTask() {
@@ -108,10 +134,12 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                     });
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setMessage("Are you sure you want to un mark the task?").setTitle("Unmark Task");
+                    builder.setMessage("Are you sure you want to un mark the task?" + task.getTitle()).setTitle("Unmark Task");
                     builder.setPositiveButton("Unmark", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            timeField.setInputType(InputType.TYPE_NULL);
+                            timeField.setClickable(false);
+                            timeField.setCursorVisible(false);
+                            timeField.setFocusable(false);
                             timeField.setText("0");
                             task.setTimeSpentInSeconds(0);
                             task.setFinished(state);
@@ -193,4 +221,44 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             }
         });
     }
+
+    private void setTimeFiledListener(final EditText timeFiled,final Task task){
+        timeFiled.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(timeFiled.getText().toString().length()>0){
+                    task.setTimeSpentInSeconds(new Integer(timeFiled.getText().toString()) * 60);
+                    TaskManager taskManager = TaskManager.getInstance(context);
+                    taskManager.editTask(task, new AfterEditTask() {
+                        @Override
+                        public void afterEditTask() {
+                        }
+                    });
+                }else{
+                    Toast.makeText(context, "Please enter some value", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+    }
+}
+
+class ViewHolder {
+    EditText timeFiled;
+    TextView nameText;
+    CheckBox checkBox;
+    Button deleteBtn;
+    Task task;
 }
