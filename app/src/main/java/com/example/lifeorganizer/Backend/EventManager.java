@@ -7,6 +7,9 @@ import com.example.lifeorganizer.Data.DatabaseClient;
 import com.example.lifeorganizer.Data.Event;
 import com.example.lifeorganizer.Data.Task;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EventManager {
@@ -111,7 +114,38 @@ public class EventManager {
         gh.execute();
     }
 
-    // TODO: get events for week, start day
+    public void getEvents(final Date date, final AfterGetEvents callback) {
+        class MyTask extends AsyncTask<Void, Void, List<Event>> {
+            @Override
+            protected List<Event> doInBackground(Void... voids) {
+                List<Event> events = DatabaseClient.getInstance(mCtx)
+                        .getAppDatabase()
+                        .eventDao()
+                        .getAll();
+                return events;
+            }
+
+            @Override
+            protected void onPostExecute(List<Event> events) {
+                super.onPostExecute(events);
+
+                List<Event> dateEvents = new ArrayList<>();
+                for(Event event : events){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+                    if(sdf.format(event.getStartDate()).equals(sdf.format(date)))
+                        dateEvents.add(event);
+
+                }
+
+                callback.afterGetEvents(dateEvents);
+                //callback.afterGetTasks(tasks);
+            }
+        }
+
+        MyTask gh = new MyTask();
+        gh.execute();
+    }
 
     public void getEvent(final int id, final AfterGetEvent callback) {
 

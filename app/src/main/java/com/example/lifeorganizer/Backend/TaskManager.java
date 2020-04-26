@@ -140,9 +140,9 @@ public class TaskManager {
                     if(sdf.format(task.getDate()).equals(sdf.format(date)))
                         dateTasks.add(task);
 
-                callback.afterGetTasks(dateTasks);
                 }
 
+                callback.afterGetTasks(dateTasks);
                 //callback.afterGetTasks(tasks);
             }
         }
@@ -179,9 +179,9 @@ public class TaskManager {
                     if(task_month == month && task_year == year)
                         dateTasks.add(task);
 
-                    callback.afterGetTasks(dateTasks);
                 }
 
+                callback.afterGetTasks(dateTasks);
                 //callback.afterGetTasks(tasks);
             }
         }
