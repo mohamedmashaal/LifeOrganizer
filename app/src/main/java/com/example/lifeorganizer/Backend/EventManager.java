@@ -9,6 +9,7 @@ import com.example.lifeorganizer.Data.Task;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -170,5 +171,42 @@ public class EventManager {
         gh.execute();
     }
 
+    // month: 1-12
+    public void getEvents(final int month,  final int year, final AfterGetEvents callback) {
+        class MyTask extends AsyncTask<Void, Void, List<Event>> {
+            @Override
+            protected List<Event> doInBackground(Void... voids) {
+                List<Event> events = DatabaseClient.getInstance(mCtx)
+                        .getAppDatabase()
+                        .eventDao()
+                        .getAll();
+                return events;
+            }
 
+            @Override
+            protected void onPostExecute(List<Event> events) {
+                super.onPostExecute(events);
+
+                List<Event> dateEvents = new ArrayList<>();
+                for(Event event : events){
+                    Date date = event.getStartDate();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    int event_year = cal.get(Calendar.YEAR);
+                    int event_month = cal.get(Calendar.MONTH)-1;
+                    //int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                    if(event_month == month && event_year == year)
+                        dateEvents.add(event);
+
+                }
+
+                callback.afterGetEvents(dateEvents);
+                //callback.afterGetTasks(tasks);
+            }
+        }
+
+        MyTask gh = new MyTask();
+        gh.execute();
+    }
 }
