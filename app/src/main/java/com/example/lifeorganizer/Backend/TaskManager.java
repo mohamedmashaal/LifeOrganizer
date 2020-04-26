@@ -190,7 +190,7 @@ public class TaskManager {
         gh.execute();
     }
 
-    public void getTasksForHabit(final Habit habit, final AfterGetTasksFromHabits callback){
+    public void getTasksForHabit(final Habit habit, final AfterGetTasks callback){
         class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
             @Override
             protected List<Task> doInBackground(Void... voids) {
@@ -213,7 +213,7 @@ public class TaskManager {
                         specificTasks.add(task);
                 }
 
-                callback.afterGetTasksFromHabits(specificTasks);
+                callback.afterGetTasks(specificTasks);
             }
         }
 
@@ -221,7 +221,7 @@ public class TaskManager {
         gh.execute();
     }
 
-    public void getTasksForAllHabits(final AfterGetTasksFromHabits callback){
+    public void getTasksForAllHabits(final AfterGetTasks callback){
         class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
             @Override
             protected List<Task> doInBackground(Void... voids) {
@@ -244,7 +244,7 @@ public class TaskManager {
                         specificTasks.add(task);
                 }
 
-                callback.afterGetTasksFromHabits(specificTasks);
+                callback.afterGetTasks(specificTasks);
             }
         }
 
@@ -252,7 +252,7 @@ public class TaskManager {
         gh.execute();
     }
 
-    public void getTasksForHabitAndDate(final Habit habit, final Date date, final AfterGetTasksFromHabits callback){
+    public void getTasksForHabitAndDate(final Habit habit, final Date date, final AfterGetTasks callback){
         class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
             @Override
             protected List<Task> doInBackground(Void... voids) {
@@ -275,7 +275,7 @@ public class TaskManager {
                         specificTasks.add(task);
                 }
 
-                callback.afterGetTasksFromHabits(specificTasks);
+                callback.afterGetTasks(specificTasks);
             }
         }
 
@@ -283,7 +283,7 @@ public class TaskManager {
         gh.execute();
     }
 
-    public void getTasksForAllHabitsAndDate(final Date date, final AfterGetTasksFromHabits callback){
+    public void getTasksForAllHabitsAndDate(final Date date, final AfterGetTasks callback){
         class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
             @Override
             protected List<Task> doInBackground(Void... voids) {
@@ -306,7 +306,7 @@ public class TaskManager {
                         specificTasks.add(task);
                 }
 
-                callback.afterGetTasksFromHabits(specificTasks);
+                callback.afterGetTasks(specificTasks);
             }
         }
 
@@ -314,7 +314,7 @@ public class TaskManager {
         gh.execute();
     }
 
-    public void getTasksForHabitAndMonth(final Habit habit, final int month, final int year, final AfterGetTasksFromHabits callback){
+    public void getTasksForHabitAndMonth(final Habit habit, final int month, final int year, final AfterGetTasks callback){
         class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
             @Override
             protected List<Task> doInBackground(Void... voids) {
@@ -341,7 +341,7 @@ public class TaskManager {
                         specificTasks.add(task);
                 }
 
-                callback.afterGetTasksFromHabits(specificTasks);
+                callback.afterGetTasks(specificTasks);
             }
         }
 
@@ -349,7 +349,7 @@ public class TaskManager {
         gh.execute();
     }
 
-    public void getTasksForAllHabitsAndMonth(final int month, final int year, final AfterGetTasksFromHabits callback){
+    public void getTasksForAllHabitsAndMonth(final int month, final int year, final AfterGetTasks callback){
         class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
             @Override
             protected List<Task> doInBackground(Void... voids) {
@@ -376,7 +376,7 @@ public class TaskManager {
                         specificTasks.add(task);
                 }
 
-                callback.afterGetTasksFromHabits(specificTasks);
+                callback.afterGetTasks(specificTasks);
             }
         }
 
