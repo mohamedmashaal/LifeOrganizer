@@ -37,31 +37,41 @@ public class JobManager {
 
     public void createJob(final Job job, final List<Task> subtasks, final AfterCreateJob callback) {
 
-        class MyTask extends AsyncTask<Void, Void, Void> {
+        class MyTask extends AsyncTask<Void, Void, Long> {
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected Long doInBackground(Void... voids) {
                 // adding to database
-                DatabaseClient.getInstance(mCtx).getAppDatabase()
+                long id = DatabaseClient.getInstance(mCtx).getAppDatabase()
                         .jobDao().insert(job);
-                return null;
+                return id;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            protected void onPostExecute(Long id) {
+                super.onPostExecute(id);
 
-                for(Task subtask : subtasks){
-                    subtask.setJobID(job.getId());
-                    subtask.setHabitTask(false);
-                    subtask.setJobTask(true);
+                long newId = id;
 
-                    TaskManager.getInstance(mCtx).createTask(subtask, new AfterCreateTask() {
-                        @Override
-                        public void afterCreateTask() {}
-                    });
-                }
+                JobManager.getInstance(mCtx).getJob((int) newId, new AfterGetJob() {
+                    @Override
+                    public void afterGetJob(Job job) {
+                        Job newjob = job;
 
-                callback.afterCreateJob();
+                        for(Task subtask : subtasks){
+                            subtask.setJobID(newjob.getId());
+                            subtask.setHabitTask(false);
+                            subtask.setJobTask(true);
+
+                            TaskManager.getInstance(mCtx).createTask(subtask, new AfterCreateTask() {
+                                @Override
+                                public void afterCreateTask() {}
+                            });
+                        }
+
+                        callback.afterCreateJob(newjob);
+                    }
+                });
+
             }
         }
 
