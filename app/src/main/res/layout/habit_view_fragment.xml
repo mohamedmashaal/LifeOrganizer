@@ -11,6 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <Button
+            android:id="@+id/habit_edit_btn"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:background="@drawable/ic_edit_black_24dp"/>
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

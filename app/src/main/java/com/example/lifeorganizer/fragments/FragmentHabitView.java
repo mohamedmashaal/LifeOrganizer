@@ -6,17 +6,26 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.lifeorganizer.Backend.AfterEditHabit;
+import com.example.lifeorganizer.Backend.AfterEditTask;
+import com.example.lifeorganizer.Backend.HabitManager;
+import com.example.lifeorganizer.Backend.TaskManager;
 import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
+import com.example.lifeorganizer.dialogs.EditHabitDialog;
+import com.example.lifeorganizer.dialogs.EditTaskDialog;
+import com.example.lifeorganizer.dialogs.IEditHabitDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +40,7 @@ public class FragmentHabitView extends Fragment{
     GridLayout calender;
     EditText nameField , descriptionFiled, hrsFiled, startDateFiled;
     CheckBox [] daysCheckBox = new CheckBox[7];
+    Button editBtn;
     Date currentMonth = new Date();
     final String [] MONTHS = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep", "Oct","Nov","Dec"};
 
@@ -70,6 +80,7 @@ public class FragmentHabitView extends Fragment{
         daysCheckBox[4] = view.findViewById(R.id.habitWeCheckbox);
         daysCheckBox[5] = view.findViewById(R.id.habitThCheckbox);
         daysCheckBox[6] = view.findViewById(R.id.habitFrCheckbox);
+        editBtn = view.findViewById(R.id.habit_edit_btn);
 
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +111,7 @@ public class FragmentHabitView extends Fragment{
                 layoutParams.rowSpec = GridLayout.spec(i+1);
                 float colWeight = 1;
                 //layoutParams.setMargins(0,25,0,0);
-                layoutParams.columnSpec  =GridLayout.spec(j,colWeight);
+                layoutParams.columnSpec  = GridLayout.spec(j,colWeight);
                 layoutParams.setGravity(Gravity.CENTER_HORIZONTAL);
                 calender.addView(t, layoutParams);
             }
@@ -109,6 +120,7 @@ public class FragmentHabitView extends Fragment{
         updateDetails();
         setDateText();
         updateCalendar();
+        setEditListener();
     }
     private void changeDate(int amount){
         Calendar calendar = Calendar.getInstance();
@@ -122,6 +134,28 @@ public class FragmentHabitView extends Fragment{
         String d = MONTHS[calendar.get(Calendar.MONTH)] + " ";
         d += calendar.get(Calendar.YEAR);
         calenderMonth.setText(d);
+    }
+    private void setEditListener(){
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditHabitDialog editDialog = new EditHabitDialog();
+                editDialog.createDialog((getActivity()).getSupportFragmentManager(), new IEditHabitDialog() {
+                    @Override
+                    public void onPositiveClicked(Habit habit) {
+                        HabitManager taskManager = HabitManager.getInstance(getActivity());
+                        taskManager.editHabit(habit, new AfterEditHabit() {
+                            @Override
+                            public void afterEditHabit() {
+                                updateDetails();
+                            }
+                        });
+
+                    }
+                }, habit);
+                editDialog.showDialog();
+            }
+        });
     }
     private void updateCalendar(){
         setFirstDateOfMonth();
@@ -216,6 +250,7 @@ public class FragmentHabitView extends Fragment{
 
         return list;
     }
+
 }
 
 
