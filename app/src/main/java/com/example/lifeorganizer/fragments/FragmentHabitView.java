@@ -103,14 +103,14 @@ public class FragmentHabitView extends Fragment{
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
                 TextView t = new TextView(getActivity());
-                t.setPadding(25,12,25,12);
+                t.setPadding(5,4,5,4);
                 t.setText(i +","+j);
                 GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
                 layoutParams.height = GridLayout.LayoutParams.WRAP_CONTENT;
                 layoutParams.width = GridLayout.LayoutParams.WRAP_CONTENT;
                 layoutParams.rowSpec = GridLayout.spec(i+1);
                 float colWeight = 1;
-                //layoutParams.setMargins(0,25,0,0);
+                //layoutParams.setMargins(5,4,5,4);
                 layoutParams.columnSpec  = GridLayout.spec(j,colWeight);
                 layoutParams.setGravity(Gravity.CENTER_HORIZONTAL);
                 calender.addView(t, layoutParams);
@@ -168,7 +168,8 @@ public class FragmentHabitView extends Fragment{
             textView.setBackground(null);
             textView.setTypeface(null, Typeface.NORMAL);
             textView.setTextColor(((TextView)calender.getChildAt(0)).getTextColors());
-            textView.setTextSize(15);
+            //textView.setTextSize(15);
+            textView.setTextSize(13);
             if(i < positionOfFirstDay || i >= positionOfFirstDay +lastDay){
                 textView.setText(" ");
             } else {
@@ -183,7 +184,7 @@ public class FragmentHabitView extends Fragment{
             int taskDay = getDayInMonth(t.getDate());
             TextView textView = (TextView)calender.getChildAt(taskDay -1 +positionOfFirstDay );
             textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorBlack));
-            textView.setTypeface(null, Typeface.BOLD);
+            //textView.setTypeface(null, Typeface.BOLD);
             textView.setTextSize(16);
             if((new Date()).compareTo(t.getDate()) == 1) {
                 if (t.isFinished()) {
