@@ -1,5 +1,6 @@
 package com.example.lifeorganizer.Adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.lifeorganizer.Backend.AfterDeleteJob;
+import com.example.lifeorganizer.Backend.JobManager;
 import com.example.lifeorganizer.Data.Job;
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
@@ -27,11 +30,13 @@ public class MyJobRecyclerViewAdapter extends RecyclerView.Adapter<MyJobRecycler
     private final List<Job> mValues;
     private final HashMap<Job, ArrayList<Task>> mJobTasks;
     private final OnListFragmentInteractionListener mListener;
+    private JobManager jobManager;
 
-    public MyJobRecyclerViewAdapter(List<Job> items, HashMap<Job, ArrayList<Task>> tasks, OnListFragmentInteractionListener listener) {
+    public MyJobRecyclerViewAdapter(List<Job> items, HashMap<Job, ArrayList<Task>> tasks, OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
         mListener = listener;
         mJobTasks = tasks;
+        jobManager = JobManager.getInstance(context);
     }
 
     @Override
@@ -49,8 +54,16 @@ public class MyJobRecyclerViewAdapter extends RecyclerView.Adapter<MyJobRecycler
         holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mValues.remove(position);
-                notifyDataSetChanged();
+                final Job toBeDeleted = mValues.get(position);
+                jobManager.deleteJob(toBeDeleted, new AfterDeleteJob() {
+                    @Override
+                    public void afterDeleteJob() {
+                        mValues.remove(toBeDeleted);
+                        mJobTasks.remove(toBeDeleted);
+                        notifyDataSetChanged();
+                    }
+                });
+
             }
         });
         holder.mView.setOnClickListener(new View.OnClickListener() {

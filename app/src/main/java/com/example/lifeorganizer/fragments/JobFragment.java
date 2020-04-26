@@ -40,7 +40,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class JobFragment extends Fragment {
+public class JobFragment extends Fragment   {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -97,7 +97,7 @@ public class JobFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            mAdapter = new MyJobRecyclerViewAdapter(currentJobs, currentJobsTasks, mListener);
+            mAdapter = new MyJobRecyclerViewAdapter(currentJobs, currentJobsTasks, mListener, getContext());
             recyclerView.setAdapter(mAdapter);
         }
         jobManager.getJobs(new AfterGetJobs() {
