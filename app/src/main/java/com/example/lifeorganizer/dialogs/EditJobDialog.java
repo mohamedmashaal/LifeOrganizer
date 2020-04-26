@@ -8,19 +8,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.example.lifeorganizer.Data.Job;
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
-import com.example.lifeorganizer.fragments.TaskHolder;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,11 +28,13 @@ public class EditJobDialog extends DialogFragment {
     private IEditJobDialog iDialog;
     private FragmentManager fm;
     private Job currentJob;
+    private ArrayList<Task> currentJobTasks;
 
-    public void createDialog(FragmentManager fm, IEditJobDialog iDialog, Job job) {
+    public void createDialog(FragmentManager fm, IEditJobDialog iDialog, Job job, ArrayList<Task> tasks) {
         this.fm = fm;
         this.iDialog = iDialog;
         this.currentJob = job;
+        this.currentJobTasks = tasks;
     }
 
     public void showDialog() {
@@ -52,14 +52,13 @@ public class EditJobDialog extends DialogFragment {
         ((EditText)rootView.findViewById(R.id.edit_job_description)).setText(currentJob.getDescription());
         ((EditText)rootView.findViewById(R.id.edit_job_deadline)).setText(dateToString(currentJob.getDeadline()));
         LinearLayout layout = rootView.findViewById(R.id.edit_job_task_list);
-        /*ArrayList<Task> tasks = new ArrayList<>();
-        for(Task task: tasks){
+        for(Task task: currentJobTasks){
             final JobEditTaskItem item = new JobEditTaskItem(layout.getContext());
             item.taskNameEditText.setText(task.getTitle());
-            item.taskCheckBox.setChecked(true);
+            item.taskCheckBox.setChecked(task.isFinished());
             item.taskDeadlineEditText.setText(dateToString(task.getDate()));
             layout.addView(item.view);
-        }*/
+        }
        rootView.findViewById(R.id.edit_job_task_add_button).setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -90,7 +89,7 @@ public class EditJobDialog extends DialogFragment {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        ArrayList<TaskHolder> tasks = new ArrayList<>();
+                        ArrayList<Task> tasks = new ArrayList<>();
                         LinearLayout list = rootView.findViewById(R.id.edit_job_task_list);
                         for(int i = 0 ; i < list.getChildCount() ; i ++){
                             String taskName = ((EditText)list.getChildAt(i).findViewById(R.id.edit_job_task_name)).getText().toString();
@@ -100,7 +99,8 @@ public class EditJobDialog extends DialogFragment {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-                            TaskHolder task = new TaskHolder(taskName, taskDeadline);
+                            boolean taskFinished = ((CheckBox)list.getChildAt(i).findViewById(R.id.edit_job_task_done)).isChecked();
+                            Task task = new Task(taskName, taskDeadline, taskFinished, -1);
                             tasks.add(task);
                         }
                         iDialog.onPositiveClicked(jobName, jobDescription, jobDeadline, tasks);

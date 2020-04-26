@@ -12,7 +12,7 @@
         android:background="@color/colorPrimaryDark"
         android:elevation="4dp"
         android:padding="16sp"
-        android:text="Add New Job"
+        android:text="Edit/View Job"
         android:textAlignment="center"
         android:textColor="@color/colorLight"
         android:textSize="24sp"
