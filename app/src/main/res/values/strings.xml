@@ -3,5 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_todo">Todo</string>
     <string name="title_habit">Habit</string>
+    <string name="title_event">Events</string>
 
 </resources>

@@ -28,12 +28,13 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_todo:
-//                    loadFragment(new FragmentTodo(), false);
                     viewPager.setCurrentItem(0);
                     return true;
                 case R.id.navigation_habit:
-//                    loadFragment(new FragmentHabit(), false);
                     viewPager.setCurrentItem(1);
+                    return true;
+                case R.id.navigation_event:
+                    viewPager.setCurrentItem(2);
                     return true;
             }
             return false;

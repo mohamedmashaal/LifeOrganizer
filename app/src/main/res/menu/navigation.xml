@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_habit"
         android:title="@string/title_habit" />
 
+    <item
+        android:id="@+id/navigation_event"
+        android:icon="@drawable/ic_event"
+        android:title="@string/title_event" />
+
 </menu>

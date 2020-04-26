@@ -50,4 +50,6 @@ dependencies {
 
     //gridLayout
     implementation 'com.android.support:gridlayout-v7:28.0.0'
+
+    implementation 'com.github.alamkanak:android-week-view:1.2.6'
 }
