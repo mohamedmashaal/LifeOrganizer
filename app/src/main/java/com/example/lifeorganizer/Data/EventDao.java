@@ -4,25 +4,24 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
 import java.util.List;
 
 @Dao
-public interface JobDao {
-    @Query("SELECT * FROM job")
-    List<Job> getAll();
+public interface EventDao {
+    @Query("SELECT * FROM event")
+    List<Event> getAll();
 
-    @Query("SELECT * FROM job WHERE id=:jobID")
-    Job getJob(int jobID);
+    @Query("SELECT * FROM event where id = :id")
+    Event get(int id);
 
     @Insert
-    long insert(Job job);
+    void insert(Event event);
 
     @Delete
-    void delete(Job job);
+    void delete(Event event);
 
     @Update
-    void update(Job job);
+    void update(Event event);
 }

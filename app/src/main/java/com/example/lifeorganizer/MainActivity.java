@@ -12,7 +12,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.lifeorganizer.Adapters.ViewPagerAdapter;
+import com.example.lifeorganizer.Data.Job;
 import com.example.lifeorganizer.fragments.FragmentHabit;
+import com.example.lifeorganizer.fragments.JobFragment;
+import com.example.lifeorganizer.fragments.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_habit:
 //                    loadFragment(new FragmentHabit(), false);
                     viewPager.setCurrentItem(1);
+                    return true;
+                case R.id.navigation_job:
+                    viewPager.setCurrentItem(2);
                     return true;
             }
             return false;
