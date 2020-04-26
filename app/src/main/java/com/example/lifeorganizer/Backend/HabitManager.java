@@ -83,8 +83,22 @@ public class HabitManager {
         class DeleteHabit  extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {
-                DatabaseClient.getInstance(mCtx).getAppDatabase()
-                        .habitDao().delete(habit);
+                TaskManager.getInstance(mCtx).getTasksForHabit(habit, new AfterGetTasks() {
+                    @Override
+                    public void afterGetTasks(List<Task> tasks) {
+                        DatabaseClient.getInstance(mCtx).getAppDatabase()
+                                .habitDao().delete(habit);
+
+                        for(Task task : tasks){
+                            TaskManager.getInstance(mCtx).deleteTask(task, new AfterDeleteTask() {
+                                @Override
+                                public void afterDeleteTask() {}
+                            });
+                        }
+                    }
+                });
+
+
                 return null;
             }
 
@@ -145,39 +159,39 @@ public class HabitManager {
         gh.execute();
     }
 
-    public void getTasksFromHabits(final Date date, final int day, final AfterGetTasksFromHabits callback){
-        final List<Task> finalTasks = new ArrayList<>();
+    public void createTasksFromHabits(final Date date, final int day, final AfterCreateTasksFromHabits callback){
+        //final List<Task> finalTasks = new ArrayList<>();
         getHabits(new AfterGetHabits() {
             @Override
             public void afterGetHabits(List<Habit> habits) {
                 for(final Habit habit : habits){
                     String daysMask = habit.getDaysMask();
                     if(daysMask.charAt(day) == '1'){
-                        TaskManager.getInstance(mCtx).getTasksForHabitAndDate(habit, date, new AfterGetTasksFromHabits() {
+                        TaskManager.getInstance(mCtx).getTasksForHabitAndDate(habit, date, new AfterGetTasks() {
                             @Override
-                            public void afterGetTasksFromHabits(List<Task> tasks) {
+                            public void afterGetTasks(List<Task> tasks) {
                                 if(tasks.isEmpty()){
                                     Task task = new Task(habit.getTitle(), date, false, 0);
                                     task.setHabitID(habit.getId());
                                     task.setHabitTask(true);
                                     task.setJobTask(false);
 
-                                    finalTasks.add(task);
+                                    //finalTasks.add(task);
 
                                     TaskManager.getInstance(mCtx).createTask(task, new AfterCreateTask() {
                                         @Override
                                         public void afterCreateTask() {}
                                     });
                                 }
-                                else{
+                                /*else{
                                     finalTasks.addAll(tasks);
-                                }
+                                }*/
                             }
                         });
                     }
                 }
 
-                callback.afterGetTasksFromHabits(finalTasks);
+                callback.afterCreateTasksFromHabits();
             }
         });
     }
