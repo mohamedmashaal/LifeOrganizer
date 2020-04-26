@@ -28,13 +28,18 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_todo:
+//                    loadFragment(new FragmentTodo(), false);
                     viewPager.setCurrentItem(0);
                     return true;
                 case R.id.navigation_habit:
+//                    loadFragment(new FragmentHabit(), false);
                     viewPager.setCurrentItem(1);
                     return true;
-                case R.id.navigation_event:
+                case R.id.navigation_job:
                     viewPager.setCurrentItem(2);
+                    return true;
+                case R.id.navigation_event:
+                    viewPager.setCurrentItem(3);
                     return true;
             }
             return false;
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //FragmentHabit fragment = (FragmentHabit) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 0);
-
+        //TODO handle navigation
         FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
         /*switch (viewPagerAdapter.currentFragment){
             case TODO:

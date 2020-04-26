@@ -10,6 +10,10 @@
         android:id="@+id/navigation_habit"
         android:icon="@drawable/ic_habit"
         android:title="@string/title_habit" />
+    <item
+        android:id="@+id/navigation_job"
+        android:icon="@drawable/ic_job"
+        android:title="@string/title_job" />
 
     <item
         android:id="@+id/navigation_event"

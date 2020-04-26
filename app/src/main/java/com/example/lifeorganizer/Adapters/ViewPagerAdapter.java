@@ -10,11 +10,12 @@ import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.fragments.FragmentEvent;
 import com.example.lifeorganizer.fragments.FragmentHabit;
 import com.example.lifeorganizer.fragments.FragmentTodo;
+import com.example.lifeorganizer.fragments.JobFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     //private Fragment todoFragment, habitFragment;
-    public Fragment todoFragment, habitFragment, eventFragment;
+    public Fragment todoFragment, habitFragment, eventFragment, jobFragment;
     public enum  FRAGMENT_TYPE {Habit,TODO,EVENT ,Job,Diary};
     public FRAGMENT_TYPE currentFragment = FRAGMENT_TYPE.TODO;
 
@@ -39,6 +40,11 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 }
                 return habitFragment;
             case 2:
+                if(jobFragment == null){
+                    jobFragment = new JobFragment();
+                }
+                return jobFragment;
+            case 3:
                 if (eventFragment == null) {
                     eventFragment = new FragmentEvent();
                 }
@@ -49,7 +55,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     private ViewPager.OnPageChangeListener listner = new ViewPager.OnPageChangeListener() {
@@ -70,6 +76,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                     currentFragment = FRAGMENT_TYPE.Habit;
                     break;
                 case 2:
+                    navigationView.getMenu().findItem(R.id.navigation_job).setChecked(true);
+                    currentFragment = FRAGMENT_TYPE.Job;
+                    break;
+                case 3:
                     navigationView.getMenu().findItem(R.id.navigation_event).setChecked(true);
                     currentFragment = FRAGMENT_TYPE.EVENT;
                     break;

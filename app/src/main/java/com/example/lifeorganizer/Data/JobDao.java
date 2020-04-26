@@ -14,8 +14,11 @@ public interface JobDao {
     @Query("SELECT * FROM job")
     List<Job> getAll();
 
+    @Query("SELECT * FROM job WHERE id=:jobID")
+    Job getJob(int jobID);
+
     @Insert
-    void insert(Job job);
+    long insert(Job job);
 
     @Delete
     void delete(Job job);

@@ -86,8 +86,6 @@ public class HabitManager {
                 TaskManager.getInstance(mCtx).getTasksForHabit(habit, new AfterGetTasks() {
                     @Override
                     public void afterGetTasks(List<Task> tasks) {
-                        DatabaseClient.getInstance(mCtx).getAppDatabase()
-                                .habitDao().delete(habit);
 
                         for(Task task : tasks){
                             TaskManager.getInstance(mCtx).deleteTask(task, new AfterDeleteTask() {
@@ -98,6 +96,8 @@ public class HabitManager {
                     }
                 });
 
+                DatabaseClient.getInstance(mCtx).getAppDatabase()
+                        .habitDao().delete(habit);
 
                 return null;
             }
@@ -159,7 +159,7 @@ public class HabitManager {
         gh.execute();
     }
 
-    public void getTasksFromHabits(final Date date, final int day, final AfterCreateTasksFromHabits callback){
+    public void createTasksFromHabits(final Date date, final int day, final AfterCreateTasksFromHabits callback){
         //final List<Task> finalTasks = new ArrayList<>();
         getHabits(new AfterGetHabits() {
             @Override

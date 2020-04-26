@@ -6,6 +6,7 @@ import android.text.format.DateUtils;
 
 import com.example.lifeorganizer.Data.DatabaseClient;
 import com.example.lifeorganizer.Data.Habit;
+import com.example.lifeorganizer.Data.Job;
 import com.example.lifeorganizer.Data.Task;
 
 import java.text.SimpleDateFormat;
@@ -190,6 +191,8 @@ public class TaskManager {
         gh.execute();
     }
 
+    // Habit-related methods
+
     public void getTasksForHabit(final Habit habit, final AfterGetTasks callback){
         class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
             @Override
@@ -373,6 +376,202 @@ public class TaskManager {
                     int task_month = cal.get(Calendar.MONTH)-1;
 
                     if(task_year == year && task_month == month && task.isHabitTask())
+                        specificTasks.add(task);
+                }
+
+                callback.afterGetTasks(specificTasks);
+            }
+        }
+
+        MyAsyncTask gh = new MyAsyncTask();
+        gh.execute();
+    }
+
+    // Job-related methods
+
+    public void getTasksForJob(final Job job, final AfterGetTasks callback){
+        class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
+            @Override
+            protected List<Task> doInBackground(Void... voids) {
+                List<Task> tasks = DatabaseClient.getInstance(mCtx)
+                        .getAppDatabase()
+                        .taskDao()
+                        .getAll();
+                return tasks;
+            }
+
+            @Override
+            protected void onPostExecute(List<Task> tasks) {
+                super.onPostExecute(tasks);
+
+                List<Task> specificTasks = new ArrayList<>();
+                for(Task task : tasks){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+                    if(task.getJobID() == job.getId())
+                        specificTasks.add(task);
+                }
+
+                callback.afterGetTasks(specificTasks);
+            }
+        }
+
+        MyAsyncTask gh = new MyAsyncTask();
+        gh.execute();
+    }
+
+    public void getTasksForAllJobs(final AfterGetTasks callback){
+        class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
+            @Override
+            protected List<Task> doInBackground(Void... voids) {
+                List<Task> tasks = DatabaseClient.getInstance(mCtx)
+                        .getAppDatabase()
+                        .taskDao()
+                        .getAll();
+                return tasks;
+            }
+
+            @Override
+            protected void onPostExecute(List<Task> tasks) {
+                super.onPostExecute(tasks);
+
+                List<Task> specificTasks = new ArrayList<>();
+                for(Task task : tasks){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+                    if(task.isJobTask())
+                        specificTasks.add(task);
+                }
+
+                callback.afterGetTasks(specificTasks);
+            }
+        }
+
+        MyAsyncTask gh = new MyAsyncTask();
+        gh.execute();
+    }
+
+    public void getTasksForJobAndDate(final Job job, final Date date, final AfterGetTasks callback){
+        class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
+            @Override
+            protected List<Task> doInBackground(Void... voids) {
+                List<Task> tasks = DatabaseClient.getInstance(mCtx)
+                        .getAppDatabase()
+                        .taskDao()
+                        .getAll();
+                return tasks;
+            }
+
+            @Override
+            protected void onPostExecute(List<Task> tasks) {
+                super.onPostExecute(tasks);
+
+                List<Task> specificTasks = new ArrayList<>();
+                for(Task task : tasks){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+                    if(sdf.format(task.getDate()).equals(sdf.format(date)) && task.getJobID() == job.getId())
+                        specificTasks.add(task);
+                }
+
+                callback.afterGetTasks(specificTasks);
+            }
+        }
+
+        MyAsyncTask gh = new MyAsyncTask();
+        gh.execute();
+    }
+
+    public void getTasksForAllJobsAndDate(final Date date, final AfterGetTasks callback){
+        class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
+            @Override
+            protected List<Task> doInBackground(Void... voids) {
+                List<Task> tasks = DatabaseClient.getInstance(mCtx)
+                        .getAppDatabase()
+                        .taskDao()
+                        .getAll();
+                return tasks;
+            }
+
+            @Override
+            protected void onPostExecute(List<Task> tasks) {
+                super.onPostExecute(tasks);
+
+                List<Task> specificTasks = new ArrayList<>();
+                for(Task task : tasks){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+                    if(sdf.format(task.getDate()).equals(sdf.format(date)) && task.isJobTask())
+                        specificTasks.add(task);
+                }
+
+                callback.afterGetTasks(specificTasks);
+            }
+        }
+
+        MyAsyncTask gh = new MyAsyncTask();
+        gh.execute();
+    }
+
+    public void getTasksForJobAndMonth(final Job job, final int month, final int year, final AfterGetTasks callback){
+        class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
+            @Override
+            protected List<Task> doInBackground(Void... voids) {
+                List<Task> tasks = DatabaseClient.getInstance(mCtx)
+                        .getAppDatabase()
+                        .taskDao()
+                        .getAll();
+                return tasks;
+            }
+
+            @Override
+            protected void onPostExecute(List<Task> tasks) {
+                super.onPostExecute(tasks);
+
+                List<Task> specificTasks = new ArrayList<>();
+                for(Task task : tasks){
+                    Date date = task.getDate();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    int task_year = cal.get(Calendar.YEAR);
+                    int task_month = cal.get(Calendar.MONTH)-1;
+
+                    if(task_year == year && task_month == month && task.getJobID() == job.getId())
+                        specificTasks.add(task);
+                }
+
+                callback.afterGetTasks(specificTasks);
+            }
+        }
+
+        MyAsyncTask gh = new MyAsyncTask();
+        gh.execute();
+    }
+
+    public void getTasksForAllJobsAndMonth(final int month, final int year, final AfterGetTasks callback){
+        class MyAsyncTask extends AsyncTask<Void, Void, List<Task>> {
+            @Override
+            protected List<Task> doInBackground(Void... voids) {
+                List<Task> tasks = DatabaseClient.getInstance(mCtx)
+                        .getAppDatabase()
+                        .taskDao()
+                        .getAll();
+                return tasks;
+            }
+
+            @Override
+            protected void onPostExecute(List<Task> tasks) {
+                super.onPostExecute(tasks);
+
+                List<Task> specificTasks = new ArrayList<>();
+                for(Task task : tasks){
+                    Date date = task.getDate();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    int task_year = cal.get(Calendar.YEAR);
+                    int task_month = cal.get(Calendar.MONTH)-1;
+
+                    if(task_year == year && task_month == month && task.isJobTask())
                         specificTasks.add(task);
                 }
 
