@@ -159,7 +159,7 @@ public class HabitManager {
         gh.execute();
     }
 
-    public void getTasksFromHabits(final Date date, final int day, final AfterCreateTasksFromHabits callback){
+    public void createTasksFromHabits(final Date date, final int day, final AfterCreateTasksFromHabits callback){
         //final List<Task> finalTasks = new ArrayList<>();
         getHabits(new AfterGetHabits() {
             @Override
