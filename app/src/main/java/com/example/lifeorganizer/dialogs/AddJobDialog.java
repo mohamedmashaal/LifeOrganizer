@@ -3,22 +3,17 @@ package com.example.lifeorganizer.dialogs;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
-import com.example.lifeorganizer.fragments.TaskHolder;
 
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -76,7 +71,7 @@ public class AddJobDialog extends DialogFragment {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        ArrayList<TaskHolder> tasks = new ArrayList<>();
+                        ArrayList<Task> tasks = new ArrayList<>();
                         LinearLayout list = rootView.findViewById(R.id.add_job_task_list);
                         for(int i = 0 ; i < list.getChildCount() ; i ++){
                             String taskName = ((EditText)list.getChildAt(i).findViewById(R.id.add_job_task_name)).getText().toString();
@@ -86,7 +81,7 @@ public class AddJobDialog extends DialogFragment {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-                            TaskHolder task = new TaskHolder(taskName, taskDeadline);
+                            Task task = new Task(taskName, taskDeadline, false, -1);
                             tasks.add(task);
                         }
                         iDialog.onPositiveClicked(jobName, jobDescription, jobDeadline, tasks);

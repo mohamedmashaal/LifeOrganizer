@@ -8,10 +8,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.lifeorganizer.Data.Job;
+import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.fragments.JobFragment.OnListFragmentInteractionListener;
 import com.example.lifeorganizer.fragments.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,11 +25,13 @@ import java.util.List;
 public class MyJobRecyclerViewAdapter extends RecyclerView.Adapter<MyJobRecyclerViewAdapter.ViewHolder> {
 
     private final List<Job> mValues;
+    private final HashMap<Job, ArrayList<Task>> mJobTasks;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyJobRecyclerViewAdapter(List<Job> items, OnListFragmentInteractionListener listener) {
+    public MyJobRecyclerViewAdapter(List<Job> items, HashMap<Job, ArrayList<Task>> tasks, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+        mJobTasks = tasks;
     }
 
     @Override
@@ -40,8 +45,7 @@ public class MyJobRecyclerViewAdapter extends RecyclerView.Adapter<MyJobRecycler
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getTitle());
-        //holder.mContentView.setText(mValues.get(position).getProgress);
-        holder.mContentView.setText("PROGRESS !!!!");
+        holder.mContentView.setText(getProgress(mJobTasks.get(holder.mItem)));
         holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +65,18 @@ public class MyJobRecyclerViewAdapter extends RecyclerView.Adapter<MyJobRecycler
         });
     }
 
+    private String getProgress(ArrayList<Task> tasks) {
+        int count = 0;
+        if(tasks != null) {
+            for (Task task : tasks) {
+                if (task.isFinished())
+                    count++;
+            }
+            return count + "/" + tasks.size();
+        }
+        return count + "/" + count;
+    }
+
     @Override
     public int getItemCount() {
         return mValues.size();
@@ -72,6 +88,7 @@ public class MyJobRecyclerViewAdapter extends RecyclerView.Adapter<MyJobRecycler
         public final TextView mContentView;
         public final Button mDeleteButton;
         public Job mItem;
+        public ArrayList<Task> mTasks;
 
         public ViewHolder(View view) {
             super(view);

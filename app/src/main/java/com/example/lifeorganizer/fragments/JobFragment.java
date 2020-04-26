@@ -2,7 +2,6 @@ package com.example.lifeorganizer.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,22 +15,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.lifeorganizer.Adapters.MyJobRecyclerViewAdapter;
-import com.example.lifeorganizer.Backend.AfterCreateHabit;
-import com.example.lifeorganizer.Backend.HabitManager;
-import com.example.lifeorganizer.Data.Habit;
+import com.example.lifeorganizer.Backend.AfterCreateJob;
+import com.example.lifeorganizer.Backend.AfterDeleteJob;
+import com.example.lifeorganizer.Backend.AfterGetJobs;
+import com.example.lifeorganizer.Backend.AfterGetTasks;
+import com.example.lifeorganizer.Backend.JobManager;
+import com.example.lifeorganizer.Backend.TaskManager;
 import com.example.lifeorganizer.Data.Job;
+import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
-import com.example.lifeorganizer.dialogs.AddHabitDialog;
 import com.example.lifeorganizer.dialogs.AddJobDialog;
 import com.example.lifeorganizer.dialogs.EditJobDialog;
-import com.example.lifeorganizer.dialogs.IAddHabitDialog;
 import com.example.lifeorganizer.dialogs.IAddJobDialog;
 import com.example.lifeorganizer.dialogs.IEditJobDialog;
-import com.example.lifeorganizer.fragments.dummy.DummyContent;
-import com.example.lifeorganizer.fragments.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -46,15 +47,21 @@ public class JobFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private ArrayList<Job> jobs;
+    private ArrayList<Job> currentJobs;
+    private HashMap<Job, ArrayList<Task>> currentJobsTasks;
     private MyJobRecyclerViewAdapter mAdapter;
+    private JobManager jobManager;
+    private TaskManager taskManager;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public JobFragment() {
-        jobs = new ArrayList<>();
+        currentJobs = new ArrayList<>();
+        currentJobsTasks = new HashMap<>();
+        jobManager = JobManager.getInstance(getContext());
+        taskManager = TaskManager.getInstance(getContext());
     }
 
     // TODO: Customize parameter initialization
@@ -90,9 +97,26 @@ public class JobFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            mAdapter = new MyJobRecyclerViewAdapter(jobs, mListener);
+            mAdapter = new MyJobRecyclerViewAdapter(currentJobs, currentJobsTasks, mListener);
             recyclerView.setAdapter(mAdapter);
         }
+        jobManager.getJobs(new AfterGetJobs() {
+            @Override
+            public void afterGetJobs(List<Job> jobs) {
+                currentJobs.clear();
+                currentJobs.addAll(jobs);
+                for(int i = 0 ; i < currentJobs.size() ; i ++){
+                    final Job current = currentJobs.get(i);
+                    taskManager.getTasksForJob(current, new AfterGetTasks() {
+                        @Override
+                        public void afterGetTasks(List<Task> tasks) {
+                            currentJobsTasks.put(current, new ArrayList<Task>(tasks));
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+        });
         return view;
     }
 
@@ -108,13 +132,33 @@ public class JobFragment extends Fragment {
                     mainDialog.createDialog(getActivity().getSupportFragmentManager(), new IEditJobDialog(){
 
                         @Override
-                        public void onPositiveClicked(String title, String description, Date deadline, ArrayList<TaskHolder> tasks) {
-                            Job job = new Job(title, description, deadline);
-                            jobs.remove(item);
-                            jobs.add(job);
-                            mAdapter.notifyDataSetChanged();
+                        public void onPositiveClicked(String title, String description, Date deadline, final ArrayList<Task> tasks) {
+                            final Job job = new Job(title, description, deadline);
+                            jobManager.deleteJob(item, new AfterDeleteJob() {
+                                @Override
+                                public void afterDeleteJob() {
+                                    currentJobs.remove(item);
+                                    currentJobsTasks.remove(item);
+                                    mAdapter.notifyDataSetChanged();
+                                    jobManager.createJob(job, tasks, new AfterCreateJob() {
+                                        @Override
+                                        public void afterCreateJob(final Job job) {
+                                            currentJobs.add(job);
+                                            mAdapter.notifyDataSetChanged();
+                                            taskManager.getTasksForJob(job, new AfterGetTasks() {
+                                                @Override
+                                                public void afterGetTasks(List<Task> tasks) {
+                                                    currentJobsTasks.put(job, new ArrayList<Task>(tasks));
+                                                    mAdapter.notifyDataSetChanged();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+
                         }
-                    }, item);
+                    }, item, currentJobsTasks.get(item));
                     mainDialog.showDialog();
                 }
             };
@@ -155,16 +199,24 @@ public class JobFragment extends Fragment {
                 mainDialog.createDialog(getActivity().getSupportFragmentManager(), new IAddJobDialog() {
 
                     @Override
-                    public void onPositiveClicked(String title, String description, Date deadline, ArrayList<TaskHolder> tasks) {
+                    public void onPositiveClicked(String title, String description, Date deadline, ArrayList<Task> tasks) {
                         Job job = new Job(title, description, deadline);
-                        jobs.add(job);
-                        mAdapter.notifyDataSetChanged();
-                        /*Log.d("Title", title);
-                        Log.d("Desc", description);
-                        Log.d("Deadline", deadline.toString());
-                        for(TaskHolder taskHolder: tasks){
-                            Log.d("Task", taskHolder.toString());
-                        }*/
+                        jobManager.createJob(job, tasks, new AfterCreateJob() {
+                            @Override
+                            public void afterCreateJob(final Job job) {
+                                Log.d("I came back", "Indeed");
+                                currentJobs.add(job);
+                                mAdapter.notifyDataSetChanged();
+                                taskManager.getTasksForJob(job, new AfterGetTasks() {
+                                    @Override
+                                    public void afterGetTasks(List<Task> tasks) {
+                                        currentJobsTasks.put(job, new ArrayList<Task>(tasks));
+                                        mAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                            }
+                        });
+
                     }
                 });
                 mainDialog.showDialog();
