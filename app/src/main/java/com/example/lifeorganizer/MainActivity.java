@@ -64,27 +64,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    public void onBackPressed() {
-//        //FragmentHabit fragment = (FragmentHabit) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 0);
-//        //TODO handle navigation
-//        FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
-//        /*switch (viewPagerAdapter.currentFragment){
-//            case TODO:
-//                Toast.makeText(getApplicationContext(),"TODO",Toast.LENGTH_SHORT).show();
-//                break;
-//            case Habit:
-//                Toast.makeText(getApplicationContext(),"Habit",Toast.LENGTH_SHORT).show();
-//                break;
-//        }*/
-//
-//
-//        if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0 &&
-//               viewPagerAdapter.currentFragment == ViewPagerAdapter.FRAGMENT_TYPE.Habit) {
-//            fragment.getChildFragmentManager().popBackStack();
-//        } else {
-//            super.onBackPressed();
-//        }
-//
-//    }
+    @Override
+    public void onBackPressed() {
+        //FragmentHabit fragment = (FragmentHabit) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 0);
+        //TODO handle navigation
+        FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
+        /*switch (viewPagerAdapter.currentFragment){
+            case TODO:
+                Toast.makeText(getApplicationContext(),"TODO",Toast.LENGTH_SHORT).show();
+                break;
+            case Habit:
+                Toast.makeText(getApplicationContext(),"Habit",Toast.LENGTH_SHORT).show();
+                break;
+        }*/
+
+        if(viewPagerAdapter.currentFragment == ViewPagerAdapter.FRAGMENT_TYPE.Habit){
+            if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0) {
+                fragment.getChildFragmentManager().popBackStack();
+            }
+        } else {
+            super.onBackPressed();
+        }
+
+    }
 }
