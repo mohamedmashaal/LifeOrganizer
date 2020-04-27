@@ -32,7 +32,7 @@ public class JobEditTaskItem {
         taskNameEditText = view.findViewById(R.id.edit_job_task_name);
         taskDeadlineEditText = view.findViewById(R.id.edit_job_task_date);
         taskDeleteButton = view.findViewById(R.id.edit_job_task_delete);
-        taskCheckBox = view.findViewById(R.id.task_checkbox);
+        taskCheckBox = view.findViewById(R.id.edit_job_task_done);
     }
 
 }

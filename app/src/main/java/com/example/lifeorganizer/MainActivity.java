@@ -12,10 +12,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.lifeorganizer.Adapters.ViewPagerAdapter;
-import com.example.lifeorganizer.Data.Job;
 import com.example.lifeorganizer.fragments.FragmentHabit;
-import com.example.lifeorganizer.fragments.JobFragment;
-import com.example.lifeorganizer.fragments.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_job:
                     viewPager.setCurrentItem(2);
                     return true;
+                case R.id.navigation_event:
+                    viewPager.setCurrentItem(3);
+                    return true;
             }
             return false;
         }
@@ -64,25 +64,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onBackPressed() {
-        //FragmentHabit fragment = (FragmentHabit) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 0);
-        //TODO handle navigation
-        FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
-        /*switch (viewPagerAdapter.currentFragment){
-            case TODO:
-                Toast.makeText(getApplicationContext(),"TODO",Toast.LENGTH_SHORT).show();
-                break;
-            case Habit:
-                Toast.makeText(getApplicationContext(),"Habit",Toast.LENGTH_SHORT).show();
-                break;
-        }*/
-        if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0 &&
-               viewPagerAdapter.currentFragment == ViewPagerAdapter.FRAGMENT_TYPE.Habit) {
-            fragment.getChildFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }
-
-    }
+//    @Override
+//    public void onBackPressed() {
+//        //FragmentHabit fragment = (FragmentHabit) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 0);
+//        //TODO handle navigation
+//        FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
+//        /*switch (viewPagerAdapter.currentFragment){
+//            case TODO:
+//                Toast.makeText(getApplicationContext(),"TODO",Toast.LENGTH_SHORT).show();
+//                break;
+//            case Habit:
+//                Toast.makeText(getApplicationContext(),"Habit",Toast.LENGTH_SHORT).show();
+//                break;
+//        }*/
+//
+//
+//        if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0 &&
+//               viewPagerAdapter.currentFragment == ViewPagerAdapter.FRAGMENT_TYPE.Habit) {
+//            fragment.getChildFragmentManager().popBackStack();
+//        } else {
+//            super.onBackPressed();
+//        }
+//
+//    }
 }

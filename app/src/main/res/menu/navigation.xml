@@ -15,4 +15,9 @@
         android:icon="@drawable/ic_job"
         android:title="@string/title_job" />
 
+    <item
+        android:id="@+id/navigation_event"
+        android:icon="@drawable/ic_event"
+        android:title="@string/title_event" />
+
 </menu>
