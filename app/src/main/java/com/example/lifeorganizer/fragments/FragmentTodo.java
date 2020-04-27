@@ -17,8 +17,13 @@ import android.widget.Toast;
 
 import com.example.lifeorganizer.Adapters.TaskAdapter;
 import com.example.lifeorganizer.Backend.AfterCreateTask;
+import com.example.lifeorganizer.Backend.AfterCreateTasksFromHabits;
+import com.example.lifeorganizer.Backend.AfterGetEvents;
 import com.example.lifeorganizer.Backend.AfterGetTasks;
+import com.example.lifeorganizer.Backend.EventManager;
+import com.example.lifeorganizer.Backend.HabitManager;
 import com.example.lifeorganizer.Backend.TaskManager;
+import com.example.lifeorganizer.Data.Event;
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.dialogs.EditTaskDialog;
@@ -42,7 +47,7 @@ public class FragmentTodo extends Fragment {
     List<Task> todoTasks;
     List<Task> habitTasks;
     List<Task> jobTasks;
-    public enum  TASKS_TYPE {Habit,TODO,Job};
+    public enum  TASKS_TYPE {Habit,TODO,Job,Event};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -118,6 +123,12 @@ public class FragmentTodo extends Fragment {
         dateText.setText(d);
     }
     private void loadTheList(){
+        HabitManager.getInstance(getContext()).createTasksFromHabits(date, getDayInWeek(date), new AfterCreateTasksFromHabits() {
+            @Override
+            public void afterCreateTasksFromHabits() {
+
+            }
+        });
 
         TaskManager.getInstance(getContext()).getTasks(date, new AfterGetTasks() {
             @Override
@@ -154,16 +165,43 @@ public class FragmentTodo extends Fragment {
                 habitListView.setItemsCanFocus(true);
                 habitListView.setAdapter(habitAdapter);
 
-
-                //TODO add job tasks list
+                // job list
+                ListView JobListView = (ListView) getView().findViewById(R.id.jobTasksListView);
+                JobListView.setItemsCanFocus(true);
+                JobListView.setAdapter(jobAdapter);
 
             }
         });
         //TODO Load events
+        EventManager.getInstance(getContext()).getEvents(date, new AfterGetEvents() {
+            @Override
+            public void afterGetEvents(List<Event> event) {
+                // convert events to tasks
+                //TODO use another way to do that
+                ArrayList<Task> eventsList = new ArrayList<>();
+                for (int i = 0; i < event.size(); i++) {
+                    Task task = new Task(event.get(i).getTitle(),new Date(),false,0);
+                    eventsList.add(task);
+                }
+                TaskAdapter eventAdapter =  new TaskAdapter(getActivity(),eventsList, TASKS_TYPE.Event,FragmentTodo.this);
+                //event list
+                ListView habitListView = (ListView) getView().findViewById(R.id.eventTasksListView);
+                habitListView.setItemsCanFocus(true);
+                habitListView.setAdapter(eventAdapter);
+            }
+        });
+
+
     }
 
     public void notifyChange(){
+        //TODO notify adapters instead
         loadTheList();
     }
 
+    private int getDayInWeek(Date date){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        return c.get(Calendar.DAY_OF_WEEK) % 7;
+    }
 }

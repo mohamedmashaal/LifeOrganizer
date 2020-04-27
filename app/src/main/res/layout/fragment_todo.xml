@@ -42,22 +42,45 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Events"
+            android:textSize="20sp"
+            android:layout_margin="5dp"/>
+        <ListView
+            android:id="@+id/eventTasksListView"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Habits Tasks"
             android:textSize="20sp"
             android:layout_margin="5dp"/>
-
         <ListView
             android:id="@+id/habitTasksListView"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jobs Subtasks"
+            android:textSize="20sp"
+            android:layout_margin="5dp"/>
+        <ListView
+            android:id="@+id/jobTasksListView"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TODO Tasks"
             android:textSize="20sp"
             android:layout_margin="5dp"/>
-
         <ListView
             android:id="@+id/todoListView"
             android:orientation="vertical"

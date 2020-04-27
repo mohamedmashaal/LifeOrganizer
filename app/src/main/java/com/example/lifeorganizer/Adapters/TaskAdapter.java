@@ -27,6 +27,7 @@ import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.dialogs.EditTaskDialog;
 import com.example.lifeorganizer.dialogs.IEditTaskDialog;
+import com.example.lifeorganizer.fragments.FragmentHabit;
 import com.example.lifeorganizer.fragments.FragmentTodo;
 
 import java.util.Calendar;
@@ -63,11 +64,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             listItemView = mInflater.inflate(R.layout.task_item, null);
             holder.task = getItem(position);
 
-            //TODO put change listener
-            //timeField.requestFocus();
-            //timeField.setOnC
             holder.timeFiled = (EditText) listItemView.findViewById(R.id.task_time_spent_field);
-            //holder.timeFiled.setTag(position);
 
             holder.nameText = listItemView.findViewById(R.id.task_name_text);
 
@@ -91,6 +88,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             holder.timeFiled.setCursorVisible(true);
             holder.timeFiled.setFocusable(true);
         }
+
         setTimeFiledListener(holder.timeFiled,holder.task);
 
         holder.nameText.setText(holder.task.getTitle());
@@ -102,6 +100,11 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         setDeleteListener(holder.deleteBtn,holder.task);
         if(tasksType != FragmentTodo.TASKS_TYPE.TODO){
             holder.deleteBtn.setVisibility(View.GONE);
+        }
+
+        if(tasksType == FragmentTodo.TASKS_TYPE.Event){
+            holder.timeFiled.setVisibility(View.GONE);
+            listItemView.findViewById(R.id.minText).setVisibility(View.GONE);
         }
 
         return listItemView;
