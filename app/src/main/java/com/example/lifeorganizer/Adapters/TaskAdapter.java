@@ -105,6 +105,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         if(tasksType == FragmentTodo.TASKS_TYPE.Event){
             holder.timeFiled.setVisibility(View.GONE);
             listItemView.findViewById(R.id.minText).setVisibility(View.GONE);
+            holder.checkBox.setVisibility(View.GONE);
         }
 
         return listItemView;

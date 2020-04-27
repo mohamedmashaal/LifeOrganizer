@@ -133,7 +133,6 @@ public class FragmentTodo extends Fragment {
         TaskManager.getInstance(getContext()).getTasks(date, new AfterGetTasks() {
             @Override
             public void afterGetTasks(List<Task> tasks) {
-                //TODO filter them to habits and tasks
                 todoTasks = new ArrayList<>();
                 habitTasks = new ArrayList<>();
                 jobTasks = new ArrayList<>();
@@ -148,7 +147,7 @@ public class FragmentTodo extends Fragment {
                     }
                 }
                 //Test Code
-                habitTasks.add(new Task("habit Task",new Date(),false,0));
+                //habitTasks.add(new Task("habit Task",new Date(),false,0));
 
                 TaskAdapter todoAdapter = new TaskAdapter(getActivity(), todoTasks,TASKS_TYPE.TODO,FragmentTodo.this);
                 TaskAdapter habitAdapter = new TaskAdapter(getActivity(),habitTasks, TASKS_TYPE.Habit,FragmentTodo.this);
@@ -172,7 +171,6 @@ public class FragmentTodo extends Fragment {
 
             }
         });
-        //TODO Load events
         EventManager.getInstance(getContext()).getEvents(date, new AfterGetEvents() {
             @Override
             public void afterGetEvents(List<Event> event) {
