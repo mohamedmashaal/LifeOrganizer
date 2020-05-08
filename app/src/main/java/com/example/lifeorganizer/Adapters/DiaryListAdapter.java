@@ -103,8 +103,8 @@ public class DiaryListAdapter extends ArrayAdapter<FragmentDiary.DummyNote> {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                builder.setMessage("Are you sure you want to delete this the task?")
-                        .setTitle("Delete Task");
+                builder.setMessage("Are you sure you want to delete this the note?")
+                        .setTitle("Delete Note");
 
                 builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
