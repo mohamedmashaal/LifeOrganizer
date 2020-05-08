@@ -4,7 +4,7 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 
-@Database(entities = {Task.class, Job.class, Habit.class, Event.class}, version = 1, exportSchema = false)
+@Database(entities = {Task.class, Job.class, Habit.class, Event.class, DiaryNote.class}, version = 1, exportSchema = false)
 
 @TypeConverters({DateConverter.class})
 
@@ -13,4 +13,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract JobDao jobDao();
     public abstract HabitDao habitDao();
     public abstract EventDao eventDao();
+    public abstract DiaryNoteDao diaryNoteDao();
 }
