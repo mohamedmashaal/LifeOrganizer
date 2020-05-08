@@ -4,6 +4,6 @@
     <string name="title_todo">Todo</string>
     <string name="title_habit">Habit</string>
     <string name="title_event">Events</string>
-
+    <string name="title_diary">Diary</string>
     <string name="title_job">Job</string>
 </resources>
