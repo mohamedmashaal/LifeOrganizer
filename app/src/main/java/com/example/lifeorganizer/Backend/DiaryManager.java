@@ -38,19 +38,20 @@ public class DiaryManager {
 
     public void createDiaryNote(final DiaryNote diaryNote, final AfterCreateDiaryNote callback) {
 
-        class MyTask extends AsyncTask<Void, Void, Void> {
+        class MyTask extends AsyncTask<Void, Void, Long> {
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected Long doInBackground(Void... voids) {
                 // adding to database
-                DatabaseClient.getInstance(mCtx).getAppDatabase()
+                long id = DatabaseClient.getInstance(mCtx).getAppDatabase()
                         .diaryNoteDao().insert(diaryNote);
-                return null;
+                return id;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                callback.afterCreateDiaryNote();
+            protected void onPostExecute(Long id) {
+                super.onPostExecute(id);
+                diaryNote.setId(id.intValue());
+                callback.afterCreateDiaryNote(diaryNote);
             }
         }
 

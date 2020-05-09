@@ -37,19 +37,22 @@ public class HabitManager {
 
     public void createHabit(final Habit habit, final AfterCreateHabit callback) {
 
-        class CreateHabit extends AsyncTask<Void, Void, Void> {
+        class CreateHabit extends AsyncTask<Void, Void, Long> {
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected Long doInBackground(Void... voids) {
                 // adding to database
-                DatabaseClient.getInstance(mCtx).getAppDatabase()
+                long id = DatabaseClient.getInstance(mCtx).getAppDatabase()
                         .habitDao().insert(habit);
-                return null;
+                return id;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                callback.afterCreateHabit();
+            protected void onPostExecute(Long id) {
+                super.onPostExecute(id);
+
+                habit.setId(id.intValue());
+
+                callback.afterCreateHabit(habit);
             }
         }
 
@@ -180,7 +183,7 @@ public class HabitManager {
 
                                     TaskManager.getInstance(mCtx).createTask(task, new AfterCreateTask() {
                                         @Override
-                                        public void afterCreateTask() {}
+                                        public void afterCreateTask(Task task) {}
                                     });
                                 }
                                 /*else{
