@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.lifeorganizer.Adapters.HabitListAdapter;
 import com.example.lifeorganizer.Backend.AfterEditHabit;
 import com.example.lifeorganizer.Backend.AfterEditTask;
+import com.example.lifeorganizer.Backend.AfterGetTasks;
 import com.example.lifeorganizer.Backend.HabitManager;
 import com.example.lifeorganizer.Backend.TaskManager;
 import com.example.lifeorganizer.Data.Habit;
@@ -31,9 +32,11 @@ import com.example.lifeorganizer.dialogs.IEditHabitDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import android.view.Gravity;
 import android.support.v7.widget.GridLayout;
+import android.widget.Toast;
 
 public class FragmentHabitView extends Fragment{
     ImageView prev, next;
@@ -161,9 +164,9 @@ public class FragmentHabitView extends Fragment{
     }
     private void updateCalendar(){
         setFirstDateOfMonth();
-        int weekDay = getDayInWeek(currentMonth);
-        int positionOfFirstDay = weekDay + 7;
-        int lastDay = getLastDayInMonth();
+        final int weekDay = getDayInWeek(currentMonth);
+        final int positionOfFirstDay = weekDay + 7;
+        final int lastDay = getLastDayInMonth();
         //start from  seven because the first 7 elements in gridlayout are the days name
         for (int i = 7; i < 49; i++) {
             TextView textView = (TextView)calender.getChildAt(i);
@@ -180,7 +183,7 @@ public class FragmentHabitView extends Fragment{
         }
 
         //TODO merge the backend here
-        ArrayList<Task> tasksList = getTasks();
+        /*ArrayList<Task> tasksList = getTasks();
         for (int j = 0; j < tasksList.size(); j++) {
             Task t = tasksList.get(j);
             int taskDay = getDayInMonth(t.getDate());
@@ -198,6 +201,49 @@ public class FragmentHabitView extends Fragment{
                 }
             }
         }
+        */
+        final TaskManager taskManager = TaskManager.getInstance(getActivity());
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentMonth);
+
+        taskManager.getTasks(c.get(Calendar.MONTH), c.get(Calendar.YEAR), new AfterGetTasks() {
+            @Override
+            public void afterGetTasks(List<Task> tasks) {
+                ArrayList<Task> tasksList = new ArrayList<>(tasks);
+                Toast.makeText(getActivity(),tasksList.size()+"",Toast.LENGTH_SHORT).show();
+                int [] state = new int[lastDay];
+                String days = habit.getDaysMask();
+                for (int i = 0; i < state.length; i++) {
+                    if(days.charAt((i+weekDay)%7) == '1'){
+                        state[i] = 0;
+                    } else {
+                        state[i] = -1;
+                    }
+                }
+                for (int j = 0; j < tasksList.size(); j++) {
+                    Task t = tasksList.get(j);
+                    if(t.isFinished()){
+                        int taskDay = getDayInMonth(t.getDate());
+                        state[taskDay-1] = 1;
+                    }
+                }
+                for (int i = 0; i < state.length; i++) {
+                    if(state[i] != -1) {
+                        TextView textView = (TextView) calender.getChildAt(i + positionOfFirstDay);
+                        textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorBlack));
+                        textView.setTextSize(16);
+                        if (state[i] == 0) {
+                            textView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_wrong_red_24dp));
+                        } else if (state[i] == 1) {
+                            textView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_check_green_24dp));
+                        }
+                    }
+                }
+            }
+        });
+
+
+
     }
     private void updateDetails(){
         nameField.setText(habit.getTitle());
@@ -235,6 +281,7 @@ public class FragmentHabitView extends Fragment{
         c.setTime(date);
         return c.get(Calendar.DAY_OF_MONTH);
     }
+
     private int getLastDayInMonth(){
         Calendar cal = Calendar.getInstance();
         cal.setTime(currentMonth);
