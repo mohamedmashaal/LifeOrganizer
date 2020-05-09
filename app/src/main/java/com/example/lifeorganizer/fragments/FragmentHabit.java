@@ -19,6 +19,7 @@ import com.example.lifeorganizer.Backend.TaskManager;
 import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.dialogs.AddHabitDialog;
+import com.example.lifeorganizer.dialogs.HabitStatisticsDialog;
 import com.example.lifeorganizer.dialogs.IAddHabitDialog;
 
 import java.util.ArrayList;
@@ -91,7 +92,14 @@ public class FragmentHabit extends Fragment {
                 mainDialog.showDialog();
             }
         });
-
+        ((FloatingActionButton) view.findViewById(R.id.habit_stats_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HabitStatisticsDialog habitStats = new HabitStatisticsDialog();
+                habitStats.createDialog(getActivity().getSupportFragmentManager());
+                habitStats.showDialog();
+            }
+        });
 
     }
 

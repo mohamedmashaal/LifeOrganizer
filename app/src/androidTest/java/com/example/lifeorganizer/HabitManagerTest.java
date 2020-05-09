@@ -3,6 +3,7 @@ package com.example.lifeorganizer;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import com.example.lifeorganizer.Backend.AfterCreateHabit;
 import com.example.lifeorganizer.Backend.AfterGetHabits;
@@ -26,6 +27,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class HabitManagerTest {
+    boolean x = true;
     @Test
     public void testSingletonClass() {
         HabitManager mgr1 = HabitManager.getInstance(InstrumentationRegistry.getTargetContext());
@@ -38,13 +40,23 @@ public class HabitManagerTest {
     public void testGetHabitsWhenEmpty() {
         HabitManager mgr1 = HabitManager.getInstance(InstrumentationRegistry.getTargetContext());
         final List<Habit> habitList = new ArrayList<>();
-        mgr1.getHabits(new AfterGetHabits() {
-            @Override
-            public void afterGetHabits(List<Habit> habits) {
-                habitList.addAll(habits);
-                assertEquals(true, habitList.isEmpty());
+        Log.d("Test2", "===============\nhabits length\n==============" );
+        x = true;
+        boolean u = true;
+        while (x) {
+            if(u) {
+                u =false;
+                mgr1.getHabits(new AfterGetHabits() {
+                    @Override
+                    public void afterGetHabits(List<Habit> habits) {
+                        x = false;
+                        habitList.addAll(habits);
+                        Log.i("habits length", "===============\n" + habits.size() + "\n===============");
+                        assertEquals(true, habits.isEmpty());
+                    }
+                });
             }
-        });
+        }
     }
 
     /*@Test

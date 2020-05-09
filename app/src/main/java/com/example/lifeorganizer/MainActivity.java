@@ -12,7 +12,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.lifeorganizer.Adapters.ViewPagerAdapter;
+import com.example.lifeorganizer.fragments.FragmentDiary;
 import com.example.lifeorganizer.fragments.FragmentHabit;
+import com.example.lifeorganizer.fragments.FragmentNoteView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
                 /*case R.id.navigation_event:
                     viewPager.setCurrentItem(3);
                     return true;*/
+                case R.id.navigation_diary:
+                    viewPager.setCurrentItem(4);
+                    return true;
             }
             return false;
         }
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         //FragmentHabit fragment = (FragmentHabit) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 0);
         //TODO handle navigation
-        FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
+
         /*switch (viewPagerAdapter.currentFragment){
             case TODO:
                 Toast.makeText(getApplicationContext(),"TODO",Toast.LENGTH_SHORT).show();
@@ -78,9 +83,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }*/
 
-        if(viewPagerAdapter.currentFragment == ViewPagerAdapter.FRAGMENT_TYPE.Habit){
+        if(viewPagerAdapter.currentFragment == ViewPagerAdapter.FRAGMENT_TYPE.Habit) {
+            FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
             if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0) {
                 fragment.getChildFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
+            }
+        } else if(viewPagerAdapter.currentFragment == ViewPagerAdapter.FRAGMENT_TYPE.Diary){
+            FragmentDiary fragment = (FragmentDiary) viewPagerAdapter.diaryFragment;
+            if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0) {
+                fragment.getChildFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
             }
         } else {
             super.onBackPressed();

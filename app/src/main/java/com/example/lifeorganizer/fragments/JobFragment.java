@@ -28,6 +28,7 @@ import com.example.lifeorganizer.dialogs.AddJobDialog;
 import com.example.lifeorganizer.dialogs.EditJobDialog;
 import com.example.lifeorganizer.dialogs.IAddJobDialog;
 import com.example.lifeorganizer.dialogs.IEditJobDialog;
+import com.example.lifeorganizer.dialogs.JobStatisticsDialog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -219,6 +220,14 @@ public class JobFragment extends Fragment   {
                     }
                 });
                 mainDialog.showDialog();
+            }
+        });
+        ((FloatingActionButton) view.findViewById(R.id.job_statistics)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JobStatisticsDialog jobStats = new JobStatisticsDialog();
+                jobStats.createDialog(getActivity().getSupportFragmentManager(), currentJobs, currentJobsTasks);
+                jobStats.showDialog();
             }
         });
     }

@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.design.widget.BottomNavigationView;
 
 import com.example.lifeorganizer.R;
+import com.example.lifeorganizer.fragments.FragmentDiary;
 import com.example.lifeorganizer.fragments.FragmentEvent;
 import com.example.lifeorganizer.fragments.FragmentHabit;
 import com.example.lifeorganizer.fragments.FragmentTodo;
@@ -15,7 +16,7 @@ import com.example.lifeorganizer.fragments.JobFragment;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     //private Fragment todoFragment, habitFragment;
-    public Fragment todoFragment, habitFragment, eventFragment, jobFragment;
+    public Fragment todoFragment, habitFragment, eventFragment, jobFragment, diaryFragment;
     public enum  FRAGMENT_TYPE {Habit,TODO,EVENT ,Job,Diary};
     public FRAGMENT_TYPE currentFragment = FRAGMENT_TYPE.TODO;
 
@@ -48,7 +49,13 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 if (eventFragment == null) {
                     eventFragment = new FragmentEvent();
                 }
-                return eventFragment;*/
+                return eventFragment;
+            case 4:
+                if (diaryFragment == null) {
+                    diaryFragment = new FragmentDiary();
+                }
+                return diaryFragment;
+             */
         }
         return null;
     }
@@ -82,6 +89,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 case 3:
                     navigationView.getMenu().findItem(R.id.navigation_event).setChecked(true);
                     currentFragment = FRAGMENT_TYPE.EVENT;
+                    break;
+                case 4:
+                    navigationView.getMenu().findItem(R.id.navigation_diary).setChecked(true);
+                    currentFragment = FRAGMENT_TYPE.Diary;
                     break;
             }
         }

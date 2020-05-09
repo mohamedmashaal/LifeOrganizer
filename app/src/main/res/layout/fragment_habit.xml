@@ -31,6 +31,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/habit_stats_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:src="@android:drawable/ic_menu_recent_history"
+        android:tint="@color/colorLight"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <FrameLayout
         android:id="@+id/habit_view_fragment_container"
         android:layout_width="match_parent"

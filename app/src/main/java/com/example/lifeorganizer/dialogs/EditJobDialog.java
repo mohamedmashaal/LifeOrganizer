@@ -102,7 +102,7 @@ public class EditJobDialog extends DialogFragment {
                             }
                             boolean taskFinished = ((CheckBox)list.getChildAt(i).findViewById(R.id.edit_job_task_done)).isChecked();
                             String timeSpentInHours = ((EditText)list.getChildAt(i).findViewById(R.id.edit_job_task_time)).getText().toString();
-                            int taskTimeInSec = Integer.getInteger(timeSpentInHours)*3600;
+                            int taskTimeInSec = Integer.parseInt(timeSpentInHours)*3600;
                             Task task = new Task(taskName, taskDeadline, taskFinished, taskTimeInSec);
                             tasks.add(task);
                         }

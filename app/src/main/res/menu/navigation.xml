@@ -20,4 +20,8 @@
         android:icon="@drawable/ic_event"
         android:title="@string/title_event" />
 
+    <item
+        android:id="@+id/navigation_diary"
+        android:icon="@drawable/ic_note"
+        android:title="@string/title_diary" />
 </menu>
