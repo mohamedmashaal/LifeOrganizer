@@ -57,6 +57,7 @@ public class EditJobDialog extends DialogFragment {
             item.taskNameEditText.setText(task.getTitle());
             item.taskCheckBox.setChecked(task.isFinished());
             item.taskDeadlineEditText.setText(dateToString(task.getDate()));
+            item.taskTimeSpentEditText.setText(Integer.toString(task.getTimeSpentInSeconds()/3600));
             layout.addView(item.view);
         }
        rootView.findViewById(R.id.edit_job_task_add_button).setOnClickListener(new View.OnClickListener() {
@@ -100,7 +101,9 @@ public class EditJobDialog extends DialogFragment {
                                 e.printStackTrace();
                             }
                             boolean taskFinished = ((CheckBox)list.getChildAt(i).findViewById(R.id.edit_job_task_done)).isChecked();
-                            Task task = new Task(taskName, taskDeadline, taskFinished, -1);
+                            String timeSpentInHours = ((EditText)list.getChildAt(i).findViewById(R.id.edit_job_task_time)).getText().toString();
+                            int taskTimeInSec = Integer.parseInt(timeSpentInHours)*3600;
+                            Task task = new Task(taskName, taskDeadline, taskFinished, taskTimeInSec);
                             tasks.add(task);
                         }
                         iDialog.onPositiveClicked(jobName, jobDescription, jobDeadline, tasks);
