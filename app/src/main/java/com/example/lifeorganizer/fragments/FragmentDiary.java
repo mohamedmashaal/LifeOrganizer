@@ -59,8 +59,8 @@ public class FragmentDiary extends Fragment {
                         final DiaryNote note = new DiaryNote(title, body, new Date());
                         DiaryManager.getInstance(getActivity()).createDiaryNote(note, new AfterCreateDiaryNote() {
                             @Override
-                            public void afterCreateDiaryNote() {
-                                notes.add(note);
+                            public void afterCreateDiaryNote(DiaryNote note1) {
+                                notes.add(note1);
                                 mAdapter.notifyDataSetChanged();
                             }
                         });

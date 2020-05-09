@@ -80,8 +80,8 @@ public class FragmentHabit extends Fragment {
                         final Habit habit = new Habit(title, description, daysMask, hrsPerWeek, startDate);
                         HabitManager.getInstance(getActivity()).createHabit(habit, new AfterCreateHabit() {
                             @Override
-                            public void afterCreateHabit() {
-                                habitList.add(habit);
+                            public void afterCreateHabit(Habit habit1) {
+                                habitList.add(habit1);
                                 mAdapter.notifyDataSetChanged();
                             }
                         });
