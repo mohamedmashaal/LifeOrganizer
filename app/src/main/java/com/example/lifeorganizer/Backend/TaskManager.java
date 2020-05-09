@@ -35,19 +35,20 @@ public class TaskManager {
 
     public void createTask(final Task task, final AfterCreateTask callback) {
 
-        class CreateTask extends AsyncTask<Void, Void, Void> {
+        class CreateTask extends AsyncTask<Void, Void, Long> {
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected Long doInBackground(Void... voids) {
                 // adding to database
-                DatabaseClient.getInstance(mCtx).getAppDatabase()
+                long id = DatabaseClient.getInstance(mCtx).getAppDatabase()
                         .taskDao().insert(task);
-                return null;
+                return id;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                callback.afterCreateTask();
+            protected void onPostExecute(Long id) {
+                super.onPostExecute(id);
+                task.setId(id.intValue());
+                callback.afterCreateTask(task);
             }
         }
 

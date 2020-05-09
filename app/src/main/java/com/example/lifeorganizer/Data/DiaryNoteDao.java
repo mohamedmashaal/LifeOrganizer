@@ -17,7 +17,7 @@ public interface DiaryNoteDao {
     DiaryNote getDiaryNote(int noteID);
 
     @Insert
-    void insert(DiaryNote diaryNote);
+    long insert(DiaryNote diaryNote);
 
     @Delete
     void delete(DiaryNote diaryNote);

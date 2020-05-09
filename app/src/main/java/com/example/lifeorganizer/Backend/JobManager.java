@@ -64,7 +64,7 @@ public class JobManager {
 
                             TaskManager.getInstance(mCtx).createTask(subtask, new AfterCreateTask() {
                                 @Override
-                                public void afterCreateTask() {}
+                                public void afterCreateTask(Task task) {}
                             });
                         }
 

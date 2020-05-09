@@ -19,7 +19,7 @@ public interface HabitDao {
     Habit getHabit(int habitID);
 
     @Insert
-    void insert(Habit habit);
+    long insert(Habit habit);
 
     @Delete
     void delete(Habit habit);

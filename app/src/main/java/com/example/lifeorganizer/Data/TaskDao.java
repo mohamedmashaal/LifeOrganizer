@@ -21,7 +21,7 @@ public interface TaskDao {
     List<Task> getForSpecificHabit(final int habitId);
 
     @Insert
-    void insert(Task task);
+    long insert(Task task);
 
     @Delete
     void delete(Task task);

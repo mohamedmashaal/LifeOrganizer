@@ -7,6 +7,10 @@ import com.example.lifeorganizer.Data.AppDatabase;
 import com.example.lifeorganizer.Data.DatabaseClient;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 
 public class BackupManager {
     private Context mCtx;
@@ -35,24 +39,28 @@ public class BackupManager {
         File externalStorageDirectory = Environment.getExternalStorageDirectory();
 
         // Get the Room database storage path using SupportSQLiteOpenHelper
-        DatabaseClient.getInstance(mCtx).getAppDatabase().getOpenHelper().getWritableDatabase().getPath();
-/*
+        AppDatabase appDatabase = DatabaseClient.getInstance(mCtx).getAppDatabase();
+
         if (externalStorageDirectory.canWrite()) {
-            val currentDBPath = AppDatabase.getDatabase(applicationContext)!!.openHelper.writableDatabase.path
-            val backupDBPath = "mydb.sqlite"      //you can modify the file type you need to export
-            val currentDB = File(currentDBPath)
-            val backupDB = File(sd, backupDBPath)
+            String currentDBPath = appDatabase.getOpenHelper().getWritableDatabase().getPath();
+            String backupDBPath = "life_orgranizer_dp.sqlite"; //you can modify the file type you need to export
+            File currentDB = new File(currentDBPath);
+            File backupDB = new File(externalStorageDirectory, backupDBPath);
             if (currentDB.exists()) {
                 try {
-                    val src = FileInputStream(currentDB).channel
-                    val dst = FileOutputStream(backupDB).channel
-                    dst.transferFrom(src, 0, src.size())
-                    src.close()
-                    dst.close()
-                } catch (e: IOException) {
-                    e.printStackTrace()
+                    FileChannel src = new FileInputStream(currentDB).getChannel();
+                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                    dst.transferFrom(src, 0, src.size());
+                    src.close();
+                    dst.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-        }*/
+        }
+    }
+
+    public void importDatabase() {
+
     }
 }
