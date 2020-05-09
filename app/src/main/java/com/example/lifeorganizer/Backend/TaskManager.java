@@ -175,7 +175,7 @@ public class TaskManager {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
                     int task_year = cal.get(Calendar.YEAR);
-                    int task_month = cal.get(Calendar.MONTH)-1;
+                    int task_month = cal.get(Calendar.MONTH);
                     //int day = cal.get(Calendar.DAY_OF_MONTH);
 
                     if(task_month == month && task_year == year)

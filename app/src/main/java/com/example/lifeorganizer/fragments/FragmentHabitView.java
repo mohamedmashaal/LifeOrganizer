@@ -206,11 +206,11 @@ public class FragmentHabitView extends Fragment{
         final Calendar c = Calendar.getInstance();
         c.setTime(currentMonth);
 
-        taskManager.getTasks(c.get(Calendar.MONTH)+1, c.get(Calendar.YEAR), new AfterGetTasks() {
+        taskManager.getTasks(c.get(Calendar.MONTH), c.get(Calendar.YEAR), new AfterGetTasks() {
             @Override
             public void afterGetTasks(List<Task> tasks) {
                 ArrayList<Task> tasksList = new ArrayList<>(tasks);
-                String out = tasksList.size()+","+ c.get(Calendar.MONTH)+1 +"," + c.get(Calendar.YEAR);
+                String out = tasksList.size()+","+ c.get(Calendar.MONTH) +"," + c.get(Calendar.YEAR);
                 Toast.makeText(getActivity(),out ,Toast.LENGTH_SHORT).show();
                 int [] state = new int[lastDay];
                 String days = habit.getDaysMask();
