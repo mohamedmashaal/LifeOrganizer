@@ -81,7 +81,7 @@ public class AddJobDialog extends DialogFragment {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-                            Task task = new Task(taskName, taskDeadline, false, -1);
+                            Task task = new Task(taskName, taskDeadline, false, 0);
                             tasks.add(task);
                         }
                         iDialog.onPositiveClicked(jobName, jobDescription, jobDeadline, tasks);

@@ -18,6 +18,7 @@ public class JobEditTaskItem {
     public Date taskDeadline;
     public Button taskDeleteButton;
     public CheckBox taskCheckBox;
+    public EditText taskTimeSpentEditText;
     public View view;
     public int index;
 
@@ -33,6 +34,7 @@ public class JobEditTaskItem {
         taskDeadlineEditText = view.findViewById(R.id.edit_job_task_date);
         taskDeleteButton = view.findViewById(R.id.edit_job_task_delete);
         taskCheckBox = view.findViewById(R.id.edit_job_task_done);
+        taskTimeSpentEditText = view.findViewById(R.id.edit_job_task_time);
     }
 
 }

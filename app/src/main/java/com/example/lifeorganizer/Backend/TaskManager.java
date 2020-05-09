@@ -175,7 +175,7 @@ public class TaskManager {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
                     int task_year = cal.get(Calendar.YEAR);
-                    int task_month = cal.get(Calendar.MONTH)-1;
+                    int task_month = cal.get(Calendar.MONTH)+1;
                     //int day = cal.get(Calendar.DAY_OF_MONTH);
 
                     if(task_month == month && task_year == year)
@@ -339,7 +339,7 @@ public class TaskManager {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
                     int task_year = cal.get(Calendar.YEAR);
-                    int task_month = cal.get(Calendar.MONTH)-1;
+                    int task_month = cal.get(Calendar.MONTH)+1;
 
                     if(task_year == year && task_month == month && task.getHabitID() == habit.getId())
                         specificTasks.add(task);
@@ -374,7 +374,7 @@ public class TaskManager {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
                     int task_year = cal.get(Calendar.YEAR);
-                    int task_month = cal.get(Calendar.MONTH)-1;
+                    int task_month = cal.get(Calendar.MONTH)+1;
 
                     if(task_year == year && task_month == month && task.isHabitTask())
                         specificTasks.add(task);
@@ -535,7 +535,7 @@ public class TaskManager {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
                     int task_year = cal.get(Calendar.YEAR);
-                    int task_month = cal.get(Calendar.MONTH)-1;
+                    int task_month = cal.get(Calendar.MONTH)+1;
 
                     if(task_year == year && task_month == month && task.getJobID() == job.getId())
                         specificTasks.add(task);
@@ -570,7 +570,7 @@ public class TaskManager {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
                     int task_year = cal.get(Calendar.YEAR);
-                    int task_month = cal.get(Calendar.MONTH)-1;
+                    int task_month = cal.get(Calendar.MONTH)+1;
 
                     if(task_year == year && task_month == month && task.isJobTask())
                         specificTasks.add(task);
