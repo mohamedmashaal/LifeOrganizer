@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.lifeorganizer.Data.DiaryNote;
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.fragments.FragmentDiary;
@@ -24,9 +25,9 @@ public class EditNoteDialog extends DialogFragment {
 
     private IEditNoteDialog iDialog;
     private FragmentManager fm;
-    private FragmentDiary.DummyNote note;
+    private DiaryNote note;
 
-    public void createDialog(FragmentManager fm, IEditNoteDialog iDialog, FragmentDiary.DummyNote note){
+    public void createDialog(FragmentManager fm, IEditNoteDialog iDialog, DiaryNote note){
         this.fm = fm;
         this.iDialog = iDialog;
         this.note = note;
@@ -46,10 +47,10 @@ public class EditNoteDialog extends DialogFragment {
         TextView header = rootView.findViewById(R.id.add_note_header);
         header.setText("Edit Note");
         EditText titleText = rootView.findViewById(R.id.add_note_title);
-        titleText.setText(note.title);
+        titleText.setText(note.getTitle());
 
         EditText bodyText = rootView.findViewById(R.id.add_note_body);
-        bodyText.setText(note.body);
+        bodyText.setText(note.getBody());
 
 
         // Inflate and set the layout for the dialog
@@ -63,9 +64,9 @@ public class EditNoteDialog extends DialogFragment {
                         String noteTitle = ((EditText) rootView.findViewById(R.id.add_note_title)).getText().toString();
                         String noteBody = ((EditText) rootView.findViewById(R.id.add_note_body)).getText().toString();
 
-                        note.title = noteTitle;
-                        note.body = noteBody;
-                        note.date = new Date();
+                        note.setTitle(noteTitle);
+                        note.setBody(noteBody);
+                        note.setCreatedAtDate(new Date());
                         iDialog.onPositiveClicked(note);
                     }
                 })

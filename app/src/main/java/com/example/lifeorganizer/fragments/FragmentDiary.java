@@ -14,6 +14,10 @@ import android.widget.ListView;
 
 
 import com.example.lifeorganizer.Adapters.DiaryListAdapter;
+import com.example.lifeorganizer.Backend.AfterCreateDiaryNote;
+import com.example.lifeorganizer.Backend.AfterGetDiaryNotes;
+import com.example.lifeorganizer.Backend.DiaryManager;
+import com.example.lifeorganizer.Data.DiaryNote;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.dialogs.AddNoteDialog;
 import com.example.lifeorganizer.dialogs.IAddNoteDialog;
@@ -28,7 +32,7 @@ public class FragmentDiary extends Fragment {
     private ListView listview;
     private DiaryListAdapter mAdapter;
     // TODO  list of note instead
-    List<DummyNote> notes;
+    List<DiaryNote> notes;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,45 +56,30 @@ public class FragmentDiary extends Fragment {
 
                     @Override
                     public void onPositiveClicked(String title, String body) {
-                        //TODO add the not in database
-
-                        /*final Habit habit = new Habit(title, description, daysMask, hrsPerWeek, startDate);
-                        HabitManager.getInstance(getActivity()).createHabit(habit, new AfterCreateHabit() {
+                        final DiaryNote note = new DiaryNote(title, body, new Date());
+                        DiaryManager.getInstance(getActivity()).createDiaryNote(note, new AfterCreateDiaryNote() {
                             @Override
-                            public void afterCreateHabit() {
-                                habitList.add(habit);
+                            public void afterCreateDiaryNote() {
+                                notes.add(note);
                                 mAdapter.notifyDataSetChanged();
                             }
-                        });*/
-
-                        notes.add(new DummyNote(title,body,new Date()));
-                        mAdapter.notifyDataSetChanged();
-
+                        });
                     }
                 });
                 mainDialog.showDialog();
             }
         });
-        //TODO load notes list from database look TODOFragment Example
-        notes = new ArrayList<>();
-        notes.add(new DummyNote("note1", "note1 details\nline 1",new Date()));
-        notes.add(new DummyNote("note2", "note2 details\nline 23",new Date()));
-        mAdapter = new DiaryListAdapter(getActivity(),notes,FragmentDiary.this);
         listview = view.findViewById(R.id.notesListView);
-        listview.setItemsCanFocus(true);
-        listview.setAdapter(mAdapter);
-
-
-    }
-    public class DummyNote{
-        public DummyNote(String title,String body,Date date){
-            this.title = title;
-            this.body = body;
-            this.date = date;
-        }
-        public String title;
-        public String body;
-        public Date date;
+        DiaryManager diaryManager= DiaryManager.getInstance(getActivity());
+        diaryManager.getDiaryNotes(new AfterGetDiaryNotes() {
+            @Override
+            public void afterGetDiaryNotes(List<DiaryNote> diaryNotes) {
+                notes = diaryNotes;
+                mAdapter = new DiaryListAdapter(getActivity(),notes,FragmentDiary.this);
+                listview.setItemsCanFocus(true);
+                listview.setAdapter(mAdapter);
+            }
+        });
     }
 
 }

@@ -20,8 +20,11 @@ import android.widget.TextView;
 
 import com.example.lifeorganizer.Adapters.DiaryListAdapter;
 import com.example.lifeorganizer.Adapters.HabitListAdapter;
+import com.example.lifeorganizer.Backend.AfterEditDiaryNote;
 import com.example.lifeorganizer.Backend.AfterEditHabit;
+import com.example.lifeorganizer.Backend.DiaryManager;
 import com.example.lifeorganizer.Backend.HabitManager;
+import com.example.lifeorganizer.Data.DiaryNote;
 import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
@@ -38,8 +41,8 @@ public class FragmentNoteView extends Fragment {
     EditText titleField , bodyFiled;
     Button editBtn;
     private static DiaryListAdapter diaryListAdapter;
-    private static FragmentDiary.DummyNote note;
-    public static FragmentNoteView newInstance(FragmentDiary.DummyNote note, DiaryListAdapter diaryListAdapter) {
+    private static DiaryNote note;
+    public static FragmentNoteView newInstance(DiaryNote note, DiaryListAdapter diaryListAdapter) {
         FragmentNoteView.note = note;
         FragmentNoteView.diaryListAdapter = diaryListAdapter;
         FragmentNoteView fragment = new FragmentNoteView();
@@ -63,8 +66,8 @@ public class FragmentNoteView extends Fragment {
         bodyFiled = view.findViewById(R.id.note_body_filed);
         editBtn = view.findViewById(R.id.note_edit_btn);
 
-        titleField.setText(note.title);
-        bodyFiled.setText(note.body);
+        titleField.setText(note.getTitle());
+        bodyFiled.setText(note.getBody());
 
         setEditListener();
     }
@@ -76,16 +79,15 @@ public class FragmentNoteView extends Fragment {
                 EditNoteDialog editDialog = new EditNoteDialog();
                 editDialog.createDialog((getActivity()).getSupportFragmentManager(), new IEditNoteDialog() {
                     @Override
-                    public void onPositiveClicked(FragmentDiary.DummyNote note) {
-                        //TODO udate note in the database
-                        /*TaskManager taskManager = TaskManager.getInstance(context);
-                        taskManager.editTask(task, new AfterEditTask() {
+                    public void onPositiveClicked(DiaryNote note) {
+                        DiaryManager diaryManager = DiaryManager.getInstance(getActivity());
+                        diaryManager.editDiaryNote(note, new AfterEditDiaryNote() {
                             @Override
-                            public void afterEditTask() {
+                            public void afterEditDiaryNote() {
                             }
-                        });*/
-                        titleField.setText(note.title);
-                        bodyFiled.setText(note.body);
+                        });
+                        titleField.setText(note.getTitle());
+                        bodyFiled.setText(note.getBody());
                         diaryListAdapter.notifyDataSetChanged();
                     }
                 }, note);

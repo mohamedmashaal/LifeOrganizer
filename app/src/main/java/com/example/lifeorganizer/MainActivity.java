@@ -87,11 +87,15 @@ public class MainActivity extends AppCompatActivity {
             FragmentHabit fragment = (FragmentHabit) viewPagerAdapter.habitFragment;
             if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0) {
                 fragment.getChildFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
             }
         } else if(viewPagerAdapter.currentFragment == ViewPagerAdapter.FRAGMENT_TYPE.Diary){
             FragmentDiary fragment = (FragmentDiary) viewPagerAdapter.diaryFragment;
             if (fragment.getChildFragmentManager().getBackStackEntryCount() != 0) {
                 fragment.getChildFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
             }
         } else {
             super.onBackPressed();

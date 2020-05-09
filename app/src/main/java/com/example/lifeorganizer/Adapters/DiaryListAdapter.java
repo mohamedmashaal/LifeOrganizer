@@ -12,6 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.lifeorganizer.Backend.AfterDeleteDiaryNote;
+import com.example.lifeorganizer.Backend.AfterEditDiaryNote;
+import com.example.lifeorganizer.Backend.DiaryManager;
+import com.example.lifeorganizer.Data.DiaryNote;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.dialogs.EditNoteDialog;
 import com.example.lifeorganizer.dialogs.IEditNoteDialog;
@@ -23,8 +27,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class DiaryListAdapter extends ArrayAdapter<FragmentDiary.DummyNote> {
-    List<FragmentDiary.DummyNote> notes;
+public class DiaryListAdapter extends ArrayAdapter<DiaryNote> {
+    List<DiaryNote> notes;
     DiaryListAdapter diaryAdapter;
     Context context;
     FragmentDiary diaryFragment;
@@ -32,7 +36,7 @@ public class DiaryListAdapter extends ArrayAdapter<FragmentDiary.DummyNote> {
 
     final String [] MONTHS = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep", "Oct","Nov","Dec"};
 
-    public DiaryListAdapter(Context context, List<FragmentDiary.DummyNote> notes, FragmentDiary fragment) {
+    public DiaryListAdapter(Context context, List<DiaryNote> notes, FragmentDiary fragment) {
         super(context, 0, notes);
         this.notes = notes;
         diaryAdapter = this;
@@ -50,14 +54,14 @@ public class DiaryListAdapter extends ArrayAdapter<FragmentDiary.DummyNote> {
             //listItemView = mInflater.inflate(R.layout.task_item, parent,false);
             listItemView = mInflater.inflate(R.layout.note_item, null);
         }
-        FragmentDiary.DummyNote note = getItem(position);
+        DiaryNote note = getItem(position);
         Button deleteBtn = (Button) listItemView.findViewById(R.id.note_delete_btn);
         TextView titleView = listItemView.findViewById(R.id.note_title_text);
         TextView dateView = listItemView.findViewById(R.id.note_date_text);
 
 
-        titleView.setText(note.title);
-        dateView.setText(getDateText(note.date));
+        titleView.setText(note.getTitle());
+        dateView.setText(getDateText(note.getCreatedAtDate()));
 
         setNameTextListener(titleView,note);
 
@@ -78,11 +82,10 @@ public class DiaryListAdapter extends ArrayAdapter<FragmentDiary.DummyNote> {
     }
 
 
-    private void setNameTextListener(final TextView titleView, final FragmentDiary.DummyNote note){
+    private void setNameTextListener(final TextView titleView, final DiaryNote note){
         titleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Open Single Habit Fragment
                 FragmentTransaction transaction = diaryFragment.getChildFragmentManager().beginTransaction();
 /*
                 transaction.replace(R.id.habit_view_fragment_container,
@@ -97,7 +100,7 @@ public class DiaryListAdapter extends ArrayAdapter<FragmentDiary.DummyNote> {
         });
     }
 
-    private void setDeleteListener(final Button deleteBtn, final FragmentDiary.DummyNote note){
+    private void setDeleteListener(final Button deleteBtn, final DiaryNote note){
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,16 +111,15 @@ public class DiaryListAdapter extends ArrayAdapter<FragmentDiary.DummyNote> {
 
                 builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        //TODO delete note from database
-                        /*TaskManager.getInstance(getContext()).deleteTask(task, new AfterDeleteTask() {
+                        DiaryManager diaryManager = DiaryManager.getInstance(diaryFragment.getActivity());
+                        diaryManager.deleteDiaryNote(note, new AfterDeleteDiaryNote() {
                             @Override
-                            public void afterDeleteTask() {
-                                tasksList.remove(task);
-                                taskAdapter.notifyDataSetChanged();
+                            public void afterDeleteDiaryNote() {
+                                notes.remove(note);
+                                diaryAdapter.notifyDataSetChanged();
                             }
-                        });*/
-                        notes.remove(note);
-                        diaryAdapter.notifyDataSetChanged();
+                        });
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

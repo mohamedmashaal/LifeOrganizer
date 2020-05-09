@@ -1,7 +1,7 @@
 package com.example.lifeorganizer.dialogs;
 
-import com.example.lifeorganizer.fragments.FragmentDiary;
+import com.example.lifeorganizer.Data.DiaryNote;
 
 public interface IEditNoteDialog {
-    void onPositiveClicked(FragmentDiary.DummyNote note);
+    void onPositiveClicked(DiaryNote note);
 }
