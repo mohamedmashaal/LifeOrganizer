@@ -44,18 +44,18 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                     jobFragment = new JobFragment();
                 }
                 return jobFragment;
-            case 3:
+            /*case 3:
                 if (eventFragment == null) {
                     eventFragment = new FragmentEvent();
                 }
-                return eventFragment;
+                return eventFragment;*/
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 
     private ViewPager.OnPageChangeListener listner = new ViewPager.OnPageChangeListener() {

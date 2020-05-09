@@ -204,7 +204,6 @@ public class JobFragment extends Fragment   {
                         jobManager.createJob(job, tasks, new AfterCreateJob() {
                             @Override
                             public void afterCreateJob(final Job job) {
-                                Log.d("I came back", "Indeed");
                                 currentJobs.add(job);
                                 mAdapter.notifyDataSetChanged();
                                 taskManager.getTasksForJob(job, new AfterGetTasks() {

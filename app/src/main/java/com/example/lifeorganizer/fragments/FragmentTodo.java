@@ -75,7 +75,7 @@ public class FragmentTodo extends Fragment {
 
                         TaskManager.getInstance(getActivity()).createTask(task, new AfterCreateTask() {
                             @Override
-                            public void afterCreateTask() {
+                            public void afterCreateTask(Task task) {
                                 loadTheList();
                             }
                         });

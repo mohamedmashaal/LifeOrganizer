@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_job:
                     viewPager.setCurrentItem(2);
                     return true;
-                case R.id.navigation_event:
+                /*case R.id.navigation_event:
                     viewPager.setCurrentItem(3);
-                    return true;
+                    return true;*/
             }
             return false;
         }
