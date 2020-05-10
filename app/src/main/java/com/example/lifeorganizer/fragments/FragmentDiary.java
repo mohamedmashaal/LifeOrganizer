@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 
@@ -21,6 +22,8 @@ import com.example.lifeorganizer.Data.DiaryNote;
 import com.example.lifeorganizer.R;
 import com.example.lifeorganizer.dialogs.AddNoteDialog;
 import com.example.lifeorganizer.dialogs.IAddNoteDialog;
+import com.example.lifeorganizer.dialogs.ISelectDiaryDayDialog;
+import com.example.lifeorganizer.dialogs.SelectDiaryDayDialog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,9 +72,63 @@ public class FragmentDiary extends Fragment {
                 mainDialog.showDialog();
             }
         });
+
+        Button allBtn = view.findViewById(R.id.diary_all_btn);
+        Button selectBtn = view.findViewById(R.id.diary_select_btn);
+
+        allBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadAllNotes();
+            }
+        });
+
+        selectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectDiaryDayDialog selectDialog = new SelectDiaryDayDialog();
+                selectDialog.createDialog(getActivity().getSupportFragmentManager(), new ISelectDiaryDayDialog() {
+
+                    @Override
+                    public void onPositiveClicked(Date date) {
+                        loadDayNotes(date);
+                    }
+                });
+                selectDialog.showDialog();
+            }
+        });
+
         listview = view.findViewById(R.id.notesListView);
+        loadAllNotes();
+        /*DiaryManager diaryManager= DiaryManager.getInstance(getActivity());
+        diaryManager.getDiaryNotes(new AfterGetDiaryNotes() {
+            @Override
+            public void afterGetDiaryNotes(List<DiaryNote> diaryNotes) {
+                notes = diaryNotes;
+                mAdapter = new DiaryListAdapter(getActivity(),notes,FragmentDiary.this);
+                listview.setItemsCanFocus(true);
+                listview.setAdapter(mAdapter);
+            }
+        });*/
+
+
+    }
+    private void loadAllNotes(){
         DiaryManager diaryManager= DiaryManager.getInstance(getActivity());
         diaryManager.getDiaryNotes(new AfterGetDiaryNotes() {
+            @Override
+            public void afterGetDiaryNotes(List<DiaryNote> diaryNotes) {
+                notes = diaryNotes;
+                mAdapter = new DiaryListAdapter(getActivity(),notes,FragmentDiary.this);
+                listview.setItemsCanFocus(true);
+                listview.setAdapter(mAdapter);
+            }
+        });
+    }
+
+    private void loadDayNotes(Date date){
+        DiaryManager diaryManager= DiaryManager.getInstance(getActivity());
+        diaryManager.getDiaryNotes(date,new AfterGetDiaryNotes() {
             @Override
             public void afterGetDiaryNotes(List<DiaryNote> diaryNotes) {
                 notes = diaryNotes;
