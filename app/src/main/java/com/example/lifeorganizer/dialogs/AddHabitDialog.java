@@ -8,9 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.lifeorganizer.R;
 
@@ -44,10 +46,20 @@ public class AddHabitDialog extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(rootView)
                 // Add action buttons
-                .setPositiveButton("Add Habit", new DialogInterface.OnClickListener() {
-                    @Override
+                .setPositiveButton("Add Habit",null)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        AddHabitDialog.this.getDialog().cancel();
+                    }
+                });
+        final AlertDialog dialog1 = builder.create();
+        dialog1.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button positiveButton = (Button) dialog1.getButton(Dialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         String habitName = ((EditText) rootView.findViewById(R.id.add_habit_name)).getText().toString();
                         String habitDescription = ((EditText) rootView.findViewById(R.id.add_habit_description)).getText().toString();
 
@@ -58,15 +70,37 @@ public class AddHabitDialog extends DialogFragment {
                         DatePicker datePicker = rootView.findViewById(R.id.add_habit_date_picker);
                         Date habitDate = getDate(datePicker);
 
-                        iDialog.onPositiveClicked(habitName, habitDescription, daysMask, habitHours, habitDate);
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        AddHabitDialog.this.getDialog().cancel();
+
+
+                        boolean isError = false;
+                        if(habitName.length() == 0){
+                            isError = true;
+                            ((EditText)rootView.findViewById(R.id.add_habit_name)).setError("Enter habit name");
+                        }
+                        if(hrs.length() == 0){
+                            isError = true;
+                            ((EditText)rootView.findViewById(R.id.add_habit_hours)).setError("Enter habit hrs");
+                        }
+                        int counter = 0;
+                        for (int i = 0; i < daysMask.length(); i++) {
+                            if(daysMask.charAt(i) == '1'){
+                                counter++;
+                            }
+                        }
+                        if(counter == 0){
+                            isError = true;
+                            Toast.makeText(getActivity(),"Check at least one day",Toast.LENGTH_SHORT).show();
+                        }
+
+                        if(!isError){
+                            dialog1.dismiss();
+                            iDialog.onPositiveClicked(habitName, habitDescription, daysMask, habitHours, habitDate);
+                        }
                     }
                 });
-        return builder.create();
+            }
+        });
+        return dialog1;
     }
 
     private String getDaysMask(View rootView) {

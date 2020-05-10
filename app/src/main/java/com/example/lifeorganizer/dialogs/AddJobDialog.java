@@ -8,8 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.lifeorganizer.Data.Task;
 import com.example.lifeorganizer.R;
@@ -59,39 +62,69 @@ public class AddJobDialog extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(rootView)
                 // Add action buttons
-                .setPositiveButton("Add Job", new DialogInterface.OnClickListener() {
-                    @Override
+                .setPositiveButton("Add Job", null)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        AddJobDialog.this.getDialog().cancel();
+                    }
+                });
+        final AlertDialog dialog1 = builder.create();
+        dialog1.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button positiveButton = (Button) dialog1.getButton(Dialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         String jobName = ((EditText) rootView.findViewById(R.id.add_job_name)).getText().toString();
                         String jobDescription = ((EditText) rootView.findViewById(R.id.add_job_description)).getText().toString();
+                        boolean isError = false;
+
+                        if(jobName.length() == 0){
+                            isError = true;
+                            ((EditText)rootView.findViewById(R.id.add_job_name)).setError("Enter Job name");
+                        }
+
                         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                         Date jobDeadline = new Date();
                         try {
                             jobDeadline = df.parse(((EditText) rootView.findViewById(R.id.add_job_deadline)).getText().toString());
                         } catch (ParseException e) {
                             e.printStackTrace();
+                            isError = true;
+                            ((EditText) rootView.findViewById(R.id.add_job_deadline)).setError("Enter valid date 'dd/MM/yyyy'");
                         }
                         ArrayList<Task> tasks = new ArrayList<>();
                         LinearLayout list = rootView.findViewById(R.id.add_job_task_list);
+                        if(list.getChildCount() == 0){
+                            isError = true;
+                            Toast.makeText(getActivity(),"Add at least one task",Toast.LENGTH_SHORT).show();
+                        }
                         for(int i = 0 ; i < list.getChildCount() ; i ++){
                             String taskName = ((EditText)list.getChildAt(i).findViewById(R.id.add_job_task_name)).getText().toString();
+                            if(taskName.length() == 0){
+                                isError = true;
+                                ((EditText)list.getChildAt(i).findViewById(R.id.add_job_task_name)).setError("Enter Task name");
+                            }
                             Date taskDeadline = new Date();
                             try {
-                                 taskDeadline = df.parse(((EditText)list.getChildAt(i).findViewById(R.id.add_job_task_date)).getText().toString());
+                                taskDeadline = df.parse(((EditText)list.getChildAt(i).findViewById(R.id.add_job_task_date)).getText().toString());
                             } catch (ParseException e) {
                                 e.printStackTrace();
+                                isError = true;
+                                ((EditText) list.getChildAt(i).findViewById(R.id.add_job_task_date)).setError("Enter valid date 'dd/MM/yyyy'");
                             }
                             Task task = new Task(taskName, taskDeadline, false, 0);
                             tasks.add(task);
                         }
-                        iDialog.onPositiveClicked(jobName, jobDescription, jobDeadline, tasks);
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        AddJobDialog.this.getDialog().cancel();
+                        if(!isError){
+                            dialog1.dismiss();
+                            iDialog.onPositiveClicked(jobName, jobDescription, jobDeadline, tasks);
+                        }
                     }
                 });
-        return builder.create();
+            }
+        });
+        return dialog1;
     }
 }

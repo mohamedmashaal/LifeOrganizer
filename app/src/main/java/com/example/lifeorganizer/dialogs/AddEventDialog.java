@@ -130,7 +130,6 @@ public class AddEventDialog extends DialogFragment {
         ((TextView) view.findViewById(R.id.add_event_min)).setText(String.valueOf(event.getStartMinute()));
         ((TextView) view.findViewById(R.id.add_event_duration)).setText(String.valueOf(event.getDuration()));
 
-        //TODO set date packer
         DatePicker datePicker = view.findViewById(R.id.add_event_date_picker);
         Calendar cal = Calendar.getInstance();
         cal.setTime(event.getStartDate());

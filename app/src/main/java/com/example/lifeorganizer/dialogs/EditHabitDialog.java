@@ -7,10 +7,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lifeorganizer.Data.Habit;
 import com.example.lifeorganizer.R;
@@ -80,6 +82,41 @@ public class EditHabitDialog extends DialogFragment {
                         EditHabitDialog.this.getDialog().cancel();
                     }
                 });
-        return builder.create();
+        final AlertDialog dialog1 = builder.create();
+        dialog1.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button positiveButton = (Button) dialog1.getButton(Dialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String habitName = ((EditText) rootView.findViewById(R.id.add_habit_name)).getText().toString();
+                        String habitDescription = ((EditText) rootView.findViewById(R.id.add_habit_description)).getText().toString();
+
+                        String hrs = ((EditText) rootView.findViewById(R.id.add_habit_hours)).getText().toString();
+                        int habitHours = (!hrs.equals("")) ? Integer.valueOf(hrs) : 0;
+
+                        boolean isError = false;
+                        if(habitName.length() == 0){
+                            isError = true;
+                            ((EditText)rootView.findViewById(R.id.add_habit_name)).setError("Enter habit name");
+                        }
+                        if(hrs.length() == 0){
+                            isError = true;
+                            ((EditText)rootView.findViewById(R.id.add_habit_hours)).setError("Enter habit hrs");
+                        }
+
+                        if(!isError){
+                            dialog1.dismiss();
+                            habit.setTitle(habitName);
+                            habit.setHrsPerWeek(habitHours);
+                            habit.setDescription(habitDescription);
+                            iDialog.onPositiveClicked(habit);
+                        }
+                    }
+                });
+            }
+        });
+        return dialog1;
     }
 }
