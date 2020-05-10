@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -57,25 +58,46 @@ public class EditNoteDialog extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(rootView)
                 // Add action buttons
-                .setPositiveButton("Edit Note", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        String noteTitle = ((EditText) rootView.findViewById(R.id.add_note_title)).getText().toString();
-                        String noteBody = ((EditText) rootView.findViewById(R.id.add_note_body)).getText().toString();
-
-                        note.setTitle(noteTitle);
-                        note.setBody(noteBody);
-                        note.setCreatedAtDate(new Date());
-                        iDialog.onPositiveClicked(note);
-                    }
-                })
+                .setPositiveButton("Edit Note",null)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         EditNoteDialog.this.getDialog().cancel();
                     }
                 });
-        return builder.create();
+        final AlertDialog d = builder.create();
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button positiveBtn = d.getButton(Dialog.BUTTON_POSITIVE);
+                positiveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String noteTitle = ((EditText) rootView.findViewById(R.id.add_note_title)).getText().toString();
+                        String noteBody = ((EditText) rootView.findViewById(R.id.add_note_body)).getText().toString();
+
+                        if (noteBody.length() == 0) {
+                            //Log.d("Empty Body", "\n======================\nI am here\n====================\n");
+                            EditText bodyFiled = rootView.findViewById(R.id.add_note_body);
+                            bodyFiled.setError("enter content of note");
+                        } else {
+                            if(noteTitle.length() == 0){
+                                if(noteBody.length() <= 10){
+                                    noteTitle = noteBody;
+                                }else {
+                                    noteTitle = noteBody.substring(0,10);
+                                }
+                            }
+                            note.setTitle(noteTitle);
+                            note.setBody(noteBody);
+                            note.setCreatedAtDate(new Date());
+                            d.dismiss();
+                            iDialog.onPositiveClicked(note);
+                        }
+                    }
+                });
+            }
+        });
+        return d;
     }
 
 
