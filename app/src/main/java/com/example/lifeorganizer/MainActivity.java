@@ -1,5 +1,6 @@
 package com.example.lifeorganizer;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -7,14 +8,22 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.lifeorganizer.Adapters.ViewPagerAdapter;
 import com.example.lifeorganizer.fragments.FragmentDiary;
 import com.example.lifeorganizer.fragments.FragmentHabit;
 import com.example.lifeorganizer.fragments.FragmentNoteView;
+import com.example.lifeorganizer.notifications.TaskNotification;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,6 +75,17 @@ public class MainActivity extends AppCompatActivity {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        createNotification();
+    }
+
+    private void createNotification() {
+        TaskNotification notification = TaskNotification.getInstance(this);
+        notification.setTime(21, 49);
+        //TODO get tasks number and make string
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        Log.i("date", formatter.format(date));
+//        notification.createNotification("Hi there", new Date());
     }
 
 
