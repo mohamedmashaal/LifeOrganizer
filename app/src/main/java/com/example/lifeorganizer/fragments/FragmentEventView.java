@@ -23,6 +23,7 @@ import com.example.lifeorganizer.dialogs.AddEventDialog;
 import com.example.lifeorganizer.dialogs.IAddEventDialog;
 import com.example.lifeorganizer.interfaces.iOnEventOperation;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class FragmentEventView extends Fragment {
@@ -31,6 +32,7 @@ public class FragmentEventView extends Fragment {
     private static Event event;
     private static int eventID;
     private static iOnEventOperation onEventOperation;
+    final String [] MONTHS = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep", "Oct","Nov","Dec"};
 
     public static FragmentEventView newInstance(iOnEventOperation onEventOperation, int eventID) {
         FragmentEventView.onEventOperation = onEventOperation;
@@ -108,7 +110,7 @@ public class FragmentEventView extends Fragment {
                             }
                         });
                     }
-                }, "Edit Event");
+                }, "Edit Event",event);
                 mainDialog.showDialog();
             }
         });
@@ -121,7 +123,15 @@ public class FragmentEventView extends Fragment {
         ((TextView) view.findViewById(R.id.event_start_hours)).setText(String.valueOf(event.getStartHour()));
         ((TextView) view.findViewById(R.id.event_min)).setText(String.valueOf(event.getStartMinute()));
         ((TextView) view.findViewById(R.id.event_duration)).setText(String.valueOf(event.getDuration()));
-        ((TextView) view.findViewById(R.id.event_date)).setText(event.getStartDate().toString());
+        ((TextView) view.findViewById(R.id.event_date)).setText(getDateText(event.getStartDate()));
+    }
+    private String getDateText(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        String d = calendar.get(Calendar.DAY_OF_MONTH)+" ";
+        d += MONTHS[calendar.get(Calendar.MONTH)] + " ";
+        d += calendar.get(Calendar.YEAR);
+        return  d;
     }
 
 }

@@ -107,7 +107,7 @@ public class FragmentEvent extends Fragment {
                             }
                         });
                     }
-                }, "Add Event");
+                }, "Add Event",null);
                 mainDialog.showDialog();
             }
         });
