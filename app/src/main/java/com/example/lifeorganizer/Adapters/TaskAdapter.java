@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
     Context context;
     FragmentTodo todoFragment;
     LayoutInflater mInflater;
+    private long tStart;
 
     final String [] MONTHS = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep", "Oct","Nov","Dec"};
 
@@ -71,6 +73,8 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             holder.checkBox = listItemView.findViewById(R.id.task_checkbox);
 
             holder.deleteBtn = (Button) listItemView.findViewById(R.id.task_delete_btn);
+
+            holder.timerBtn = (Button) listItemView.findViewById(R.id.task_btn_timer);
 
             listItemView.setTag(holder);
 
@@ -107,6 +111,25 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             listItemView.findViewById(R.id.minText).setVisibility(View.GONE);
             holder.checkBox.setVisibility(View.GONE);
         }
+
+        holder.timerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button btn = (Button)v;
+                if (btn.getText().equals("START")){
+                    tStart = System.currentTimeMillis();
+                    btn.setText("STOP");
+                } else {
+                    long tEnd = System.currentTimeMillis();
+                    long tDelta = tEnd - tStart;
+                    int elapsedSeconds = (int)(tDelta / 1000);
+                    holder.timeFiled.setText(String.valueOf(elapsedSeconds));
+                    btn.setText("START");
+                }
+            }
+        });
+
+
 
         return listItemView;
     }
@@ -264,5 +287,6 @@ class ViewHolder {
     TextView nameText;
     CheckBox checkBox;
     Button deleteBtn;
+    Button timerBtn;
     Task task;
 }
