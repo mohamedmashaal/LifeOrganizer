@@ -1,58 +1,61 @@
 package com.example.lifeorganizer;
 
-import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import com.example.lifeorganizer.Backend.AfterCreateHabit;
+import com.example.lifeorganizer.Backend.AfterDeleteDiaryNote;
+import com.example.lifeorganizer.Backend.AfterGetDiaryNotes;
 import com.example.lifeorganizer.Backend.AfterGetHabits;
+import com.example.lifeorganizer.Backend.DiaryManager;
 import com.example.lifeorganizer.Backend.HabitManager;
+import com.example.lifeorganizer.Data.DiaryNote;
 import com.example.lifeorganizer.Data.Habit;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 @RunWith(AndroidJUnit4.class)
-public class HabitManagerTest {
+public class DiaryManagerTest {
     boolean x = true;
-    @Test
-    public void testSingletonClass() {
-        HabitManager mgr1 = HabitManager.getInstance(InstrumentationRegistry.getTargetContext());
-        HabitManager mgr2 = HabitManager.getInstance(InstrumentationRegistry.getTargetContext());
-
-        assert mgr1.equals(mgr2);
+    @After
+    public void clearDiaryTable(){
+        final DiaryManager mgr1 = DiaryManager.getInstance(InstrumentationRegistry.getTargetContext());
+        mgr1.getDiaryNotes(new AfterGetDiaryNotes() {
+            @Override
+            public void afterGetDiaryNotes(List<DiaryNote> diaryNotes) {
+                for (int i = 0; i < diaryNotes.size(); i++) {
+                    mgr1.deleteDiaryNote(diaryNotes.get(i), new AfterDeleteDiaryNote() {
+                        @Override
+                        public void afterDeleteDiaryNote() {
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Test
-    public void testGetHabitsWhenEmpty() {
-        HabitManager mgr1 = HabitManager.getInstance(InstrumentationRegistry.getTargetContext());
-        final List<Habit> habitList = new ArrayList<>();
-        Log.d("Test2", "===============\nhabits length\n==============" );
+    public void testGetNotesWhenEmpty() {
+        DiaryManager mgr1 = DiaryManager.getInstance(InstrumentationRegistry.getTargetContext());
+        //Log.d("Test2", "===============\nhabits length\n==============" );
         x = true;
         boolean u = true;
         while (x) {
             if(u) {
                 u =false;
-                mgr1.getHabits(new AfterGetHabits() {
+                mgr1.getDiaryNotes(new AfterGetDiaryNotes() {
                     @Override
-                    public void afterGetHabits(List<Habit> habits) {
+                    public void afterGetDiaryNotes(List<DiaryNote> notes) {
                         x = false;
-                        habitList.addAll(habits);
-                        Log.i("habits length", "===============\n" + habits.size() + "\n===============");
-                        assertEquals(true, habits.isEmpty());
+                        //Log.i("habits length", "===============\n" + notes.size() + "\n===============");
+                        assertEquals(true, notes.isEmpty());
                     }
                 });
             }
