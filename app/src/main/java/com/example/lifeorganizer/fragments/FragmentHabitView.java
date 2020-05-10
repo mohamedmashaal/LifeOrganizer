@@ -89,18 +89,32 @@ public class FragmentHabitView extends Fragment{
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeDate(-1);
-                setDateText();
-                updateCalendar();
+                Calendar c = Calendar.getInstance();
+                c.setTime(habit.getStartDate());
+                int startMonth = c.get(Calendar.MONTH);
+                c.setTime(currentMonth);
+                int currentMonth = c.get(Calendar.MONTH);
+                if(currentMonth > startMonth) {
+                    changeDate(-1);
+                    setDateText();
+                    updateCalendar();
+                }
             }
         });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeDate(1);
-                setDateText();
-                updateCalendar();
+                Calendar c = Calendar.getInstance();
+                c.setTime(new Date());
+                int thisMonth = c.get(Calendar.MONTH);
+                c.setTime(currentMonth);
+                int currentMonth = c.get(Calendar.MONTH);
+                if(currentMonth < thisMonth) {
+                    changeDate(1);
+                    setDateText();
+                    updateCalendar();
+                }
             }
         });
 
@@ -205,25 +219,39 @@ public class FragmentHabitView extends Fragment{
         final TaskManager taskManager = TaskManager.getInstance(getActivity());
         final Calendar c = Calendar.getInstance();
         c.setTime(currentMonth);
-
-        taskManager.getTasks(c.get(Calendar.MONTH), c.get(Calendar.YEAR), new AfterGetTasks() {
+        taskManager.getTasks(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR), new AfterGetTasks() {
             @Override
             public void afterGetTasks(List<Task> tasks) {
-                ArrayList<Task> tasksList = new ArrayList<>(tasks);
-                String out = tasksList.size()+","+ c.get(Calendar.MONTH) +"," + c.get(Calendar.YEAR);
+                ArrayList<Task> tasksList = new ArrayList<>();
+                for (int i = 0; i < tasks.size(); i++) {
+                    if(tasks.get(i).getHabitID() == habit.getId()){
+                        tasksList.add(tasks.get(i));
+                    }
+                }
+                String out = tasksList.size()+","+ (c.get(Calendar.MONTH) + 1)  +"," + c.get(Calendar.YEAR);
                 Toast.makeText(getActivity(),out ,Toast.LENGTH_SHORT).show();
+                /*
+                   * -2 not habit day
+                   * -1 habit future day
+                   * 0 not done habit day
+                   * 1 done habit day
+                 */
                 int [] state = new int[lastDay];
                 String days = habit.getDaysMask();
                 for (int i = 0; i < state.length; i++) {
                     if(days.charAt((i+weekDay)%7) == '1'){
-                        state[i] = 0;
+                        if(i <= getDayInMonth(new Date()) -1){
+                            state[i] = 0;
+                        } else {
+                            state[i] = -1;
+                        }
                     } else {
-                        state[i] = -1;
+                        state[i] = -2;
                     }
                 }
                 for (int j = 0; j < tasksList.size(); j++) {
                     Task t = tasksList.get(j);
-                    if(t.isFinished()){
+                    if(t.isFinished() && getDayInMonth(t.getDate()) <= getDayInMonth(new Date())){
                         int taskDay = getDayInMonth(t.getDate());
                         state[taskDay-1] = 1;
                     }
