@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createNotification() {
         TaskNotification notification = TaskNotification.getInstance(this);
-        notification.setTime(21, 49);
+        notification.setTime(22, 50);
         //TODO get tasks number and make string
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
